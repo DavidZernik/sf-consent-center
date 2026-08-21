@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <description>Record-triggered flow. When a Case is closed with reason "Unsubscribe Request", records the opt-out through the Apex invocable so the audit trail and Marketing Cloud sync fire exactly as they would from the UI.</description>
+    <environments>Default</environments>
+    <interviewLabel>Consent Unsubscribe Request {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Consent: Unsubscribe Request</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value><stringValue>LightningFlowBuilder</stringValue></value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <status>Active</status>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Apply_Opt_Out</targetReference>
+        </connector>
+        <object>Case</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value><stringValue>Closed</stringValue></value>
+        </filters>
+        <filters>
+            <field>Reason</field>
+            <operator>EqualTo</operator>
+            <value><stringValue>Unsubscribe Request</stringValue></value>
+        </filters>
+        <filters>
+            <field>ContactId</field>
+            <operator>IsNull</operator>
+            <value><booleanValue>false</booleanValue></value>
+        </filters>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+    </start>
+    <actionCalls>
+        <name>Apply_Opt_Out</name>
+        <label>Record the email opt-out</label>
+        <locationX>50</locationX>
+        <locationY>150</locationY>
+        <actionName>ConsentFlowActions</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>contactId</name>
+            <value><elementReference>$Record.ContactId</elementReference></value>
+        </inputParameters>
+        <inputParameters>
+            <name>channel</name>
+            <value><stringValue>Email</stringValue></value>
+        </inputParameters>
+        <inputParameters>
+            <name>optIn</name>
+            <value><booleanValue>false</booleanValue></value>
+        </inputParameters>
+        <inputParameters>
+            <name>source</name>
+            <value><stringValue>Support Case</stringValue></value>
+        </inputParameters>
+        <nameSegment>ConsentFlowActions</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+</Flow>

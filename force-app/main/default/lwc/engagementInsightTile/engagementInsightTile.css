@@ -1,0 +1,38 @@
+.insight-tile {
+    border: 1px solid #e5e5e5;
+    border-radius: 0.25rem;
+    padding: 0.75rem 1rem;
+    background: #ffffff;
+}
+
+.score-ring {
+    position: relative;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: conic-gradient(var(--ring-color, #0176d3) var(--score-angle, 0deg), #ecebea 0deg);
+}
+
+.score-ring::after {
+    content: '';
+    position: absolute;
+    inset: 0.4rem;
+    border-radius: 50%;
+    background: #ffffff;
+}
+
+.score-value {
+    position: relative;
+    z-index: 1;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #181818;
+}
+
+.score-ring_high { --ring-color: #2e844a; }
+.score-ring_medium { --ring-color: #0176d3; }
+.score-ring_low { --ring-color: #fe9339; }
+.score-ring_dormant { --ring-color: #c9c9c9; }

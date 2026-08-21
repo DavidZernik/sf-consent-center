@@ -1,0 +1,18 @@
+<template>
+    <div class="toast-stack">
+        <template for:each={toasts} for:item="toast">
+            <div key={toast.id} class={toast.className} role="status">
+                <lightning-icon icon-name={toast.icon} size="small" variant="inverse" class="slds-var-m-right_small"></lightning-icon>
+                <div class="slds-notify__content slds-col slds-grow">
+                    <h2 class="slds-text-heading_small">{toast.title}</h2>
+                    <template lwc:if={toast.message}>
+                        <p class="slds-text-body_small">{toast.message}</p>
+                    </template>
+                </div>
+                <button class="dismiss" data-id={toast.id} onclick={handleDismiss} title="Close">
+                    <lightning-icon icon-name="utility:close" size="xx-small" variant="inverse"></lightning-icon>
+                </button>
+            </div>
+        </template>
+    </div>
+</template>

@@ -1,0 +1,77 @@
+<template>
+    <lightning-card title="Consent Records" icon-name="standard:contact_list">
+        <div slot="actions" class="slds-grid slds-gutters_x-small slds-grid_vertical-align-center">
+            <span class="slds-text-body_small slds-text-color_weak slds-var-m-right_x-small">{resultCountLabel}</span>
+            <lightning-button-icon
+                icon-name="utility:refresh"
+                variant="border-filled"
+                alternative-text="Refresh"
+                title="Refresh"
+                onclick={handleRefresh}
+            ></lightning-button-icon>
+        </div>
+
+        <div class="slds-var-p-horizontal_medium slds-var-p-bottom_small">
+            <div class="slds-grid slds-gutters_small slds-wrap">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-3">
+                    <lightning-input
+                        type="search"
+                        label="Search"
+                        variant="label-hidden"
+                        placeholder="Search by name or email…"
+                        onchange={handleSearchChange}
+                    ></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                    <lightning-combobox
+                        label="Channel"
+                        variant="label-hidden"
+                        value={selectedChannel}
+                        options={channelOptions}
+                        onchange={handleChannelChange}
+                    ></lightning-combobox>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <template lwc:if={isLoading}>
+                <div class="slds-is-relative slds-var-p-around_xx-large">
+                    <lightning-spinner alternative-text="Loading consent records" size="small"></lightning-spinner>
+                </div>
+            </template>
+
+            <template lwc:elseif={errorMessage}>
+                <div class="slds-var-p-around_medium">
+                    <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                        <lightning-icon icon-name="utility:error" variant="inverse" size="x-small" class="slds-var-m-right_x-small"></lightning-icon>
+                        <span>{errorMessage}</span>
+                    </div>
+                </div>
+            </template>
+
+            <template lwc:elseif={hasRows}>
+                <lightning-datatable
+                    key-field="preferenceId"
+                    data={rows}
+                    columns={columns}
+                    sorted-by={sortedBy}
+                    sorted-direction={sortDirection}
+                    onsort={handleSort}
+                    onrowaction={handleRowAction}
+                    hide-checkbox-column
+                    resize-column-disabled
+                ></lightning-datatable>
+            </template>
+
+            <template lwc:if={isEmpty}>
+                <div class="slds-var-p-around_xx-large slds-align_absolute-center slds-text-color_weak">
+                    <div class="slds-text-align_center">
+                        <lightning-icon icon-name="utility:search" size="small" variant="warning"></lightning-icon>
+                        <p class="slds-var-m-top_small">No consent records match this filter.</p>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

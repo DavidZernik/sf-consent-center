@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Append-only audit trail of consent changes. Written by ConsentService, never edited.</description>
+    <enableActivities>false</enableActivities>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <label>Consent History</label>
+    <nameField>
+        <displayFormat>CH-{00000}</displayFormat>
+        <label>Consent History Number</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Consent History</pluralLabel>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

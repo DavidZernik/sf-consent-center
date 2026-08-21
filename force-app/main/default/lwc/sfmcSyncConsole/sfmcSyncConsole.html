@@ -1,0 +1,79 @@
+<template>
+    <lightning-card title="Marketing Cloud Sync" icon-name="standard:data_streams">
+        <div slot="actions" class="slds-grid slds-gutters_x-small slds-grid_vertical-align-center">
+            <lightning-button
+                label={retryLabel}
+                icon-name="utility:refresh"
+                disabled={isRetryDisabled}
+                onclick={handleRetry}
+            ></lightning-button>
+            <lightning-button-icon
+                icon-name="utility:refresh"
+                variant="border-filled"
+                alternative-text="Reload"
+                title="Reload"
+                onclick={handleRefresh}
+            ></lightning-button-icon>
+        </div>
+
+        <div class="slds-var-p-horizontal_medium">
+            <div class="slds-grid slds-gutters_small slds-wrap slds-var-m-bottom_small">
+                <template for:each={stats} for:item="stat">
+                    <div key={stat.key} class="slds-col slds-size_1-of-3">
+                        <div class="stat-tile">
+                            <div class={stat.className}>{stat.value}</div>
+                            <div class="slds-text-body_small slds-text-color_weak">{stat.label}</div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <div class="slds-var-m-bottom_small" style="max-width: 16rem;">
+                <lightning-combobox
+                    label="Status"
+                    variant="label-hidden"
+                    value={selectedStatus}
+                    options={statusOptions}
+                    onchange={handleStatusChange}
+                ></lightning-combobox>
+            </div>
+        </div>
+
+        <div class="table-wrapper slds-is-relative">
+            <template lwc:if={isRetrying}>
+                <lightning-spinner alternative-text="Queueing retry" size="small"></lightning-spinner>
+            </template>
+
+            <template lwc:if={isLoading}>
+                <div class="slds-var-p-around_xx-large slds-is-relative">
+                    <lightning-spinner alternative-text="Loading sync activity" size="small"></lightning-spinner>
+                </div>
+            </template>
+
+            <template lwc:elseif={errorMessage}>
+                <div class="slds-var-p-around_medium">
+                    <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">{errorMessage}</div>
+                </div>
+            </template>
+
+            <template lwc:elseif={hasRows}>
+                <lightning-datatable
+                    key-field="logId"
+                    data={rows}
+                    columns={columns}
+                    onrowselection={handleRowSelection}
+                    resize-column-disabled
+                ></lightning-datatable>
+            </template>
+
+            <template lwc:if={isEmpty}>
+                <div class="slds-var-p-around_xx-large slds-align_absolute-center slds-text-color_weak">
+                    <div class="slds-text-align_center">
+                        <lightning-icon icon-name="utility:success" size="small" variant="success"></lightning-icon>
+                        <p class="slds-var-m-top_small">No sync activity for this filter.</p>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

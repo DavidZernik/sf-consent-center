@@ -1,0 +1,71 @@
+<template>
+    <div class={backdropClass} onclick={handleBackdropClick}></div>
+
+    <section class={panelClass} role="dialog" aria-label="Source code" onkeydown={handleKeydown}>
+        <header class="panel-header slds-grid slds-grid_vertical-align-center">
+            <lightning-icon icon-name="utility:apex" size="x-small" variant="inverse" class="slds-var-m-right_x-small"></lightning-icon>
+            <h2 class="slds-col slds-grow slds-text-heading_small">Source</h2>
+            <template lwc:if={activeFile}>
+                <span class="slds-text-body_small line-count slds-var-m-right_small">{activeLineCount} lines</span>
+                <button class="header-button slds-var-m-right_xx-small" onclick={handleCopy} title="Copy file">
+                    <lightning-icon icon-name="utility:copy_to_clipboard" size="xx-small" variant="inverse"></lightning-icon>
+                </button>
+            </template>
+            <button class="header-button" onclick={handleBackdropClick} title="Close">
+                <lightning-icon icon-name="utility:close" size="xx-small" variant="inverse"></lightning-icon>
+            </button>
+        </header>
+
+        <div class="panel-body">
+            <nav class="file-tree">
+                <div class="slds-var-p-around_x-small">
+                    <input
+                        type="search"
+                        class="filter-input"
+                        placeholder="Filter files…"
+                        value={filterTerm}
+                        oninput={handleFilter}
+                    />
+                </div>
+
+                <template lwc:if={isLoading}>
+                    <div class="slds-var-p-around_medium slds-text-body_small slds-text-color_weak">Loading…</div>
+                </template>
+
+                <template lwc:elseif={loadError}>
+                    <div class="slds-var-p-around_medium slds-text-body_small error-text">{loadError}</div>
+                </template>
+
+                <template lwc:elseif={hasResults}>
+                    <template for:each={filteredGroups} for:item="group">
+                        <div key={group.key} class="tree-group">
+                            <div class="tree-group-label">{group.name}</div>
+                            <template for:each={group.files} for:item="file">
+                                <button
+                                    key={file.key}
+                                    class={file.itemClass}
+                                    data-path={file.path}
+                                    onclick={handleSelectFile}
+                                    title={file.path}
+                                >{file.name}</button>
+                            </template>
+                        </div>
+                    </template>
+                </template>
+
+                <template lwc:else>
+                    <div class="slds-var-p-around_medium slds-text-body_small slds-text-color_weak">
+                        No files match that filter.
+                    </div>
+                </template>
+            </nav>
+
+            <div class="code-pane">
+                <template lwc:if={activeFile}>
+                    <div class="code-path">{activeFile.path}</div>
+                </template>
+                <div class="code-scroll" data-code-container lwc:dom="manual"></div>
+            </div>
+        </div>
+    </section>
+</template>

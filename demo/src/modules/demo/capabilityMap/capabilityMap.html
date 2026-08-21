@@ -1,0 +1,73 @@
+<template>
+    <div class="slds-var-p-around_medium">
+        <div class="intro slds-var-m-bottom_medium">
+            <h1 class="slds-text-heading_medium slds-var-m-bottom_xx-small">Capability map</h1>
+            <p class="slds-text-body_regular slds-text-color_weak">
+                {totalCount} capabilities, each one implemented in this repository. Open any file to
+                read the actual source — nothing here is a screenshot or a description of code that
+                exists somewhere else.
+            </p>
+        </div>
+
+        <div class="slds-var-m-bottom_medium group-filter">
+            <template for:each={groupOptions} for:item="option">
+                <button
+                    key={option.key}
+                    class={option.className}
+                    data-group={option.name}
+                    onclick={handleGroupChange}
+                >{option.name}</button>
+            </template>
+        </div>
+
+        <template for:each={groups} for:item="group">
+            <div key={group.name} class="slds-var-m-bottom_large">
+                <h2 class="slds-text-title_caps slds-var-m-bottom_x-small group-heading">{group.name}</h2>
+                <div class="capability-grid">
+                    <template for:each={group.items} for:item="capability">
+                        <article key={capability.id} class={capability.cardClass}>
+                            <header class="slds-var-m-bottom_x-small">
+                                <h3 class="slds-text-heading_small">{capability.name}</h3>
+                                <p class="slds-text-body_small slds-text-color_weak slds-var-m-top_xxx-small">
+                                    {capability.summary}
+                                </p>
+                            </header>
+
+                            <template lwc:if={capability.isExpanded}>
+                                <p class="detail-text slds-text-body_small slds-var-m-bottom_x-small">
+                                    {capability.detail}
+                                </p>
+                            </template>
+
+                            <div class="file-list slds-var-m-bottom_x-small">
+                                <template for:each={capability.fileLinks} for:item="file">
+                                    <button
+                                        key={file.key}
+                                        class="file-chip"
+                                        data-path={file.path}
+                                        onclick={handleViewSource}
+                                        title={file.path}
+                                    >
+                                        <lightning-icon icon-name="utility:file" size="xx-small" class="slds-var-m-right_xx-small"></lightning-icon>
+                                        {file.label}
+                                    </button>
+                                </template>
+                            </div>
+
+                            <footer class="slds-grid slds-gutters_x-small">
+                                <button class="slds-button slds-button_neutral slds-button_small" data-id={capability.id} onclick={handleToggleDetail}>
+                                    {capability.toggleLabel}
+                                </button>
+                                <template lwc:if={capability.route}>
+                                    <button class="slds-button slds-button_brand slds-button_small" data-route={capability.route} onclick={handleOpenDemo}>
+                                        See it running
+                                    </button>
+                                </template>
+                            </footer>
+                        </article>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </div>
+</template>

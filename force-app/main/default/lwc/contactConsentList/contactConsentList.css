@@ -1,0 +1,5 @@
+.table-wrapper {
+    min-height: 12rem;
+    max-height: 32rem;
+    overflow-y: auto;
+}

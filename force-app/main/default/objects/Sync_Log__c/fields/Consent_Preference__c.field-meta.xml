@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Consent_Preference__c</fullName>
+    <label>Consent Preference</label>
+    <referenceTo>Consent_Preference__c</referenceTo>
+    <relationshipLabel>Sync Logs</relationshipLabel>
+    <relationshipName>Sync_Logs</relationshipName>
+    <deleteConstraint>Cascade</deleteConstraint>
+    <required>true</required>
+    <description>Preference record this attempt was for.</description>
+    <type>Lookup</type>
+</CustomField>

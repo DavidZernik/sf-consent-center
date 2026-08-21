@@ -1,0 +1,21 @@
+<template>
+    <div class="banner">
+        <div class="banner-inner">
+            <div class="banner-text">
+                <span class="badge">Portfolio demo</span>
+                <span class="headline">Salesforce Consent &amp; Preference Center</span>
+                <span class="sub">
+                    Real LWC and Apex, running in the browser. Not a live Salesforce org —
+                    the Apex is deployable source, served here through a mock with the identical contract.
+                </span>
+            </div>
+            <div class="banner-links">
+                <button class="link-button" onclick={handleViewSource}>View source</button>
+                <a class="link-button" href={repoUrl} target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a class="link-button link-button_primary" href={portfolioUrl} target="_blank" rel="noopener noreferrer">
+                    davidz-losangeles.com
+                </a>
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,47 @@
+<template>
+    <div class="slds-var-m-top_medium">
+        <div class="slds-grid slds-grid_vertical-align-center slds-var-m-bottom_x-small">
+            <h3 class="slds-text-title_caps slds-col slds-grow">Resolved consent</h3>
+            <template lwc:if={hasConflicts}>
+                <span class="slds-badge slds-theme_warning">{conflictLabel}</span>
+            </template>
+        </div>
+
+        <p class="slds-text-body_small slds-text-color_weak slds-var-m-bottom_small">
+            Consent is answered across every source record in the identity graph. Where sources
+            disagree, the most restrictive value wins.
+        </p>
+
+        <template lwc:if={hasData}>
+            <template for:each={channels} for:item="channel">
+                <div key={channel.key} class={channel.rowClass}>
+                    <div class="slds-grid slds-grid_vertical-align-center slds-var-m-bottom_xx-small">
+                        <div class="slds-col slds-grow slds-text-title_bold">{channel.channel}</div>
+                        <span class={channel.statusClass}>{channel.statusLabel}</span>
+                    </div>
+                    <div class="slds-text-body_small slds-text-color_weak slds-var-m-bottom_x-small">
+                        {channel.reason}
+                    </div>
+                    <ul class="source-list">
+                        <template for:each={channel.contributing} for:item="source">
+                            <li key={source.key} class="slds-text-body_small">
+                                <span class="slds-text-color_weak">{source.sourceSystem}</span>
+                                <span> — </span>
+                                <span class={source.statusClass}>{source.statusLabel}</span>
+                                <template lwc:if={source.isDecisive}>
+                                    <span class="slds-text-color_error"> · decided the outcome</span>
+                                </template>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
+        </template>
+
+        <template lwc:else>
+            <div class="slds-text-body_small slds-text-color_weak slds-var-p-around_small">
+                No consent records found in Data Cloud for this profile.
+            </div>
+        </template>
+    </div>
+</template>

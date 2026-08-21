@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Last_Sync_Error__c</fullName>
+    <label>Last Sync Error</label>
+    <description>Truncated error from the most recent failed attempt.</description>
+    <type>Text</type>
+    <length>255</length>
+</CustomField>

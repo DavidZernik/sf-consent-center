@@ -1,0 +1,41 @@
+/* Page frame. Everything inside the app is styled by SLDS or by component stylesheets. */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background: #f3f3f3;
+    font-family: 'Salesforce Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+#main {
+    min-height: 100vh;
+}
+
+/* Splash shown until the LWC bundle boots. Removed on first paint. */
+#boot {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.75rem;
+    background: #f3f3f3;
+    color: #706e6b;
+    font-size: 0.875rem;
+    z-index: 10000;
+}
+
+#boot .spinner {
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid #d8dde6;
+    border-top-color: #0176d3;
+    border-radius: 50%;
+    animation: boot-spin 0.8s linear infinite;
+}
+
+@keyframes boot-spin {
+    to { transform: rotate(360deg); }
+}

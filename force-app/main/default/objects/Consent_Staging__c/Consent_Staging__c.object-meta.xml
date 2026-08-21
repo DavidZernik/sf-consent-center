@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Landing zone for bulk consent loads from an external ETL tool (Informatica, MuleSoft, Data Loader). The ETL job writes here with no business logic attached; ConsentStagingBatch validates and promotes the rows asynchronously. Decoupling the load from the processing means a failed transform never leaves half-applied consent in the live object, and the ETL job never has to understand Salesforce validation rules.</description>
+    <enableActivities>false</enableActivities>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>false</enableSearch>
+    <label>Consent Staging</label>
+    <nameField>
+        <displayFormat>STG-{000000}</displayFormat>
+        <label>Staging Row</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Consent Staging</pluralLabel>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

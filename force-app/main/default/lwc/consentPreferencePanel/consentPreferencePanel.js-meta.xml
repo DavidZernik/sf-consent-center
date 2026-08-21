@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Consent Preferences</masterLabel>
+    <description>Channel-level marketing consent editor with a batched save and a dirty-state guard.</description>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <objects>
+                <object>Contact</object>
+            </objects>
+            <property name="source" type="String" default="Service Console" label="Change source"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

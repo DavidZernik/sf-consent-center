@@ -1,0 +1,62 @@
+<template>
+    <lightning-card title="Unified Profile" icon-name="standard:data_mapping">
+        <span slot="actions" class="slds-text-body_small slds-text-color_weak">{queryTimingLabel}</span>
+
+        <template lwc:if={isLoading}>
+            <div class="slds-var-p-around_xx-large slds-is-relative">
+                <lightning-spinner alternative-text="Querying Data Cloud" size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <template lwc:elseif={errorMessage}>
+            <div class="slds-var-p-around_medium">
+                <div class="slds-notify slds-notify_alert slds-alert_warning" role="alert">{errorMessage}</div>
+            </div>
+        </template>
+
+        <template lwc:elseif={hasProfile}>
+            <div class="slds-var-p-horizontal_medium slds-var-p-bottom_medium">
+                <div class="unified-header slds-var-m-bottom_medium">
+                    <div class="slds-grid slds-grid_vertical-align-center">
+                        <lightning-icon icon-name="standard:individual" size="small" class="slds-var-m-right_small"></lightning-icon>
+                        <div class="slds-col slds-grow">
+                            <div class="slds-text-heading_small">{profile.name}</div>
+                            <div class="slds-text-body_small slds-text-color_weak">
+                                {profile.primaryEmail} · Unified ID {profile.unifiedId}
+                            </div>
+                        </div>
+                        <span class="slds-badge">{sourceCountLabel}</span>
+                    </div>
+                </div>
+
+                <h3 class="slds-text-title_caps slds-var-m-bottom_x-small">Identity graph</h3>
+                <table class="slds-table slds-table_bordered slds-table_fixed-layout slds-var-m-bottom_medium">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="slds-text-title_caps" scope="col">Source system</th>
+                            <th class="slds-text-title_caps" scope="col">Record ID</th>
+                            <th class="slds-text-title_caps" scope="col">Email</th>
+                            <th class="slds-text-title_caps" scope="col" style="width: 8rem;">Match</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={decoratedSources} for:item="source">
+                            <tr key={source.key} class="slds-hint-parent">
+                                <td class="slds-truncate">{source.sourceSystem}</td>
+                                <td class="slds-truncate slds-text-font_monospace slds-text-body_small">{source.sourceRecordId}</td>
+                                <td class="slds-truncate">{source.email}</td>
+                                <td><span class={source.confidenceClass}>{source.confidenceLabel}</span></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+
+                <c-engagement-insight-tile engagement={profile.engagement}></c-engagement-insight-tile>
+                <c-consent-resolution-panel
+                    resolved={profile.resolvedConsent}
+                    sources={profile.sourceConsents}
+                ></c-consent-resolution-panel>
+            </div>
+        </template>
+    </lightning-card>
+</template>

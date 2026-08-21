@@ -1,0 +1,97 @@
+<!--
+    Proof-of-consent certificate, rendered server side as a PDF.
+
+    This is deliberately Visualforce and not LWC. renderAs="pdf" has no Lightning equivalent —
+    generating a paginated, printable document that a compliance team can file is still the one
+    job Visualforce does better than anything else on the platform. Using LWC here would mean
+    shipping a client-side PDF library to do worse.
+-->
+<apex:page controller="ConsentCertificateController"
+           renderAs="pdf"
+           applyBodyTag="false"
+           showHeader="false"
+           sidebar="false"
+           cache="false"
+           title="Consent Certificate">
+    <head>
+        <style type="text/css">
+            @page { size: A4; margin: 20mm 18mm; }
+            body { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; color: #181818; }
+            h1 { font-size: 17pt; margin: 0 0 2mm 0; }
+            .subtitle { color: #5c5c5c; font-size: 9pt; margin-bottom: 8mm; }
+            .meta { border: 1px solid #d8d8d8; padding: 4mm; margin-bottom: 6mm; }
+            .meta td { padding: 1mm 2mm; font-size: 9.5pt; }
+            .meta .label { color: #5c5c5c; width: 32mm; }
+            table.grid { width: 100%; border-collapse: collapse; margin-bottom: 6mm; }
+            table.grid th { background: #f3f3f3; text-align: left; padding: 2.5mm; border: 1px solid #d8d8d8; font-size: 9pt; }
+            table.grid td { padding: 2.5mm; border: 1px solid #e5e5e5; font-size: 9.5pt; }
+            .in { color: #2e844a; font-weight: bold; }
+            .out { color: #ba0517; font-weight: bold; }
+            .footer { position: fixed; bottom: 0; left: 0; right: 0; font-size: 8pt; color: #767676; border-top: 1px solid #d8d8d8; padding-top: 2mm; }
+        </style>
+    </head>
+    <body>
+        <h1>Certificate of Marketing Consent</h1>
+        <div class="subtitle">
+            Generated <apex:outputText value="{0,date,d MMMM yyyy 'at' HH:mm}">
+                <apex:param value="{!generatedAt}"/>
+            </apex:outputText> · Reference {!referenceNumber}
+        </div>
+
+        <table class="meta">
+            <tr><td class="label">Contact</td><td>{!contactName}</td></tr>
+            <tr><td class="label">Email</td><td>{!contactEmail}</td></tr>
+            <tr><td class="label">Lifecycle stage</td><td>{!lifecycleStage}</td></tr>
+            <tr><td class="label">Record ID</td><td>{!contactId}</td></tr>
+        </table>
+
+        <h2 style="font-size: 12pt;">Current consent position</h2>
+        <table class="grid">
+            <tr>
+                <th style="width: 26%;">Channel</th>
+                <th style="width: 18%;">Status</th>
+                <th style="width: 30%;">Source</th>
+                <th style="width: 26%;">Last changed</th>
+            </tr>
+            <apex:repeat value="{!channelRows}" var="row">
+                <tr>
+                    <td>{!row.channel}</td>
+                    <td>
+                        <apex:outputText styleClass="{!IF(row.optIn, 'in', 'out')}"
+                                         value="{!IF(row.optIn, 'Opted in', 'Opted out')}"/>
+                    </td>
+                    <td>{!row.source}</td>
+                    <td>{!row.lastChangedLabel}</td>
+                </tr>
+            </apex:repeat>
+        </table>
+
+        <h2 style="font-size: 12pt;">Audit trail</h2>
+        <apex:outputPanel rendered="{!hasHistory}">
+            <table class="grid">
+                <tr>
+                    <th style="width: 26%;">When</th>
+                    <th style="width: 16%;">Channel</th>
+                    <th style="width: 26%;">Change</th>
+                    <th style="width: 32%;">Recorded by</th>
+                </tr>
+                <apex:repeat value="{!historyRows}" var="entry">
+                    <tr>
+                        <td>{!entry.changedAtLabel}</td>
+                        <td>{!entry.channel}</td>
+                        <td>{!entry.transition}</td>
+                        <td>{!entry.actor}</td>
+                    </tr>
+                </apex:repeat>
+            </table>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!NOT(hasHistory)}">
+            <p style="color: #5c5c5c;">No consent changes have been recorded for this contact.</p>
+        </apex:outputPanel>
+
+        <div class="footer">
+            This certificate reflects the consent position held in Salesforce at the time of generation.
+            Reference {!referenceNumber}.
+        </div>
+    </body>
+</apex:page>

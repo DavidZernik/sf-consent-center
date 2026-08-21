@@ -1,0 +1,144 @@
+<template>
+    <div class="shell" onlightning__showtoast={handleToast} onviewsource={handleViewSource} onconsentchange={handleConsentChange}>
+        <demo-demo-banner></demo-demo-banner>
+
+        <!-- Global header: the blue bar Lightning Experience puts at the top of every app. -->
+        <header class="global-header">
+            <div class="gh-left">
+                <button class="waffle" onclick={handleAppLauncher} title="App Launcher" aria-label="App Launcher">
+                    <span class="waffle-dot"></span><span class="waffle-dot"></span><span class="waffle-dot"></span>
+                    <span class="waffle-dot"></span><span class="waffle-dot"></span><span class="waffle-dot"></span>
+                    <span class="waffle-dot"></span><span class="waffle-dot"></span><span class="waffle-dot"></span>
+                </button>
+                <span class="app-name">Consent Center</span>
+            </div>
+
+            <div class="gh-search">
+                <lightning-icon icon-name="utility:search" size="xx-small" class="search-icon"></lightning-icon>
+                <input
+                    type="search"
+                    class="search-input"
+                    placeholder="Search Salesforce"
+                    onkeydown={handleGlobalSearch}
+                    aria-label="Search"
+                />
+            </div>
+
+            <div class="gh-right">
+                <lightning-icon icon-name="utility:setup" size="x-small" variant="inverse" class="gh-icon"></lightning-icon>
+                <lightning-icon icon-name="utility:notification" size="x-small" variant="inverse" class="gh-icon"></lightning-icon>
+                <div class="avatar" title="David Zernik">DZ</div>
+            </div>
+        </header>
+
+        <template lwc:if={isAppLauncherOpen}>
+            <div class="launcher-note">
+                The App Launcher is chrome only in this demo. Everything below the navigation bar is
+                real Lightning Web Components.
+            </div>
+        </template>
+
+        <!-- Navigation bar: app name, icon and tabs. -->
+        <nav class="nav-bar">
+            <div class="nav-app">
+                <lightning-icon icon-name="standard:custom" size="small" class="nav-app-icon"></lightning-icon>
+                <div>
+                    <div class="nav-app-name">Consent Center</div>
+                    <div class="nav-app-sub">{currentTabLabel}</div>
+                </div>
+            </div>
+            <ul class="nav-items">
+                <template for:each={navItems} for:item="item">
+                    <li key={item.id}>
+                        <a href={item.hash} class={item.className} data-hash={item.hash} onclick={handleNavClick}>
+                            {item.label}
+                        </a>
+                    </li>
+                </template>
+            </ul>
+        </nav>
+
+        <main class="page">
+            <!-- ---------------------------------------------------- Records tab -->
+            <template lwc:if={isRecords}>
+                <div class="page-inner">
+                    <c-contact-consent-list></c-contact-consent-list>
+                </div>
+            </template>
+
+            <!-- --------------------------------------------- Contact record page -->
+            <template lwc:elseif={isContact}>
+                <div class="page-inner">
+                    <div class="slds-var-m-bottom_small">
+                        <button class="slds-button slds-button_neutral slds-button_small" onclick={handleBackToList}>
+                            <lightning-icon icon-name="utility:back" size="xx-small" class="slds-var-m-right_xx-small"></lightning-icon>
+                            Back to consent records
+                        </button>
+                        <button class="slds-button slds-button_neutral slds-button_small slds-var-m-left_xx-small" onclick={handleCertificateClick}>
+                            <lightning-icon icon-name="utility:pdf_ext" size="xx-small" class="slds-var-m-right_xx-small"></lightning-icon>
+                            Consent certificate (PDF)
+                        </button>
+                    </div>
+
+                    <c-consent-lifecycle-path stage={lifecycleStage}></c-consent-lifecycle-path>
+
+                    <div class="record-grid slds-var-m-top_small">
+                        <div class="record-main">
+                            <c-consent-preference-panel
+                                record-id={contactId}
+                                source="Service Console"
+                            ></c-consent-preference-panel>
+                        </div>
+                        <aside class="record-side">
+                            <c-consent-history-timeline entries={historyEntries}></c-consent-history-timeline>
+                        </aside>
+                    </div>
+                </div>
+            </template>
+
+            <!-- ------------------------------------------------- Data Cloud tab -->
+            <template lwc:elseif={isUnified}>
+                <div class="page-inner">
+                    <div class="context-bar slds-var-m-bottom_small">
+                        <div class="slds-grid slds-grid_vertical-align-center slds-gutters_small slds-wrap">
+                            <div class="slds-col slds-grow">
+                                <p class="slds-text-body_small slds-text-color_weak">
+                                    One person often exists several times in CRM. Identity Resolution collapses
+                                    those records into a Unified Individual, and consent has to be answered at
+                                    that level — not on whichever record happens to be open.
+                                </p>
+                            </div>
+                            <div class="slds-col" style="min-width: 20rem;">
+                                <lightning-combobox
+                                    label="Unified profile"
+                                    variant="label-hidden"
+                                    value={selectedUnifiedContact}
+                                    options={unifiedOptions}
+                                    onchange={handleUnifiedChange}
+                                ></lightning-combobox>
+                            </div>
+                        </div>
+                    </div>
+                    <c-unified-profile-card record-id={selectedUnifiedContact}></c-unified-profile-card>
+                </div>
+            </template>
+
+            <!-- ------------------------------------------------------- Sync tab -->
+            <template lwc:elseif={isSync}>
+                <div class="page-inner">
+                    <c-sfmc-sync-console></c-sfmc-sync-console>
+                </div>
+            </template>
+
+            <!-- ------------------------------------------------- Capability map -->
+            <template lwc:elseif={isCapabilities}>
+                <div class="page-inner page-inner_wide">
+                    <demo-capability-map></demo-capability-map>
+                </div>
+            </template>
+        </main>
+
+        <demo-toast-host></demo-toast-host>
+        <demo-view-source-panel></demo-view-source-panel>
+    </div>
+</template>

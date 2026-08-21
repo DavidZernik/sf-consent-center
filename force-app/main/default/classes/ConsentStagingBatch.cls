@@ -1,0 +1,305 @@
+/**
+ * Promotes bulk-loaded consent rows from the staging object into live consent records.
+ *
+ * This is the batch half of the integration pattern (ConsentApiResource is the real-time half).
+ * The shape is the standard one for an ETL tool such as Informatica:
+ *
+ *   1. The ETL job bulk-inserts into Consent_Staging__c. No triggers, no validation, no
+ *      callouts — the load either lands or it does not, and it is fast.
+ *   2. This batch validates, resolves match keys and promotes in chunks.
+ *   3. Rows that fail are marked Failed with the reason ON the staging row, so the ETL team can
+ *      query their own failures instead of asking someone to read a debug log.
+ *
+ * Two decisions here are the ones that matter at volume:
+ *
+ *   - The trigger handler is bypassed during promotion and the Marketing Cloud sync is queued
+ *     once at the end. Without that, promoting 100,000 rows would enqueue 100,000 jobs.
+ *   - Where several staged rows target the same contact and channel, the newest Captured_At__c
+ *     wins. Bulk files routinely contain a person changing their mind twice; processing them in
+ *     arbitrary order would apply whichever row happened to come last in the file.
+ */
+public with sharing class ConsentStagingBatch implements Database.Batchable<SObject>, Database.Stateful, Schedulable {
+    private static final Set<String> VALID_CHANNELS = new Set<String>{ 'Email', 'SMS', 'Push', 'Direct Mail' };
+    /** Values an upstream system might plausibly send for "yes". */
+    private static final Set<String> TRUTHY = new Set<String>{ 'true', 'yes', 'y', '1', 'optin', 'opt-in', 'subscribed' };
+    private static final Set<String> FALSY = new Set<String>{ 'false', 'no', 'n', '0', 'optout', 'opt-out', 'unsubscribed' };
+
+    private final String batchId;
+
+    @TestVisible
+    private Integer promoted = 0;
+    @TestVisible
+    private Integer failed = 0;
+    @TestVisible
+    private Integer skipped = 0;
+
+    /** Promotes every unprocessed row. */
+    public ConsentStagingBatch() {
+        this(null);
+    }
+
+    /** Promotes only the rows belonging to one ETL batch. */
+    public ConsentStagingBatch(String batchId) {
+        this.batchId = batchId;
+    }
+
+    public Database.QueryLocator start(Database.BatchableContext bc) {
+        if (String.isNotBlank(batchId)) {
+            String scopedBatchId = batchId;
+            return Database.getQueryLocator([
+                SELECT Id, Batch_Id__c, Source_System__c, Email__c, Contact_External_Id__c,
+                       Channel__c, Opt_In_Raw__c, Captured_At__c, Process_Status__c
+                FROM Consent_Staging__c
+                WHERE Process_Status__c = 'Unprocessed' AND Batch_Id__c = :scopedBatchId
+                ORDER BY Captured_At__c ASC NULLS FIRST
+            ]);
+        }
+        return Database.getQueryLocator([
+            SELECT Id, Batch_Id__c, Source_System__c, Email__c, Contact_External_Id__c,
+                   Channel__c, Opt_In_Raw__c, Captured_At__c, Process_Status__c
+            FROM Consent_Staging__c
+            WHERE Process_Status__c = 'Unprocessed'
+            ORDER BY Captured_At__c ASC NULLS FIRST
+        ]);
+    }
+
+    public void execute(Database.BatchableContext bc, List<Consent_Staging__c> scope) {
+        Datetime now = Datetime.now();
+
+        // --- Pass 1: validate in memory, no queries yet. ---
+        Map<Id, String> errorByRowId = new Map<Id, String>();
+        Set<String> emails = new Set<String>();
+        Set<String> externalIds = new Set<String>();
+
+        for (Consent_Staging__c row : scope) {
+            String error = validateShape(row);
+            if (error != null) {
+                errorByRowId.put(row.Id, error);
+                continue;
+            }
+            if (String.isNotBlank(row.Email__c)) {
+                emails.add(row.Email__c.toLowerCase());
+            }
+            if (String.isNotBlank(row.Contact_External_Id__c)) {
+                externalIds.add(row.Contact_External_Id__c);
+            }
+        }
+
+        // --- Pass 2: resolve every match key in two queries, never one per row. ---
+        Map<String, Id> contactIdByEmail = new Map<String, Id>();
+        if (!emails.isEmpty()) {
+            for (Contact contact : [
+                SELECT Id, Email FROM Contact WHERE Email IN :emails WITH SYSTEM_MODE LIMIT 10000
+            ]) {
+                contactIdByEmail.put(contact.Email.toLowerCase(), contact.Id);
+            }
+        }
+        Map<String, Id> contactIdByExternalId = new Map<String, Id>();
+        if (!externalIds.isEmpty()) {
+            // Uses whichever external id field the org standardised on.
+            for (Contact contact : [
+                SELECT Id, ExternalId__c FROM Contact
+                WHERE ExternalId__c IN :externalIds WITH SYSTEM_MODE LIMIT 10000
+            ]) {
+                contactIdByExternalId.put(contact.ExternalId__c, contact.Id);
+            }
+        }
+
+        // --- Pass 3: collapse duplicates, newest capture wins. ---
+        Map<String, Consent_Staging__c> winnerByKey = new Map<String, Consent_Staging__c>();
+        Map<String, Id> contactIdByKey = new Map<String, Id>();
+        Set<Id> supersededRowIds = new Set<Id>();
+
+        for (Consent_Staging__c row : scope) {
+            if (errorByRowId.containsKey(row.Id)) {
+                continue;
+            }
+            Id contactId = resolveContact(row, contactIdByEmail, contactIdByExternalId);
+            if (contactId == null) {
+                errorByRowId.put(row.Id, 'No contact matched the supplied email or external id.');
+                continue;
+            }
+
+            String key = contactId + '|' + row.Channel__c;
+            Consent_Staging__c incumbent = winnerByKey.get(key);
+            if (incumbent == null) {
+                winnerByKey.put(key, row);
+                contactIdByKey.put(key, contactId);
+            } else if (isNewer(row, incumbent)) {
+                supersededRowIds.add(incumbent.Id);
+                winnerByKey.put(key, row);
+                contactIdByKey.put(key, contactId);
+            } else {
+                supersededRowIds.add(row.Id);
+            }
+        }
+
+        // --- Pass 4: promote. ---
+        Map<String, Consent_Preference__c> existingByKey = new Map<String, Consent_Preference__c>();
+        if (!contactIdByKey.isEmpty()) {
+            Set<Id> contactIds = new Set<Id>(contactIdByKey.values());
+            for (Consent_Preference__c pref : [
+                SELECT Id, Contact__c, Channel__c, Opt_In__c
+                FROM Consent_Preference__c
+                WHERE Contact__c IN :contactIds
+                WITH SYSTEM_MODE
+            ]) {
+                existingByKey.put(pref.Contact__c + '|' + pref.Channel__c, pref);
+            }
+        }
+
+        List<Consent_Preference__c> toUpsert = new List<Consent_Preference__c>();
+        List<Consent_History__c> auditTrail = new List<Consent_History__c>();
+        List<String> promotedKeys = new List<String>();
+
+        for (String key : winnerByKey.keySet()) {
+            Consent_Staging__c row = winnerByKey.get(key);
+            Id contactId = contactIdByKey.get(key);
+            Boolean next = TRUTHY.contains(row.Opt_In_Raw__c.trim().toLowerCase());
+
+            Consent_Preference__c existing = existingByKey.get(key);
+            Boolean previous = existing != null && existing.Opt_In__c == true;
+
+            if (existing != null && previous == next) {
+                // Already in the requested state — a no-op, not a failure.
+                row.Process_Status__c = 'Skipped';
+                row.Processed_At__c = now;
+                skipped++;
+                continue;
+            }
+
+            Consent_Preference__c record = existing == null
+                ? new Consent_Preference__c(Contact__c = contactId, Channel__c = row.Channel__c)
+                : new Consent_Preference__c(Id = existing.Id);
+            record.Opt_In__c = next;
+            record.Consent_Source__c = String.isBlank(row.Source_System__c) ? 'Bulk Load' : row.Source_System__c;
+            record.Last_Changed__c = row.Captured_At__c == null ? now : row.Captured_At__c;
+            record.Sync_Status__c = 'Pending';
+            record.Sync_Attempts__c = 0;
+
+            toUpsert.add(record);
+            promotedKeys.add(key);
+            auditTrail.add(new Consent_History__c(
+                Contact__c = contactId,
+                Channel__c = row.Channel__c,
+                Previous_Value__c = existing == null ? 'None' : (previous ? 'Opted In' : 'Opted Out'),
+                New_Value__c = next ? 'Opted In' : 'Opted Out',
+                Changed_By_Name__c = 'Integration User',
+                Change_Source__c = String.isBlank(row.Source_System__c) ? 'Bulk Load' : row.Source_System__c,
+                Changed_At__c = row.Captured_At__c == null ? now : row.Captured_At__c
+            ));
+        }
+
+        List<Id> promotedPreferenceIds = new List<Id>();
+        if (!toUpsert.isEmpty()) {
+            // Suppress the per-record sync; one bulk enqueue happens below instead.
+            ConsentPreferenceTriggerHandler.bypass = true;
+            try {
+                List<Database.UpsertResult> upsertResults =
+                    Database.upsert(toUpsert, false, AccessLevel.SYSTEM_MODE);
+
+                for (Integer i = 0; i < upsertResults.size(); i++) {
+                    Consent_Staging__c row = winnerByKey.get(promotedKeys[i]);
+                    if (upsertResults[i].isSuccess()) {
+                        row.Process_Status__c = 'Processed';
+                        row.Error_Message__c = null;
+                        promotedPreferenceIds.add(toUpsert[i].Id);
+                        promoted++;
+                    } else {
+                        row.Process_Status__c = 'Failed';
+                        row.Error_Message__c = truncate(upsertResults[i].getErrors()[0].getMessage(), 255);
+                        failed++;
+                    }
+                    row.Processed_At__c = now;
+                }
+                Database.insert(auditTrail, false, AccessLevel.SYSTEM_MODE);
+            } finally {
+                // Reset in a finally block: leaving the bypass set would silently disable the
+                // trigger for the rest of the transaction.
+                ConsentPreferenceTriggerHandler.bypass = false;
+            }
+        }
+
+        // Mark validation failures and superseded duplicates.
+        for (Consent_Staging__c row : scope) {
+            if (errorByRowId.containsKey(row.Id)) {
+                row.Process_Status__c = 'Failed';
+                row.Error_Message__c = errorByRowId.get(row.Id);
+                row.Processed_At__c = now;
+                failed++;
+            } else if (supersededRowIds.contains(row.Id)) {
+                row.Process_Status__c = 'Skipped';
+                row.Error_Message__c = 'Superseded by a more recent capture for the same contact and channel.';
+                row.Processed_At__c = now;
+                skipped++;
+            }
+        }
+
+        Database.update(scope, false, AccessLevel.SYSTEM_MODE);
+
+        if (!promotedPreferenceIds.isEmpty()) {
+            SfmcSyncQueueable.enqueueAll(promotedPreferenceIds);
+        }
+    }
+
+    public void finish(Database.BatchableContext bc) {
+        System.debug(LoggingLevel.INFO,
+            'ConsentStagingBatch complete. Promoted=' + promoted + ' Skipped=' + skipped + ' Failed=' + failed);
+    }
+
+    public void execute(SchedulableContext sc) {
+        Database.executeBatch(new ConsentStagingBatch(), 200);
+    }
+
+    /* ------------------------------------------------------------------ Internals */
+
+    @TestVisible
+    private static String validateShape(Consent_Staging__c row) {
+        if (String.isBlank(row.Email__c) && String.isBlank(row.Contact_External_Id__c)) {
+            return 'Either Email or Contact External Id is required.';
+        }
+        if (String.isBlank(row.Channel__c) || !VALID_CHANNELS.contains(row.Channel__c)) {
+            return 'Unsupported channel: ' + row.Channel__c;
+        }
+        if (String.isBlank(row.Opt_In_Raw__c)) {
+            return 'Opt In Raw is required.';
+        }
+        String normalised = row.Opt_In_Raw__c.trim().toLowerCase();
+        if (!TRUTHY.contains(normalised) && !FALSY.contains(normalised)) {
+            return 'Could not interpret consent value: ' + row.Opt_In_Raw__c;
+        }
+        return null;
+    }
+
+    private static Id resolveContact(
+        Consent_Staging__c row,
+        Map<String, Id> contactIdByEmail,
+        Map<String, Id> contactIdByExternalId
+    ) {
+        // External id wins over email: it is the stable key, whereas email addresses get reused.
+        if (String.isNotBlank(row.Contact_External_Id__c)) {
+            Id byExternal = contactIdByExternalId.get(row.Contact_External_Id__c);
+            if (byExternal != null) {
+                return byExternal;
+            }
+        }
+        return String.isBlank(row.Email__c) ? null : contactIdByEmail.get(row.Email__c.toLowerCase());
+    }
+
+    private static Boolean isNewer(Consent_Staging__c candidate, Consent_Staging__c incumbent) {
+        if (candidate.Captured_At__c == null) {
+            return false;
+        }
+        if (incumbent.Captured_At__c == null) {
+            return true;
+        }
+        return candidate.Captured_At__c > incumbent.Captured_At__c;
+    }
+
+    private static String truncate(String value, Integer max) {
+        if (String.isBlank(value)) {
+            return null;
+        }
+        return value.length() <= max ? value : value.substring(0, max);
+    }
+}

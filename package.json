@@ -1,0 +1,40 @@
+{
+  "name": "sf-consent-center",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Consent & Preference Center — a Salesforce LWC + Apex reference app, running in the browser as a portfolio demo.",
+  "author": "David Zernik <dzernik@gmail.com> (https://davidz-losangeles.com/)",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/smoke.mjs && node scripts/generate-sources.mjs && node scripts/copy-assets.mjs && rollup -c",
+    "dev": "npm run build && http-server dist -p 8080 -c-1",
+    "test": "jest --config jest.config.cjs",
+    "test:unit": "jest --config jest.config.cjs --coverage",
+    "lint": "eslint force-app/main/default/lwc demo/src scripts",
+    "lint:apex": "pmd check -d force-app/main/default/classes -R pmd/apex-ruleset.xml -f text --no-cache",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "devDependencies": {
+    "@babel/core": "^8.0.1",
+    "@babel/eslint-parser": "^8.0.1",
+    "@babel/plugin-proposal-decorators": "^8.0.2",
+    "@lwc/compiler": "9.4.1",
+    "@lwc/eslint-plugin-lwc": "^3.5.0",
+    "@lwc/jest-preset": "^19.6.1",
+    "@lwc/rollup-plugin": "9.4.1",
+    "@rollup/plugin-node-resolve": "^16.0.0",
+    "@rollup/plugin-replace": "^6.0.2",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@salesforce-ux/design-system": "2.264.0",
+    "@salesforce/sfdx-lwc-jest": "^7.9.0",
+    "eslint": "^9.39.5",
+    "globals": "^15.15.0",
+    "http-server": "^14.1.1",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "lightning-base-components": "1.28.19-alpha",
+    "lwc": "9.4.1",
+    "rollup": "^4.0.0"
+  }
+}

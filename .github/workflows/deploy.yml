@@ -1,0 +1,65 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Least privilege: the job needs to publish Pages and nothing else.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time, and never cancel one midway — a cancelled Pages deploy can leave the
+# site serving a half-published build.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify the build is publishable
+        # A deploy that succeeds while serving a broken page is worse than a failed deploy.
+        run: |
+          test -f dist/index.html || { echo "::error::dist/index.html missing"; exit 1; }
+          test -f dist/app.js || { echo "::error::dist/app.js missing"; exit 1; }
+          test -f dist/sources.json || { echo "::error::dist/sources.json missing"; exit 1; }
+          test -f dist/.nojekyll || { echo "::error::dist/.nojekyll missing"; exit 1; }
+          test -s dist/app.js || { echo "::error::dist/app.js is empty"; exit 1; }
+          grep -q "app.js" dist/index.html || { echo "::error::index.html does not reference app.js"; exit 1; }
+          node -e "JSON.parse(require('fs').readFileSync('dist/sources.json','utf8'))" \
+            || { echo "::error::sources.json is not valid JSON"; exit 1; }
+          echo "dist verified: $(du -sh dist | cut -f1) total"
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Publish
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

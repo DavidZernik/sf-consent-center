@@ -1,0 +1,68 @@
+<template>
+    <lightning-card icon-name="standard:contact">
+        <h2 slot="title" class="slds-card__header-title">
+            <span class="slds-text-heading_small">{contactName}</span>
+            <span class="slds-text-body_small slds-text-color_weak slds-var-m-left_x-small">{email}</span>
+        </h2>
+
+        <div slot="actions" class="slds-grid slds-gutters_x-small slds-grid_vertical-align-center">
+            <span class={dirtyLabelClass}>{dirtyLabel}</span>
+            <lightning-button label="Reset" onclick={handleReset} disabled={isSaveDisabled}></lightning-button>
+            <lightning-button
+                variant="brand"
+                label="Save"
+                onclick={handleSave}
+                disabled={isSaveDisabled}
+            ></lightning-button>
+        </div>
+
+        <div class="slds-is-relative">
+            <template lwc:if={isSaving}>
+                <lightning-spinner alternative-text="Saving preferences" size="small"></lightning-spinner>
+            </template>
+
+            <template lwc:if={isLoading}>
+                <div class="slds-var-p-around_xx-large slds-is-relative">
+                    <lightning-spinner alternative-text="Loading preferences" size="small"></lightning-spinner>
+                </div>
+            </template>
+
+            <template lwc:elseif={errorMessage}>
+                <div class="slds-var-p-around_medium">
+                    <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">{errorMessage}</div>
+                </div>
+            </template>
+
+            <template lwc:else>
+                <ul class="slds-var-p-horizontal_medium slds-var-p-bottom_medium">
+                    <template for:each={channels} for:item="channel">
+                        <li key={channel.channel} class="channel-row slds-grid slds-grid_vertical-align-center slds-var-p-vertical_small">
+                            <div class="slds-var-m-right_medium">
+                                <lightning-icon icon-name={channel.icon} size="small" variant="inverse" class="channel-icon"></lightning-icon>
+                            </div>
+                            <div class="slds-col slds-grow">
+                                <div class="slds-text-body_regular slds-text-title_bold">{channel.channel}</div>
+                                <div class="slds-text-body_small slds-text-color_weak">{channel.description}</div>
+                            </div>
+                            <div class="slds-var-m-right_medium slds-text-align_right">
+                                <c-consent-status-badge status={channel.syncStatus}></c-consent-status-badge>
+                            </div>
+                            <div>
+                                <lightning-input
+                                    type="toggle"
+                                    label={channel.channel}
+                                    variant="label-hidden"
+                                    message-toggle-active="Opted in"
+                                    message-toggle-inactive="Opted out"
+                                    checked={channel.optIn}
+                                    data-channel={channel.channel}
+                                    onchange={handleToggle}
+                                ></lightning-input>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+        </div>
+    </lightning-card>
+</template>

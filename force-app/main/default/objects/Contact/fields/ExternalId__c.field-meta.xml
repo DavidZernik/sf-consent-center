@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExternalId__c</fullName>
+    <label>External Id</label>
+    <description>Source-system identifier for this contact. The stable match key for bulk loads: email addresses get reused between people, this does not.</description>
+    <externalId>true</externalId>
+    <length>80</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>true</unique>
+    <caseSensitive>false</caseSensitive>
+</CustomField>

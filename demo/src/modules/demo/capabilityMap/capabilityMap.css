@@ -1,0 +1,80 @@
+.intro {
+    max-width: 46rem;
+}
+
+.group-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+}
+
+.group-pill {
+    font-size: 0.75rem;
+}
+
+.group-heading {
+    color: #444;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 0.25rem;
+}
+
+.capability-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: 0.75rem;
+}
+
+.capability-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.25rem;
+    padding: 0.875rem 1rem;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.capability-card:hover {
+    border-color: #c9c9c9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.capability-card.is-expanded {
+    border-color: #0176d3;
+    grid-column: 1 / -1;
+}
+
+.detail-text {
+    color: #3e3e3c;
+    background: #f8f9fb;
+    border-left: 3px solid #0176d3;
+    padding: 0.625rem 0.75rem;
+    border-radius: 0 0.25rem 0.25rem 0;
+    max-width: 58rem;
+}
+
+.file-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+}
+
+.file-chip {
+    display: inline-flex;
+    align-items: center;
+    background: #f3f3f3;
+    border: 1px solid #e0e0e0;
+    border-radius: 1rem;
+    padding: 0.125rem 0.625rem;
+    font-size: 0.75rem;
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    color: #0176d3;
+    cursor: pointer;
+}
+
+.file-chip:hover {
+    background: #eef4ff;
+    border-color: #0176d3;
+}

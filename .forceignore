@@ -1,0 +1,7 @@
+# Demo-only shell, mocks and build tooling never deploy to a Salesforce org.
+demo/
+scripts/
+dist/
+node_modules/
+**/__tests__/**
+**/jsconfig.json

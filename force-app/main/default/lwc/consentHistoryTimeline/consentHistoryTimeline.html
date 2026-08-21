@@ -1,0 +1,40 @@
+<template>
+    <lightning-card title="Consent History" icon-name="standard:record_lookup">
+        <template lwc:if={hasEntries}>
+            <ul class="slds-timeline slds-var-p-horizontal_medium slds-var-p-bottom_medium">
+                <template for:each={decoratedEntries} for:item="entry">
+                    <li key={entry.key} class="slds-var-p-vertical_x-small timeline-row">
+                        <div class="slds-grid slds-grid_vertical-align-start">
+                            <lightning-icon
+                                icon-name={entry.iconName}
+                                variant={entry.iconVariant}
+                                size="x-small"
+                                class="slds-var-m-right_small slds-var-m-top_xx-small"
+                            ></lightning-icon>
+                            <div class="slds-col slds-grow">
+                                <div class="slds-text-body_regular">{entry.summary}</div>
+                                <div class="slds-text-body_small slds-text-color_weak">
+                                    <lightning-formatted-date-time
+                                        value={entry.changedAt}
+                                        year="numeric"
+                                        month="short"
+                                        day="2-digit"
+                                        hour="2-digit"
+                                        minute="2-digit"
+                                    ></lightning-formatted-date-time>
+                                    <span> · {entry.changedByName} · via {entry.changeSource}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </template>
+
+        <template lwc:else>
+            <div class="slds-var-p-around_x-large slds-align_absolute-center slds-text-color_weak slds-text-body_small">
+                No consent changes recorded yet.
+            </div>
+        </template>
+    </lightning-card>
+</template>

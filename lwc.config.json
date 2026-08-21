@@ -1,0 +1,78 @@
+{
+  "modules": [
+    {
+      "dir": "demo/src/modules"
+    },
+    {
+      "name": "c/contactConsentList",
+      "path": "force-app/main/default/lwc/contactConsentList/contactConsentList.js"
+    },
+    {
+      "name": "c/consentPreferencePanel",
+      "path": "force-app/main/default/lwc/consentPreferencePanel/consentPreferencePanel.js"
+    },
+    {
+      "name": "c/consentHistoryTimeline",
+      "path": "force-app/main/default/lwc/consentHistoryTimeline/consentHistoryTimeline.js"
+    },
+    {
+      "name": "c/consentLifecyclePath",
+      "path": "force-app/main/default/lwc/consentLifecyclePath/consentLifecyclePath.js"
+    },
+    {
+      "name": "c/consentStatusBadge",
+      "path": "force-app/main/default/lwc/consentStatusBadge/consentStatusBadge.js"
+    },
+    {
+      "name": "c/sfmcSyncConsole",
+      "path": "force-app/main/default/lwc/sfmcSyncConsole/sfmcSyncConsole.js"
+    },
+    {
+      "name": "c/unifiedProfileCard",
+      "path": "force-app/main/default/lwc/unifiedProfileCard/unifiedProfileCard.js"
+    },
+    {
+      "name": "c/consentResolutionPanel",
+      "path": "force-app/main/default/lwc/consentResolutionPanel/consentResolutionPanel.js"
+    },
+    {
+      "name": "c/engagementInsightTile",
+      "path": "force-app/main/default/lwc/engagementInsightTile/engagementInsightTile.js"
+    },
+    {
+      "name": "@salesforce/apex/ConsentService.getConsentSummaries",
+      "path": "demo/src/mocks/apex/getConsentSummaries.js"
+    },
+    {
+      "name": "@salesforce/apex/ConsentService.getConsentDetail",
+      "path": "demo/src/mocks/apex/getConsentDetail.js"
+    },
+    {
+      "name": "@salesforce/apex/ConsentService.savePreferences",
+      "path": "demo/src/mocks/apex/savePreferences.js"
+    },
+    {
+      "name": "@salesforce/apex/ConsentService.getSyncLogs",
+      "path": "demo/src/mocks/apex/getSyncLogs.js"
+    },
+    {
+      "name": "@salesforce/apex/ConsentService.retrySync",
+      "path": "demo/src/mocks/apex/retrySync.js"
+    },
+    {
+      "name": "@salesforce/apex/DataCloudService.getUnifiedProfile",
+      "path": "demo/src/mocks/apex/getUnifiedProfile.js"
+    },
+    {
+      "name": "lightning/platformShowToastEvent",
+      "path": "demo/src/mocks/lightning/platformShowToastEvent.js"
+    },
+    {
+      "name": "lightning/navigation",
+      "path": "demo/src/mocks/lightning/navigation.js"
+    },
+    {
+      "npm": "lightning-base-components"
+    }
+  ]
+}

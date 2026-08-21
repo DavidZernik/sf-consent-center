@@ -1,0 +1,10 @@
+node_modules/
+dist/
+demo/src/generated/
+.sf/
+.sfdx/
+.localdevserver/
+coverage/
+*.log
+.DS_Store
+.gstack/

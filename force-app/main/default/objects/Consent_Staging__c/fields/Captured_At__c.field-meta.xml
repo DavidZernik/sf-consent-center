@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Captured_At__c</fullName>
+    <label>Captured At</label>
+    <description>When the source system captured the consent. Used to resolve ordering when several rows target the same contact and channel.</description>
+    <type>DateTime</type>
+</CustomField>

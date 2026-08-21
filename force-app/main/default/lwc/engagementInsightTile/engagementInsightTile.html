@@ -1,0 +1,39 @@
+<template>
+    <div class="slds-var-m-top_medium">
+        <h3 class="slds-text-title_caps slds-var-m-bottom_x-small">Engagement insight</h3>
+        <div class="insight-tile slds-grid slds-grid_vertical-align-center slds-gutters_small">
+            <div class="slds-col slds-no-flex">
+                <div class={ringClass} style={ringStyle}>
+                    <span class="score-value">{scoreLabel}</span>
+                </div>
+            </div>
+            <div class="slds-col slds-grow">
+                <div class="slds-text-heading_small slds-var-m-bottom_xxx-small">{band}</div>
+                <template lwc:if={hasData}>
+                    <div class="slds-text-body_small slds-text-color_weak">
+                        <span>Last engaged </span>
+                        <lightning-formatted-date-time
+                            value={lastEngagementAt}
+                            year="numeric"
+                            month="short"
+                            day="2-digit"
+                        ></lightning-formatted-date-time>
+                    </div>
+                    <div class="slds-grid slds-gutters_small slds-var-m-top_x-small">
+                        <template for:each={metrics} for:item="metric">
+                            <div key={metric.key} class="slds-col">
+                                <div class="slds-text-title_bold">{metric.value}</div>
+                                <div class="slds-text-body_small slds-text-color_weak">{metric.label}</div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <div class="slds-text-body_small slds-text-color_weak">
+                        No Calculated Insight has been computed for this profile yet.
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,18 @@
+<template>
+    <div class="slds-var-p-around_small path-shell">
+        <lightning-progress-indicator
+            type="path"
+            variant="base"
+            current-step={currentStep}
+            has-error={hasError}
+        >
+            <template for:each={steps} for:item="step">
+                <lightning-progress-step
+                    key={step.value}
+                    label={step.label}
+                    value={step.value}
+                ></lightning-progress-step>
+            </template>
+        </lightning-progress-indicator>
+    </div>
+</template>

@@ -1,0 +1,142 @@
+name: CI
+
+# Everything here runs without a Salesforce org. That is deliberate: a reviewer should be able to
+# see this repository's Apex and components verified from the badge alone, without being asked to
+# authorise a scratch org first.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lwc:
+    name: Components — lint, unit tests, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Demo data smoke checks
+        # Catches a module-scope error that would build cleanly and then ship a blank page.
+        run: npm run smoke
+
+      - name: Jest
+        run: npm run test:unit
+
+      - name: Build
+        run: npm run build
+
+      - name: Report bundle size
+        run: |
+          RAW=$(du -k dist/app.js | cut -f1)
+          GZ=$(gzip -c dist/app.js | wc -c)
+          echo "### Bundle size" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Artifact | Size |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| --- | --- |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| app.js (minified) | ${RAW} KB |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| app.js (gzipped) | $((GZ / 1024)) KB |" >> "$GITHUB_STEP_SUMMARY"
+
+  apex:
+    name: Apex — PMD static analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install PMD
+        run: |
+          PMD_VERSION=7.7.0
+          curl -sSL -o pmd.zip \
+            "https://github.com/pmd/pmd/releases/download/pmd_releases%2F${PMD_VERSION}/pmd-dist-${PMD_VERSION}-bin.zip"
+          unzip -q pmd.zip
+          echo "$PWD/pmd-bin-${PMD_VERSION}/bin" >> "$GITHUB_PATH"
+
+      - name: Run PMD over Apex
+        run: |
+          pmd check \
+            --dir force-app/main/default/classes \
+            --dir force-app/main/default/triggers \
+            --rulesets pmd/apex-ruleset.xml \
+            --format text \
+            --no-cache \
+            --fail-on-violation true
+
+  metadata:
+    name: Metadata — structure checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Every Apex class has a metadata file
+        # A class without its -meta.xml is invisible to a deployment, which is the kind of thing
+        # that is only discovered at the worst possible moment.
+        run: |
+          MISSING=0
+          for f in force-app/main/default/classes/*.cls; do
+            if [ ! -f "${f}-meta.xml" ]; then
+              echo "::error file=${f}::missing ${f}-meta.xml"
+              MISSING=1
+            fi
+          done
+          for f in force-app/main/default/triggers/*.trigger; do
+            if [ ! -f "${f}-meta.xml" ]; then
+              echo "::error file=${f}::missing ${f}-meta.xml"
+              MISSING=1
+            fi
+          done
+          exit $MISSING
+
+      - name: Every LWC bundle has a template and a metadata file
+        run: |
+          MISSING=0
+          for dir in force-app/main/default/lwc/*/; do
+            name=$(basename "$dir")
+            [ -f "${dir}${name}.js" ] || { echo "::error::${name} has no ${name}.js"; MISSING=1; }
+            [ -f "${dir}${name}.html" ] || { echo "::error::${name} has no ${name}.html"; MISSING=1; }
+            [ -f "${dir}${name}.js-meta.xml" ] || { echo "::error::${name} has no js-meta.xml"; MISSING=1; }
+          done
+          exit $MISSING
+
+      - name: Every Apex class is covered by a test class
+        # Not a coverage percentage — just the structural check that no class was added without
+        # anyone writing a test for it.
+        run: |
+          UNTESTED=""
+          for f in force-app/main/default/classes/*.cls; do
+            name=$(basename "$f" .cls)
+            case "$name" in
+              *Test|TestDataFactory|*Mock|ConsentCenterException) continue ;;
+            esac
+            if [ ! -f "force-app/main/default/classes/${name}Test.cls" ]; then
+              if ! grep -rlq "\b${name}\b" force-app/main/default/classes/*Test.cls 2>/dev/null; then
+                UNTESTED="${UNTESTED} ${name}"
+              fi
+            fi
+          done
+          if [ -n "$UNTESTED" ]; then
+            echo "::error::Apex classes with no test coverage:${UNTESTED}"
+            exit 1
+          fi
+          echo "Every Apex class is referenced by at least one test class."

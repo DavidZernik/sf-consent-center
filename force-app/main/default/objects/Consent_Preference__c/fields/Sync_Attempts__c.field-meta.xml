@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sync_Attempts__c</fullName>
+    <label>Sync Attempts</label>
+    <description>Delivery attempts so far. Capped by SfmcSyncQueueable.MAX_ATTEMPTS.</description>
+    <type>Number</type>
+    <precision>2</precision>
+    <scale>0</scale>
+    <defaultValue>0</defaultValue>
+</CustomField>

@@ -1,0 +1,18 @@
+.stat-tile {
+    background: #f3f3f3;
+    border-radius: 0.25rem;
+    padding: 0.75rem 1rem;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.table-wrapper {
+    min-height: 12rem;
+    max-height: 28rem;
+    overflow-y: auto;
+}
