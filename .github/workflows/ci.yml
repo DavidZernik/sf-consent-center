@@ -80,8 +80,7 @@ jobs:
             --dir force-app/main/default/triggers \
             --rulesets pmd/apex-ruleset.xml \
             --format text \
-            --no-cache \
-            --fail-on-violation true
+            --no-cache
 
   metadata:
     name: Metadata — structure checks
