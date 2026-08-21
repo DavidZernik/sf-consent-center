@@ -169,6 +169,73 @@ public with sharing class ConsentStagingBatch implements Database.Batchable<SObj
         return selection;
     }
 
+    /** Records to write, and the staging keys they correspond to, in matching order. */
+    private class Promotion {
+        List<Consent_Preference__c> toUpsert = new List<Consent_Preference__c>();
+        List<Consent_History__c> auditTrail = new List<Consent_History__c>();
+        List<String> promotedKeys = new List<String>();
+    }
+
+    /**
+     * Turns the winning staging rows into preference and audit records.
+     *
+     * toUpsert and promotedKeys are built in lockstep: the DML result at index i belongs to the
+     * staging row at promotedKeys[i], and that pairing is what lets a per-row failure be written
+     * back onto the row that caused it.
+     *
+     * Rows already in the requested state are marked Skipped here rather than written, so a
+     * re-run of the same file does not manufacture an audit trail of changes that never happened.
+     */
+    private Promotion buildPromotions(
+        Map<String, Consent_Staging__c> winnerByKey,
+        Map<String, Id> contactIdByKey,
+        Map<String, Consent_Preference__c> existingByKey,
+        Datetime now
+    ) {
+        Promotion promotion = new Promotion();
+        for (String key : winnerByKey.keySet()) {
+            Consent_Staging__c row = winnerByKey.get(key);
+            Id contactId = contactIdByKey.get(key);
+            Boolean next = TRUTHY.contains(row.Opt_In_Raw__c.trim().toLowerCase());
+
+            Consent_Preference__c existing = existingByKey.get(key);
+            Boolean previous = existing != null && existing.Opt_In__c == true;
+
+            if (existing != null && previous == next) {
+                // Already in the requested state — a no-op, not a failure.
+                row.Process_Status__c = 'Skipped';
+                row.Processed_At__c = now;
+                skipped++;
+                continue;
+            }
+
+            String source = String.isBlank(row.Source_System__c) ? 'Bulk Load' : row.Source_System__c;
+            Datetime changedAt = row.Captured_At__c == null ? now : row.Captured_At__c;
+
+            Consent_Preference__c record = existing == null
+                ? new Consent_Preference__c(Contact__c = contactId, Channel__c = row.Channel__c)
+                : new Consent_Preference__c(Id = existing.Id);
+            record.Opt_In__c = next;
+            record.Consent_Source__c = source;
+            record.Last_Changed__c = changedAt;
+            record.Sync_Status__c = 'Pending';
+            record.Sync_Attempts__c = 0;
+
+            promotion.toUpsert.add(record);
+            promotion.promotedKeys.add(key);
+            promotion.auditTrail.add(new Consent_History__c(
+                Contact__c = contactId,
+                Channel__c = row.Channel__c,
+                Previous_Value__c = existing == null ? 'None' : (previous ? 'Opted In' : 'Opted Out'),
+                New_Value__c = next ? 'Opted In' : 'Opted Out',
+                Changed_By_Name__c = 'Integration User',
+                Change_Source__c = source,
+                Changed_At__c = changedAt
+            ));
+        }
+        return promotion;
+    }
+
     public void execute(Database.BatchableContext bc, List<Consent_Staging__c> scope) {
         Datetime now = Datetime.now();
 
@@ -196,47 +263,10 @@ public with sharing class ConsentStagingBatch implements Database.Batchable<SObj
             }
         }
 
-        List<Consent_Preference__c> toUpsert = new List<Consent_Preference__c>();
-        List<Consent_History__c> auditTrail = new List<Consent_History__c>();
-        List<String> promotedKeys = new List<String>();
-
-        for (String key : winnerByKey.keySet()) {
-            Consent_Staging__c row = winnerByKey.get(key);
-            Id contactId = contactIdByKey.get(key);
-            Boolean next = TRUTHY.contains(row.Opt_In_Raw__c.trim().toLowerCase());
-
-            Consent_Preference__c existing = existingByKey.get(key);
-            Boolean previous = existing != null && existing.Opt_In__c == true;
-
-            if (existing != null && previous == next) {
-                // Already in the requested state — a no-op, not a failure.
-                row.Process_Status__c = 'Skipped';
-                row.Processed_At__c = now;
-                skipped++;
-                continue;
-            }
-
-            Consent_Preference__c record = existing == null
-                ? new Consent_Preference__c(Contact__c = contactId, Channel__c = row.Channel__c)
-                : new Consent_Preference__c(Id = existing.Id);
-            record.Opt_In__c = next;
-            record.Consent_Source__c = String.isBlank(row.Source_System__c) ? 'Bulk Load' : row.Source_System__c;
-            record.Last_Changed__c = row.Captured_At__c == null ? now : row.Captured_At__c;
-            record.Sync_Status__c = 'Pending';
-            record.Sync_Attempts__c = 0;
-
-            toUpsert.add(record);
-            promotedKeys.add(key);
-            auditTrail.add(new Consent_History__c(
-                Contact__c = contactId,
-                Channel__c = row.Channel__c,
-                Previous_Value__c = existing == null ? 'None' : (previous ? 'Opted In' : 'Opted Out'),
-                New_Value__c = next ? 'Opted In' : 'Opted Out',
-                Changed_By_Name__c = 'Integration User',
-                Change_Source__c = String.isBlank(row.Source_System__c) ? 'Bulk Load' : row.Source_System__c,
-                Changed_At__c = row.Captured_At__c == null ? now : row.Captured_At__c
-            ));
-        }
+        Promotion promotion = buildPromotions(winnerByKey, contactIdByKey, existingByKey, now);
+        List<Consent_Preference__c> toUpsert = promotion.toUpsert;
+        List<Consent_History__c> auditTrail = promotion.auditTrail;
+        List<String> promotedKeys = promotion.promotedKeys;
 
         List<Id> promotedPreferenceIds = new List<Id>();
         if (!toUpsert.isEmpty()) {

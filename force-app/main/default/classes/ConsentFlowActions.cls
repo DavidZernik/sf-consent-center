@@ -115,7 +115,7 @@ public with sharing class ConsentFlowActions {
 
             keyByIndex.put(i, key);
             toUpsert.add(buildPreference(request, existing, next, now));
-            auditTrail.add(buildHistory(request, existing, previous, next, actor, now));
+            auditTrail.add(buildHistory(request, existing, next, actor, now));
         }
 
         if (toUpsert.isEmpty()) {
@@ -152,11 +152,11 @@ public with sharing class ConsentFlowActions {
     private static Consent_History__c buildHistory(
         ApplyConsentRequest request,
         Consent_Preference__c existing,
-        Boolean previous,
         Boolean next,
         String actor,
         Datetime now
     ) {
+        Boolean previous = existing != null && existing.Opt_In__c == true;
         return new Consent_History__c(
             Contact__c = request.contactId,
             Channel__c = request.channel,
