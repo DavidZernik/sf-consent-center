@@ -122,6 +122,53 @@ public with sharing class ConsentStagingBatch implements Database.Batchable<SObj
         return index;
     }
 
+    /** The surviving row per contact+channel, plus the rows it superseded. */
+    private class WinnerSelection {
+        Map<String, Consent_Staging__c> winnerByKey = new Map<String, Consent_Staging__c>();
+        Map<String, Id> contactIdByKey = new Map<String, Id>();
+        Set<Id> supersededRowIds = new Set<Id>();
+    }
+
+    /**
+     * Picks one winning row per contact and channel, newest capture first.
+     *
+     * Bulk files routinely contain the same person changing their mind twice. Without this the
+     * applied value depends on row order in the file, which is not a decision anybody made.
+     *
+     * Mutates errorByRowId deliberately: a row that resolves to no contact is a per-row failure,
+     * and recording it here keeps that judgement next to the resolution that produced it.
+     */
+    private WinnerSelection selectWinners(
+        List<Consent_Staging__c> scope,
+        Map<Id, String> errorByRowId,
+        ContactIndex contacts
+    ) {
+        WinnerSelection selection = new WinnerSelection();
+        for (Consent_Staging__c row : scope) {
+            if (errorByRowId.containsKey(row.Id)) {
+                continue;
+            }
+            Id contactId = resolveContact(row, contacts.byEmail, contacts.byExternalId);
+            if (contactId == null) {
+                errorByRowId.put(row.Id, 'No contact matched the supplied email or external id.');
+                continue;
+            }
+
+            String key = contactId + '|' + row.Channel__c;
+            Consent_Staging__c incumbent = selection.winnerByKey.get(key);
+            if (incumbent != null && !isNewer(row, incumbent)) {
+                selection.supersededRowIds.add(row.Id);
+                continue;
+            }
+            if (incumbent != null) {
+                selection.supersededRowIds.add(incumbent.Id);
+            }
+            selection.winnerByKey.put(key, row);
+            selection.contactIdByKey.put(key, contactId);
+        }
+        return selection;
+    }
+
     public void execute(Database.BatchableContext bc, List<Consent_Staging__c> scope) {
         Datetime now = Datetime.now();
 
@@ -129,37 +176,11 @@ public with sharing class ConsentStagingBatch implements Database.Batchable<SObj
         Map<Id, String> errorByRowId = validation.errorByRowId;
 
         ContactIndex contacts = resolveContacts(validation.emails, validation.externalIds);
-        Map<String, Id> contactIdByEmail = contacts.byEmail;
-        Map<String, Id> contactIdByExternalId = contacts.byExternalId;
 
-        // Collapse duplicates: newest capture wins.
-        Map<String, Consent_Staging__c> winnerByKey = new Map<String, Consent_Staging__c>();
-        Map<String, Id> contactIdByKey = new Map<String, Id>();
-        Set<Id> supersededRowIds = new Set<Id>();
-
-        for (Consent_Staging__c row : scope) {
-            if (errorByRowId.containsKey(row.Id)) {
-                continue;
-            }
-            Id contactId = resolveContact(row, contactIdByEmail, contactIdByExternalId);
-            if (contactId == null) {
-                errorByRowId.put(row.Id, 'No contact matched the supplied email or external id.');
-                continue;
-            }
-
-            String key = contactId + '|' + row.Channel__c;
-            Consent_Staging__c incumbent = winnerByKey.get(key);
-            if (incumbent == null) {
-                winnerByKey.put(key, row);
-                contactIdByKey.put(key, contactId);
-            } else if (isNewer(row, incumbent)) {
-                supersededRowIds.add(incumbent.Id);
-                winnerByKey.put(key, row);
-                contactIdByKey.put(key, contactId);
-            } else {
-                supersededRowIds.add(row.Id);
-            }
-        }
+        WinnerSelection winners = selectWinners(scope, errorByRowId, contacts);
+        Map<String, Consent_Staging__c> winnerByKey = winners.winnerByKey;
+        Map<String, Id> contactIdByKey = winners.contactIdByKey;
+        Set<Id> supersededRowIds = winners.supersededRowIds;
 
         // Promote the winners.
         Map<String, Consent_Preference__c> existingByKey = new Map<String, Consent_Preference__c>();

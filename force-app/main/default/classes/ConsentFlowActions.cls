@@ -113,26 +113,9 @@ public with sharing class ConsentFlowActions {
                 continue;
             }
 
-            Consent_Preference__c record = existing == null
-                ? new Consent_Preference__c(Contact__c = request.contactId, Channel__c = request.channel)
-                : new Consent_Preference__c(Id = existing.Id);
-            record.Opt_In__c = next;
-            record.Consent_Source__c = String.isBlank(request.source) ? 'Flow' : request.source;
-            record.Last_Changed__c = now;
-            record.Sync_Status__c = 'Pending';
-            record.Sync_Attempts__c = 0;
-
             keyByIndex.put(i, key);
-            toUpsert.add(record);
-            auditTrail.add(new Consent_History__c(
-                Contact__c = request.contactId,
-                Channel__c = request.channel,
-                Previous_Value__c = existing == null ? 'None' : (previous ? 'Opted In' : 'Opted Out'),
-                New_Value__c = next ? 'Opted In' : 'Opted Out',
-                Changed_By_Name__c = actor,
-                Change_Source__c = String.isBlank(request.source) ? 'Flow' : request.source,
-                Changed_At__c = now
-            ));
+            toUpsert.add(buildPreference(request, existing, next, now));
+            auditTrail.add(buildHistory(request, existing, previous, next, actor, now));
         }
 
         if (toUpsert.isEmpty()) {
@@ -145,6 +128,49 @@ public with sharing class ConsentFlowActions {
 
         Database.insert(auditTrail, false, AccessLevel.SYSTEM_MODE);
         return results;
+    }
+
+    /** Builds the preference record for one request — insert shape or update shape. */
+    private static Consent_Preference__c buildPreference(
+        ApplyConsentRequest request,
+        Consent_Preference__c existing,
+        Boolean next,
+        Datetime now
+    ) {
+        Consent_Preference__c record = existing == null
+            ? new Consent_Preference__c(Contact__c = request.contactId, Channel__c = request.channel)
+            : new Consent_Preference__c(Id = existing.Id);
+        record.Opt_In__c = next;
+        record.Consent_Source__c = sourceOf(request);
+        record.Last_Changed__c = now;
+        record.Sync_Status__c = 'Pending';
+        record.Sync_Attempts__c = 0;
+        return record;
+    }
+
+    /** Builds the audit row describing the transition this request causes. */
+    private static Consent_History__c buildHistory(
+        ApplyConsentRequest request,
+        Consent_Preference__c existing,
+        Boolean previous,
+        Boolean next,
+        String actor,
+        Datetime now
+    ) {
+        return new Consent_History__c(
+            Contact__c = request.contactId,
+            Channel__c = request.channel,
+            Previous_Value__c = existing == null ? 'None' : (previous ? 'Opted In' : 'Opted Out'),
+            New_Value__c = next ? 'Opted In' : 'Opted Out',
+            Changed_By_Name__c = actor,
+            Change_Source__c = sourceOf(request),
+            Changed_At__c = now
+        );
+    }
+
+    /** Flow may leave the source blank; the audit trail must still say where it came from. */
+    private static String sourceOf(ApplyConsentRequest request) {
+        return String.isBlank(request.source) ? 'Flow' : request.source;
     }
 
     /**

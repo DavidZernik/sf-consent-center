@@ -106,6 +106,10 @@ public with sharing class SfmcSyncQueueable implements Queueable, Database.Allow
      * Splits a set of preference ids into chunks the REST endpoint will accept and queues one
      * job per chunk. This is the entry point every caller should use.
      */
+    // The enqueueJob call below sits in a loop, which is exactly what this rule looks for — but
+    // the loop is explicitly bounded by the remaining queueable budget and breaks before the
+    // limit, which is the opposite of the defect the rule targets. See the budget check.
+    @SuppressWarnings('PMD.OperationWithLimitsInLoop')
     public static List<Id> enqueueAll(List<Id> preferenceIds) {
         List<Id> jobIds = new List<Id>();
         if (preferenceIds == null || preferenceIds.isEmpty()) {
