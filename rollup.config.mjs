@@ -9,7 +9,13 @@ export default {
     input: 'demo/src/index.js',
     output: {
         dir: 'dist',
-        entryFileNames: 'app.js',
+        // Content-hashed so a new deploy cannot be served from a stale cache. GitHub Pages
+        // sends max-age=600 on everything and offers no way to change it, so a stable entry
+        // name leaves returning visitors on the old app with only a hard refresh to fix it.
+        // This must be rollup's job rather than a post-build rename: every code-split chunk
+        // imports shared bindings back from the entry ("../app.js"), and only rollup rewrites
+        // those back-references to match.
+        entryFileNames: 'app-[hash].js',
         // Code-split rather than inlined. lightning-base-components loads its icon sprite
         // templates through dynamic imports, and those templates are the bulk of the bundle —
         // inlining them roughly quadrupled the initial download for icons most pages never use.

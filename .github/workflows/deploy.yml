@@ -38,11 +38,19 @@ jobs:
         # A deploy that succeeds while serving a broken page is worse than a failed deploy.
         run: |
           test -f dist/index.html || { echo "::error::dist/index.html missing"; exit 1; }
-          test -f dist/app.js || { echo "::error::dist/app.js missing"; exit 1; }
           test -f dist/sources.json || { echo "::error::dist/sources.json missing"; exit 1; }
           test -f dist/.nojekyll || { echo "::error::dist/.nojekyll missing"; exit 1; }
-          test -s dist/app.js || { echo "::error::dist/app.js is empty"; exit 1; }
-          grep -q "app.js" dist/index.html || { echo "::error::index.html does not reference app.js"; exit 1; }
+          # The entry bundle and stylesheet are content-hashed for cache busting. Checking that
+          # index.html points at files that actually exist is the part that matters: a mismatch
+          # here deploys successfully and then serves a blank page.
+          BUNDLE=$(ls dist/app-*.js 2>/dev/null | head -1)
+          SHEET=$(ls dist/index-*.css 2>/dev/null | head -1)
+          test -s "$BUNDLE" || { echo "::error::no non-empty dist/app-<hash>.js"; exit 1; }
+          test -s "$SHEET" || { echo "::error::no non-empty dist/index-<hash>.css"; exit 1; }
+          grep -q "$(basename "$BUNDLE")" dist/index.html \
+            || { echo "::error::index.html does not reference $(basename "$BUNDLE")"; exit 1; }
+          grep -q "$(basename "$SHEET")" dist/index.html \
+            || { echo "::error::index.html does not reference $(basename "$SHEET")"; exit 1; }
           node -e "JSON.parse(require('fs').readFileSync('dist/sources.json','utf8'))" \
             || { echo "::error::sources.json is not valid JSON"; exit 1; }
           echo "dist verified: $(du -sh dist | cut -f1) total"

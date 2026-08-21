@@ -45,8 +45,10 @@ jobs:
 
       - name: Report bundle size
         run: |
-          RAW=$(du -k dist/app.js | cut -f1)
-          GZ=$(gzip -c dist/app.js | wc -c)
+          # The entry bundle is content-hashed, so match it rather than naming it.
+          BUNDLE=$(ls dist/app-*.js)
+          RAW=$(du -k "$BUNDLE" | cut -f1)
+          GZ=$(gzip -c "$BUNDLE" | wc -c)
           echo "### Bundle size" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "| Artifact | Size |" >> "$GITHUB_STEP_SUMMARY"

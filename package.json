@@ -7,7 +7,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "node scripts/smoke.mjs && node scripts/generate-sources.mjs && node scripts/copy-assets.mjs && rollup -c",
+    "build": "node scripts/smoke.mjs && node scripts/generate-sources.mjs && node scripts/copy-assets.mjs && rollup -c && node scripts/fingerprint.mjs",
     "dev": "npm run build && http-server dist -p 8080 -c-1",
     "test": "jest --config jest.config.cjs",
     "test:unit": "jest --config jest.config.cjs --coverage",
