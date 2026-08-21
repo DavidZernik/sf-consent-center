@@ -14,7 +14,7 @@
                     <div class="banner-links">
                         <button class="link-button" onclick={handleViewSource}>Browse the source</button>
                         <a class="link-button" href={repoUrl} target="_blank" rel="noopener noreferrer">GitHub repo</a>
-                        <a class="link-button link-button_primary" href={portfolioUrl} target="_blank" rel="noopener noreferrer">
+                        <a class="link-button" href={portfolioUrl} target="_blank" rel="noopener noreferrer">
                             davidz-losangeles.com
                         </a>
                     </div>
@@ -24,61 +24,34 @@
                     <section class="col">
                         <h2 class="col-title">Who I am</h2>
                         <p>
-                            I'm a Salesforce and marketing technology architect in Los Angeles with nine
-                            years on the platform, mostly leading Marketing Cloud and data integration work
-                            for enterprise teams. Writing Apex and LWC has always been part of that job.
-                            It is just the part a marketing-titled resume tends to hide.
-                        </p>
-                    </section>
-
-                    <section class="col">
-                        <h2 class="col-title">Why I built it</h2>
-                        <p>
-                            Rather than ask anyone to take the development half on faith, I built a working
-                            application and put the source one click away. Every capability claimed on this
-                            page links to the code that implements it, and the whole thing is checked by CI
-                            on every commit.
+                            A Salesforce and marketing technology architect in Los Angeles, nine years on the
+                            platform.
                         </p>
                     </section>
 
                     <section class="col">
                         <h2 class="col-title">How it works</h2>
                         <p>
-                            Everything below the blue bar is genuine Salesforce code, not a lookalike.
-                            These are real <strong>Lightning Web Components</strong>: <code>lwc</code> modules,
-                            JavaScript classes with <code>@api</code> and <code>@wire</code> decorators,
-                            HTML templates using <code>lwc:if</code> and <code>for:each</code> directives,
-                            compiled by Salesforce's own toolchain against the published base component
-                            library. The same files deploy to an org unchanged.
+                            Real Lightning Web Components, compiled by Salesforce's own toolchain. The same
+                            files deploy to an org unchanged.
                         </p>
                     </section>
 
                     <section class="col">
                         <h2 class="col-title">What it demonstrates</h2>
                         <p>
-                            The real platform languages. <strong>Apex</strong> classes, triggers, Batch and
-                            Queueable jobs. <strong>SOQL</strong> and <strong>SOSL</strong> queries. <strong>Visualforce</strong> markup
-                            rendered as PDF. <strong>Flow</strong> metadata calling invocable Apex. SLDS markup
-                            and Salesforce metadata XML. Plus REST and SOAP integrations, OAuth via Named
-                            Credentials, and Data Cloud identity resolution.
+                            Apex, LWC, SOQL, SOSL, Visualforce, Flow, metadata XML. REST and SOAP, OAuth,
+                            Data Cloud.
                         </p>
                     </section>
                 </div>
 
                 <div class="intro-foot">
-                    <p class="note">
-                        <strong>The honest caveat:</strong> Apex only executes inside a Salesforce org, so
-                        the browser serves the identical JSON contract from a mock layer. The Apex itself is
-                        real, deployable source with its own test classes, and every line of it is readable
-                        in the source browser.
-                    </p>
-                    <div class="foot-row">
-                        <span class="hint">
-                            Start with the <strong>Capability Map</strong> tab. It lists each capability and
-                            jumps straight to the code behind it.
-                        </span>
-                        <button class="toggle" onclick={handleToggle}>Hide this introduction</button>
-                    </div>
+                    <span class="hint">
+                        Apex only runs inside a Salesforce org, so the browser serves the same JSON from a
+                        mock. The Apex is real, deployable source. Read all of it in the source browser.
+                    </span>
+                    <button class="toggle" onclick={handleToggle}>Hide this introduction</button>
                 </div>
             </div>
         </template>
@@ -87,15 +60,14 @@
         <template lwc:else>
             <div class="banner-inner">
                 <div class="banner-text">
-                    <span class="badge badge_small">Portfolio demo</span>
                     <span class="headline">Salesforce Consent &amp; Preference Center</span>
-                    <span class="sub">Real LWC and Apex, by David Zernik.</span>
-                    <button class="toggle toggle_inline" onclick={handleToggle}>Read the introduction</button>
+                    <span class="sub">Portfolio demo by David Zernik. Real LWC and Apex.</span>
+                    <button class="toggle" onclick={handleToggle}>Read the introduction</button>
                 </div>
                 <div class="banner-links">
                     <button class="link-button" onclick={handleViewSource}>View source</button>
                     <a class="link-button" href={repoUrl} target="_blank" rel="noopener noreferrer">GitHub</a>
-                    <a class="link-button link-button_primary" href={portfolioUrl} target="_blank" rel="noopener noreferrer">
+                    <a class="link-button" href={portfolioUrl} target="_blank" rel="noopener noreferrer">
                         davidz-losangeles.com
                     </a>
                 </div>

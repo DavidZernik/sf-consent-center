@@ -1,7 +1,18 @@
+/**
+ * One background colour, one ink colour, no exceptions.
+ *
+ * Bright orange rather than another blue: the Lightning global header sits directly below
+ * this, and two blues stacked would read as one piece of chrome. The whole point of the
+ * banner is that it is visibly NOT part of the app.
+ *
+ * #1a1a1a on #ff9a3c is about 9.9:1, so a single ink colour carries headings, body and
+ * buttons without needing a second tone for contrast.
+ */
 .banner {
-    background: #0d0d12;
-    color: #e8e8ec;
-    border-bottom: 1px solid #26262e;
+    --ink: #1a1a1a;
+
+    background: #ff9a3c;
+    color: var(--ink);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -10,7 +21,7 @@
 .intro {
     max-width: 86rem;
     margin: 0 auto;
-    padding: 1.5rem 1.5rem 1.25rem;
+    padding: 1.5rem 1.5rem 1.125rem;
 }
 
 .intro-top {
@@ -20,49 +31,40 @@
     gap: 1.5rem;
     flex-wrap: wrap;
     padding-bottom: 1.125rem;
-    border-bottom: 1px solid #26262e;
-}
-
-.title {
-    font-size: 1.5rem;
-    font-weight: 650;
-    line-height: 1.2;
-    margin: 0.5rem 0 0.25rem;
-    color: #ffffff;
-    letter-spacing: -0.01em;
-}
-
-.byline {
-    font-size: 0.875rem;
-    color: #9a9aa6;
-    margin: 0;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.25);
 }
 
 .badge {
     display: inline-block;
-    background: #ff9a3c;
-    color: #1a1a1a;
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 0.1875rem 0.5rem;
+    border: 1px solid var(--ink);
     border-radius: 0.1875rem;
-}
-
-.badge_small {
     font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
     padding: 0.125rem 0.4rem;
-    white-space: nowrap;
 }
 
-/* Four columns on a wide screen, two on a laptop, one on a phone. Explicit counts rather
-   than auto-fit: the four sections read as a sequence, and auto-fit would reflow them to
-   3 + 1 at some widths, which breaks that reading order. */
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 0.5rem 0 0.25rem;
+}
+
+.byline {
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+/* Three columns on a wide screen, one on a phone. Explicit counts rather than auto-fit:
+   the sections read as a sequence, and auto-fit would reflow them unevenly at some widths,
+   which breaks that reading order. */
 .cols {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.5rem 2rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem 2rem;
     padding-top: 1.125rem;
 }
 
@@ -71,88 +73,30 @@
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #ff9a3c;
-    margin: 0 0 0.4rem;
+    margin: 0 0 0.375rem;
 }
 
 .col p {
     font-size: 0.8125rem;
-    line-height: 1.6;
-    color: #c2c2cc;
+    line-height: 1.55;
     margin: 0;
 }
 
-.col strong {
-    color: #ffffff;
-    font-weight: 600;
-}
-
-.col code {
-    font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
-    font-size: 0.75rem;
-    background: #1c1c24;
-    border: 1px solid #2e2e38;
-    border-radius: 0.1875rem;
-    padding: 0.0625rem 0.25rem;
-    color: #9fd0ff;
-    white-space: nowrap;
-}
-
 .intro-foot {
-    margin-top: 1.25rem;
-    padding-top: 0.875rem;
-    border-top: 1px solid #26262e;
-}
-
-.note {
-    font-size: 0.8125rem;
-    line-height: 1.6;
-    color: #c2c2cc;
-    margin: 0 0 0.75rem;
-    max-width: 64rem;
-}
-
-.note strong {
-    color: #ff9a3c;
-    font-weight: 600;
-}
-
-.foot-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
     flex-wrap: wrap;
+    margin-top: 1.125rem;
+    padding-top: 0.875rem;
+    border-top: 1px solid rgba(26, 26, 26, 0.25);
 }
 
 .hint {
-    font-size: 0.8125rem;
-    color: #9a9aa6;
-}
-
-.hint strong {
-    color: #e8e8ec;
-    font-weight: 600;
-}
-
-.toggle {
-    background: transparent;
-    border: none;
-    color: #9a9aa6;
-    font-family: inherit;
     font-size: 0.75rem;
-    cursor: pointer;
-    padding: 0.25rem 0;
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-}
-
-.toggle:hover {
-    color: #ffffff;
-}
-
-.toggle_inline {
-    font-size: 0.75rem;
+    line-height: 1.5;
+    max-width: 62rem;
 }
 
 /* =============================================================== Collapsed strip */
@@ -161,7 +105,7 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 0.5rem 1rem;
+    padding: 0.4375rem 1rem;
     flex-wrap: wrap;
 }
 
@@ -176,65 +120,67 @@
 
 .headline {
     font-size: 0.8125rem;
-    font-weight: 600;
+    font-weight: 700;
     white-space: nowrap;
 }
 
 .sub {
     font-size: 0.75rem;
-    color: #9a9aa6;
 }
 
-/* ==================================================================== Link buttons */
+/* ================================================================ Buttons, links */
 
 .banner-links {
     display: flex;
     gap: 0.375rem;
-    flex: 0 0 auto;
+    /* Wraps rather than overflowing: the three buttons do not fit one phone-width row,
+       and each label is nowrap so they cannot shrink their way out of it. */
+    flex-wrap: wrap;
 }
 
 .link-button {
     display: inline-block;
     background: transparent;
-    border: 1px solid #3a3a45;
+    border: 1px solid var(--ink);
     border-radius: 0.1875rem;
-    color: #d4d4dc;
+    color: var(--ink);
+    font-family: inherit;
     font-size: 0.75rem;
+    font-weight: 600;
     padding: 0.3125rem 0.75rem;
     cursor: pointer;
     text-decoration: none;
     white-space: nowrap;
+}
+
+.link-button:hover,
+.link-button:focus-visible {
+    background: var(--ink);
+    color: #ff9a3c;
+}
+
+.toggle {
+    background: transparent;
+    border: none;
+    color: var(--ink);
     font-family: inherit;
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 0.25rem 0;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    white-space: nowrap;
 }
 
-.link-button:hover {
-    background: #22222a;
-    color: #ffffff;
-    border-color: #52525f;
-}
-
-.link-button_primary {
-    background: #1b96ff;
-    border-color: #1b96ff;
-    color: #ffffff;
-    font-weight: 600;
-}
-
-.link-button_primary:hover {
-    background: #0d7fdb;
-    border-color: #0d7fdb;
-    color: #ffffff;
+.toggle:hover {
+    text-decoration-thickness: 2px;
 }
 
 /* ===================================================================== Responsive */
 
-@media (max-width: 75rem) {
-    .cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
 @media (max-width: 48rem) {
     .intro { padding: 1.125rem 1rem 1rem; }
     .title { font-size: 1.25rem; }
-    .cols { grid-template-columns: minmax(0, 1fr); gap: 1.125rem; }
+    .cols { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
     .sub { display: none; }
 }

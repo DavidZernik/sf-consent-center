@@ -29,10 +29,9 @@ describe('demoBanner', () => {
         expect(el.shadowRoot.querySelector('.banner-inner')).toBeNull();
     });
 
-    it('answers the four questions a reader arrives with', () => {
+    it('answers the questions a reader arrives with', () => {
         const body = text(render());
         expect(body).toContain('Who I am');
-        expect(body).toContain('Why I built it');
         expect(body).toContain('How it works');
         expect(body).toContain('What it demonstrates');
         expect(body).toContain('David Zernik');
@@ -42,7 +41,7 @@ describe('demoBanner', () => {
         // "Real Salesforce code" is a claim anyone can type. Naming Apex, SOQL, SOSL,
         // Visualforce and Flow is what makes it checkable against the source viewer.
         const body = text(render());
-        for (const term of ['Apex', 'SOQL', 'SOSL', 'Visualforce', 'Flow', 'Lightning Web Components']) {
+        for (const term of ['Apex', 'LWC', 'SOQL', 'SOSL', 'Visualforce', 'Flow', 'Lightning Web Components']) {
             expect(body).toContain(term);
         }
     });
