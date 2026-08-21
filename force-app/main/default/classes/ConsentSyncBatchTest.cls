@@ -74,8 +74,8 @@ private class ConsentSyncBatchTest {
         String jobId = System.schedule('Consent sync test', '0 0 2 * * ?', new ConsentSyncBatch());
         Test.stopTest();
 
-        CronTrigger trigger = [SELECT CronExpression, TimesTriggered FROM CronTrigger WHERE Id = :jobId];
-        Assert.areEqual('0 0 2 * * ?', trigger.CronExpression, 'The schedulable should register with the supplied cron.');
-        Assert.areEqual(0, trigger.TimesTriggered, 'The job should be scheduled but not yet fired.');
+        CronTrigger scheduled = [SELECT CronExpression, TimesTriggered FROM CronTrigger WHERE Id = :jobId];
+        Assert.areEqual('0 0 2 * * ?', scheduled.CronExpression, 'The schedulable should register with the supplied cron.');
+        Assert.areEqual(0, scheduled.TimesTriggered, 'The job should be scheduled but not yet fired.');
     }
 }

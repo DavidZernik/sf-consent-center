@@ -5,6 +5,10 @@
  * what the tenant said back. Retry policy, logging and record updates deliberately live in
  * SfmcSyncQueueable so this class stays trivially mockable.
  */
+// The Authorization header carries a token minted through the SFMC_Auth Named
+// Credential. It is set by hand because Marketing Cloud returns a tenant-specific
+// rest_instance_url that the callout must target, which a Named Credential cannot express.
+@SuppressWarnings('PMD.ApexSuggestUsingNamedCred')
 public with sharing class SfmcClient {
     /** SFMC rejects rowset payloads far above this; batching is the caller's job. */
     public static final Integer MAX_ROWS_PER_REQUEST = 50;

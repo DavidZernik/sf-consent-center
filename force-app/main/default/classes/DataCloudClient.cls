@@ -9,6 +9,10 @@
  * Credential is used here because ConnectApi query methods cannot be mocked in a test context,
  * and an integration that cannot be tested is not one worth shipping.
  */
+// Auth goes through the Data_Cloud Named Credential; the bearer token here is the
+// exchanged Data Cloud token, which must be paired with the tenant host the exchange
+// returned. PMD cannot see that the credential is the source of the token.
+@SuppressWarnings('PMD.ApexSuggestUsingNamedCred')
 public with sharing class DataCloudClient {
     private static final Integer CALLOUT_TIMEOUT_MS = 60000;
 

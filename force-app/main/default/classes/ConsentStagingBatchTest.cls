@@ -123,8 +123,9 @@ private class ConsentStagingBatchTest {
             Email = 'shared@example.invalid', ExternalId__c = 'SRC-9001'
         );
         insert contact;
-        // A different person now owns the email address; the external id is the stable key.
-        Contact other = new Contact(FirstName = 'Someone', LastName = 'Else', Email = 'shared@example.invalid');
+        // A different person now shares the email address. Without this record the test proves
+        // nothing: external id only "wins" if there is something for it to win against.
+        insert new Contact(FirstName = 'Someone', LastName = 'Else', Email = 'shared@example.invalid');
         Consent_Staging__c row = staged(null, 'Email', 'false', Datetime.now());
         row.Contact_External_Id__c = 'SRC-9001';
         row.Email__c = 'shared@example.invalid';

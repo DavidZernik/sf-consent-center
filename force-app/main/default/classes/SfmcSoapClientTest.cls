@@ -5,6 +5,9 @@
  * client that only checks the status code reports every failed unsubscribe as a success, and
  * nobody notices until someone who opted out receives a campaign.
  */
+// The 18-character strings below are Marketing Cloud subscriber keys inside a mocked SOAP
+// envelope, not Salesforce record ids, so they cannot break when the environment changes.
+@SuppressWarnings('PMD.AvoidHardcodingId')
 @IsTest
 private class SfmcSoapClientTest {
 

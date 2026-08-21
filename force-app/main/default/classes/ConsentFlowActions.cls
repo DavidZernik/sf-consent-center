@@ -141,13 +141,31 @@ public with sharing class ConsentFlowActions {
 
         // allOrNone=false: one invalid row must not fail the other 199 in the interview batch.
         List<Database.UpsertResult> upsertResults = Database.upsert(toUpsert, false, AccessLevel.SYSTEM_MODE);
+        applyOutcomes(results, keyByIndex, toUpsert, upsertResults);
 
+        Database.insert(auditTrail, false, AccessLevel.SYSTEM_MODE);
+        return results;
+    }
+
+    /**
+     * Copies the DML outcome for each written record back onto the result at its ORIGINAL index.
+     *
+     * The index mapping is the whole point. Flow pairs the Nth result with the Nth request, so a
+     * result written to the wrong slot silently attributes one record's failure to another —
+     * a bug that looks like data corruption rather than a bad write.
+     */
+    private static void applyOutcomes(
+        List<ApplyConsentResult> results,
+        Map<Integer, String> keyByIndex,
+        List<Consent_Preference__c> written,
+        List<Database.UpsertResult> upsertResults
+    ) {
         Map<String, Database.UpsertResult> outcomeByKey = new Map<String, Database.UpsertResult>();
         Map<String, Id> idByKey = new Map<String, Id>();
-        for (Integer i = 0; i < toUpsert.size(); i++) {
-            String key = toUpsert[i].Contact__c + '|' + toUpsert[i].Channel__c;
+        for (Integer i = 0; i < written.size(); i++) {
+            String key = written[i].Contact__c + '|' + written[i].Channel__c;
             outcomeByKey.put(key, upsertResults[i]);
-            idByKey.put(key, toUpsert[i].Id);
+            idByKey.put(key, written[i].Id);
         }
 
         for (Integer index : keyByIndex.keySet()) {
@@ -165,8 +183,5 @@ public with sharing class ConsentFlowActions {
                     : outcome.getErrors()[0].getMessage();
             }
         }
-
-        Database.insert(auditTrail, false, AccessLevel.SYSTEM_MODE);
-        return results;
     }
 }

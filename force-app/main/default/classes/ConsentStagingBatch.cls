@@ -63,49 +63,76 @@ public with sharing class ConsentStagingBatch implements Database.Batchable<SObj
         ]);
     }
 
-    public void execute(Database.BatchableContext bc, List<Consent_Staging__c> scope) {
-        Datetime now = Datetime.now();
-
-        // --- Pass 1: validate in memory, no queries yet. ---
+    /** Outcome of the in-memory validation pass. */
+    private class ValidationPass {
         Map<Id, String> errorByRowId = new Map<Id, String>();
         Set<String> emails = new Set<String>();
         Set<String> externalIds = new Set<String>();
+    }
 
+    /** The two match-key indexes, resolved in two queries regardless of scope size. */
+    private class ContactIndex {
+        Map<String, Id> byEmail = new Map<String, Id>();
+        Map<String, Id> byExternalId = new Map<String, Id>();
+    }
+
+    /**
+     * Validates every row in memory before a single query is spent.
+     *
+     * Separated from execute() so the shape rules can be read on their own, and so the query
+     * pass below receives an explicit set of keys rather than reaching back into the loop.
+     */
+    private ValidationPass validateAll(List<Consent_Staging__c> scope) {
+        ValidationPass pass = new ValidationPass();
         for (Consent_Staging__c row : scope) {
             String error = validateShape(row);
             if (error != null) {
-                errorByRowId.put(row.Id, error);
+                pass.errorByRowId.put(row.Id, error);
                 continue;
             }
             if (String.isNotBlank(row.Email__c)) {
-                emails.add(row.Email__c.toLowerCase());
+                pass.emails.add(row.Email__c.toLowerCase());
             }
             if (String.isNotBlank(row.Contact_External_Id__c)) {
-                externalIds.add(row.Contact_External_Id__c);
+                pass.externalIds.add(row.Contact_External_Id__c);
             }
         }
+        return pass;
+    }
 
-        // --- Pass 2: resolve every match key in two queries, never one per row. ---
-        Map<String, Id> contactIdByEmail = new Map<String, Id>();
+    /** Resolves every match key in two queries, never one per row. */
+    private ContactIndex resolveContacts(Set<String> emails, Set<String> externalIds) {
+        ContactIndex index = new ContactIndex();
         if (!emails.isEmpty()) {
             for (Contact contact : [
                 SELECT Id, Email FROM Contact WHERE Email IN :emails WITH SYSTEM_MODE LIMIT 10000
             ]) {
-                contactIdByEmail.put(contact.Email.toLowerCase(), contact.Id);
+                index.byEmail.put(contact.Email.toLowerCase(), contact.Id);
             }
         }
-        Map<String, Id> contactIdByExternalId = new Map<String, Id>();
         if (!externalIds.isEmpty()) {
             // Uses whichever external id field the org standardised on.
             for (Contact contact : [
                 SELECT Id, ExternalId__c FROM Contact
                 WHERE ExternalId__c IN :externalIds WITH SYSTEM_MODE LIMIT 10000
             ]) {
-                contactIdByExternalId.put(contact.ExternalId__c, contact.Id);
+                index.byExternalId.put(contact.ExternalId__c, contact.Id);
             }
         }
+        return index;
+    }
 
-        // --- Pass 3: collapse duplicates, newest capture wins. ---
+    public void execute(Database.BatchableContext bc, List<Consent_Staging__c> scope) {
+        Datetime now = Datetime.now();
+
+        ValidationPass validation = validateAll(scope);
+        Map<Id, String> errorByRowId = validation.errorByRowId;
+
+        ContactIndex contacts = resolveContacts(validation.emails, validation.externalIds);
+        Map<String, Id> contactIdByEmail = contacts.byEmail;
+        Map<String, Id> contactIdByExternalId = contacts.byExternalId;
+
+        // Collapse duplicates: newest capture wins.
         Map<String, Consent_Staging__c> winnerByKey = new Map<String, Consent_Staging__c>();
         Map<String, Id> contactIdByKey = new Map<String, Id>();
         Set<Id> supersededRowIds = new Set<Id>();
@@ -134,7 +161,7 @@ public with sharing class ConsentStagingBatch implements Database.Batchable<SObj
             }
         }
 
-        // --- Pass 4: promote. ---
+        // Promote the winners.
         Map<String, Consent_Preference__c> existingByKey = new Map<String, Consent_Preference__c>();
         if (!contactIdByKey.isEmpty()) {
             Set<Id> contactIds = new Set<Id>(contactIdByKey.values());

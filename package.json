@@ -2,7 +2,7 @@
   "name": "sf-consent-center",
   "version": "1.0.0",
   "private": true,
-  "description": "Consent & Preference Center — a Salesforce LWC + Apex reference app, running in the browser as a portfolio demo.",
+  "description": "Consent & Preference Center \u2014 a Salesforce LWC + Apex reference app, running in the browser as a portfolio demo.",
   "author": "David Zernik <dzernik@gmail.com> (https://davidz-losangeles.com/)",
   "license": "MIT",
   "type": "module",
@@ -16,9 +16,9 @@
     "smoke": "node scripts/smoke.mjs"
   },
   "devDependencies": {
-    "@babel/core": "^8.0.1",
-    "@babel/eslint-parser": "^8.0.1",
-    "@babel/plugin-proposal-decorators": "^8.0.2",
+    "@babel/core": "^7.25.0",
+    "@babel/eslint-parser": "^7.25.0",
+    "@babel/plugin-proposal-decorators": "^7.25.0",
     "@lwc/compiler": "9.4.1",
     "@lwc/eslint-plugin-lwc": "^3.5.0",
     "@lwc/jest-preset": "^19.6.1",

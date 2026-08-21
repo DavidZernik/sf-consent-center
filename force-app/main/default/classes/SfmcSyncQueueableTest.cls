@@ -102,6 +102,57 @@ private class SfmcSyncQueueableTest {
     }
 
     @IsTest
+    static void enqueueAll_neverExceedsTheQueueableLimit() {
+        // 5,000 rows want 100 jobs against a per-transaction limit of 50. Before this guard the
+        // 51st enqueueJob threw a LimitException that rolled back the whole transaction —
+        // including the consent change the user had just saved.
+        List<Id> ids = new List<Id>();
+        for (Integer i = 0; i < 5000; i++) {
+            ids.add(fakeId(Consent_Preference__c.SObjectType, i + 1));
+        }
+
+        Test.setMock(HttpCalloutMock.class, SfmcCalloutMock.success());
+        Test.startTest();
+        List<Id> jobIds = SfmcSyncQueueable.enqueueAll(ids);
+        Integer limitForTransaction = Limits.getLimitQueueableJobs();
+        Test.stopTest();
+
+        Assert.isTrue(
+            jobIds.size() <= limitForTransaction,
+            'Enqueued ' + jobIds.size() + ' jobs against a limit of ' + limitForTransaction +
+            '; the surplus must be left Pending for ConsentSyncBatch instead of throwing.'
+        );
+        Assert.isTrue(jobIds.size() > 0, 'It should still enqueue everything that does fit.');
+    }
+
+    @IsTest
+    static void chunk_splitsEvenlyAndKeepsTheRemainder() {
+        List<Id> ids = new List<Id>();
+        for (Integer i = 0; i < 125; i++) {
+            ids.add(fakeId(Consent_Preference__c.SObjectType, i + 1));
+        }
+
+        List<List<Id>> batches = SfmcSyncQueueable.chunk(ids, 50);
+
+        Assert.areEqual(3, batches.size(), '125 at 50 per batch is three batches.');
+        Assert.areEqual(50, batches[0].size(), 'First batch is full.');
+        Assert.areEqual(50, batches[1].size(), 'Second batch is full.');
+        Assert.areEqual(25, batches[2].size(), 'The remainder must not be dropped.');
+    }
+
+    @IsTest
+    static void chunk_exactMultipleLeavesNoEmptyTrailingBatch() {
+        List<Id> ids = new List<Id>();
+        for (Integer i = 0; i < 100; i++) {
+            ids.add(fakeId(Consent_Preference__c.SObjectType, i + 1));
+        }
+
+        List<List<Id>> batches = SfmcSyncQueueable.chunk(ids, 50);
+
+        Assert.areEqual(2, batches.size(), 'An exact multiple must not produce a trailing empty batch.');
+    }
+
+    @IsTest
     static void enqueueAll_emptyInputQueuesNothing() {
         Test.startTest();
         Assert.areEqual(0, SfmcSyncQueueable.enqueueAll(null).size(), 'Null input should queue nothing.');
@@ -123,8 +174,11 @@ private class SfmcSyncQueueableTest {
 
     /** Builds a well-formed but non-existent id, so chunking logic can be tested without DML. */
     private static Id fakeId(Schema.SObjectType sobjectType, Integer index) {
+        // DEFERRED: the eager describe pulls in every child relationship just to read a prefix.
         return Id.valueOf(
-            sobjectType.getDescribe().getKeyPrefix() + '0'.repeat(9) + String.valueOf(index).leftPad(6, '0')
+            sobjectType.getDescribe(SObjectDescribeOptions.DEFERRED).getKeyPrefix()
+                + '0'.repeat(9)
+                + String.valueOf(index).leftPad(6, '0')
         );
     }
 }

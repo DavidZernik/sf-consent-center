@@ -5,6 +5,9 @@
  * literal() or identifier() is wrong, the application has an injection vulnerability rather than
  * a formatting bug.
  */
+// Assertions in this class run through the assertRejected helper, which PMD cannot follow
+// across the call boundary. Every test does assert; see the helper at the foot of the class.
+@SuppressWarnings('PMD.ApexUnitTestClassShouldHaveAsserts')
 @IsTest
 private class DataCloudQueryTest {
 

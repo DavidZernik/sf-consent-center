@@ -111,17 +111,53 @@ public with sharing class SfmcSyncQueueable implements Queueable, Database.Allow
         if (preferenceIds == null || preferenceIds.isEmpty()) {
             return jobIds;
         }
-        List<Id> chunk = new List<Id>();
-        for (Id prefId : preferenceIds) {
-            chunk.add(prefId);
-            if (chunk.size() == SfmcClient.MAX_ROWS_PER_REQUEST) {
-                jobIds.add(System.enqueueJob(new SfmcSyncQueueable(chunk)));
-                chunk = new List<Id>();
-            }
+
+        // Queueable jobs are capped per transaction. Chunking blindly would mean 5,000 rows ask
+        // for 100 jobs against a limit of 50, and the 51st call throws a LimitException that
+        // rolls back the whole transaction — including the consent change the user just made.
+        // Enqueue what fits and leave the rest Pending: ConsentSyncBatch sweeps those up, which
+        // is precisely why the nightly backfill exists.
+        Integer budget = Limits.getLimitQueueableJobs() - Limits.getQueueableJobs();
+        if (budget <= 0) {
+            System.debug(
+                LoggingLevel.WARN,
+                'No queueable capacity left; ' + preferenceIds.size() +
+                ' preference(s) left Pending for ConsentSyncBatch.'
+            );
+            return jobIds;
         }
-        if (!chunk.isEmpty()) {
-            jobIds.add(System.enqueueJob(new SfmcSyncQueueable(chunk)));
+
+        List<List<Id>> chunks = chunk(preferenceIds, SfmcClient.MAX_ROWS_PER_REQUEST);
+        for (List<Id> batch : chunks) {
+            if (jobIds.size() >= budget) {
+                Integer deferred = (chunks.size() - jobIds.size()) * SfmcClient.MAX_ROWS_PER_REQUEST;
+                System.debug(
+                    LoggingLevel.WARN,
+                    'Queueable budget exhausted after ' + jobIds.size() + ' job(s); up to ' +
+                    deferred + ' preference(s) left Pending for ConsentSyncBatch.'
+                );
+                break;
+            }
+            jobIds.add(System.enqueueJob(new SfmcSyncQueueable(batch)));
         }
         return jobIds;
+    }
+
+    /** Splits a list into fixed-size batches. Pure, so the arithmetic is testable on its own. */
+    @TestVisible
+    private static List<List<Id>> chunk(List<Id> source, Integer size) {
+        List<List<Id>> batches = new List<List<Id>>();
+        List<Id> current = new List<Id>();
+        for (Id value : source) {
+            current.add(value);
+            if (current.size() == size) {
+                batches.add(current);
+                current = new List<Id>();
+            }
+        }
+        if (!current.isEmpty()) {
+            batches.add(current);
+        }
+        return batches;
     }
 }
