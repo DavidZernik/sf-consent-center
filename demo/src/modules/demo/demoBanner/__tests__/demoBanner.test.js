@@ -46,6 +46,24 @@ describe('demoBanner', () => {
         }
     });
 
+    it('points each visible capability at the tab that shows it', () => {
+        // Real hash links, not labels. The router listens for these, so naming a tab without
+        // linking it would make the reader go and find it.
+        const hrefs = [...render().shadowRoot.querySelectorAll('.where-tab')].map((a) =>
+            a.getAttribute('href')
+        );
+        expect(hrefs).toEqual(['#/records', '#/unified', '#/sync', '#/capabilities']);
+    });
+
+    it('says plainly which capabilities have no screen', () => {
+        // Most of the stack is not visible: Visualforce renders a PDF the browser cannot
+        // produce, Flow is metadata, OAuth is invisible by definition. Implying otherwise is
+        // the one thing this page cannot afford.
+        const body = text(render());
+        expect(body).toContain('have no screen of their own');
+        expect(body).toContain('Capability Map');
+    });
+
     it('collapses to a one-line strip and remembers that for the session', () => {
         const el = render();
         el.shadowRoot.querySelector('.toggle').click();

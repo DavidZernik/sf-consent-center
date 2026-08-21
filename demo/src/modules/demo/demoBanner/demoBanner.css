@@ -82,6 +82,47 @@
     margin: 0;
 }
 
+/* ============================================================= Where to look
+
+   Full width rather than a fourth column: three tab descriptions stacked inside one column
+   would run three times the height of the other two and unbalance the grid again. */
+.where {
+    margin-top: 1.125rem;
+    padding-top: 0.875rem;
+    border-top: 1px solid rgba(26, 26, 26, 0.25);
+}
+
+.where-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem 2rem;
+}
+
+.where-grid p {
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    margin: 0;
+}
+
+/* Real hash links, not labels: the router already listens for these, so naming a tab and
+   then making the reader go find it would be a wasted click. */
+.where-tab {
+    color: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.where-tab:hover {
+    text-decoration-thickness: 2px;
+}
+
+.where-note {
+    font-size: 0.75rem;
+    line-height: 1.5;
+    margin: 0.625rem 0 0;
+}
+
 .intro-foot {
     display: flex;
     align-items: center;
@@ -181,6 +222,7 @@
 @media (max-width: 48rem) {
     .intro { padding: 1.125rem 1rem 1rem; }
     .title { font-size: 1.25rem; }
-    .cols { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+    .cols,
+    .where-grid { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
     .sub { display: none; }
 }
