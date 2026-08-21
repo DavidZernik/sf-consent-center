@@ -5,6 +5,158 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
+/* ================================================================ Expanded intro */
+
+.intro {
+    max-width: 86rem;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 1.25rem;
+}
+
+.intro-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding-bottom: 1.125rem;
+    border-bottom: 1px solid #26262e;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 650;
+    line-height: 1.2;
+    margin: 0.5rem 0 0.25rem;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+}
+
+.byline {
+    font-size: 0.875rem;
+    color: #9a9aa6;
+    margin: 0;
+}
+
+.badge {
+    display: inline-block;
+    background: #ff9a3c;
+    color: #1a1a1a;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.1875rem 0.5rem;
+    border-radius: 0.1875rem;
+}
+
+.badge_small {
+    font-size: 0.625rem;
+    padding: 0.125rem 0.4rem;
+    white-space: nowrap;
+}
+
+/* Four columns on a wide screen, two on a laptop, one on a phone. Explicit counts rather
+   than auto-fit: the four sections read as a sequence, and auto-fit would reflow them to
+   3 + 1 at some widths, which breaks that reading order. */
+.cols {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem 2rem;
+    padding-top: 1.125rem;
+}
+
+.col-title {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #ff9a3c;
+    margin: 0 0 0.4rem;
+}
+
+.col p {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: #c2c2cc;
+    margin: 0;
+}
+
+.col strong {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.col code {
+    font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.75rem;
+    background: #1c1c24;
+    border: 1px solid #2e2e38;
+    border-radius: 0.1875rem;
+    padding: 0.0625rem 0.25rem;
+    color: #9fd0ff;
+    white-space: nowrap;
+}
+
+.intro-foot {
+    margin-top: 1.25rem;
+    padding-top: 0.875rem;
+    border-top: 1px solid #26262e;
+}
+
+.note {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: #c2c2cc;
+    margin: 0 0 0.75rem;
+    max-width: 64rem;
+}
+
+.note strong {
+    color: #ff9a3c;
+    font-weight: 600;
+}
+
+.foot-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.hint {
+    font-size: 0.8125rem;
+    color: #9a9aa6;
+}
+
+.hint strong {
+    color: #e8e8ec;
+    font-weight: 600;
+}
+
+.toggle {
+    background: transparent;
+    border: none;
+    color: #9a9aa6;
+    font-family: inherit;
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 0.25rem 0;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+.toggle:hover {
+    color: #ffffff;
+}
+
+.toggle_inline {
+    font-size: 0.75rem;
+}
+
+/* =============================================================== Collapsed strip */
+
 .banner-inner {
     display: flex;
     align-items: center;
@@ -22,18 +174,6 @@
     min-width: 0;
 }
 
-.badge {
-    background: #ff9a3c;
-    color: #1a1a1a;
-    font-size: 0.625rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 0.125rem 0.4rem;
-    border-radius: 0.1875rem;
-    white-space: nowrap;
-}
-
 .headline {
     font-size: 0.8125rem;
     font-weight: 600;
@@ -44,6 +184,8 @@
     font-size: 0.75rem;
     color: #9a9aa6;
 }
+
+/* ==================================================================== Link buttons */
 
 .banner-links {
     display: flex;
@@ -58,7 +200,7 @@
     border-radius: 0.1875rem;
     color: #d4d4dc;
     font-size: 0.75rem;
-    padding: 0.25rem 0.625rem;
+    padding: 0.3125rem 0.75rem;
     cursor: pointer;
     text-decoration: none;
     white-space: nowrap;
@@ -84,6 +226,15 @@
     color: #ffffff;
 }
 
+/* ===================================================================== Responsive */
+
+@media (max-width: 75rem) {
+    .cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 @media (max-width: 48rem) {
+    .intro { padding: 1.125rem 1rem 1rem; }
+    .title { font-size: 1.25rem; }
+    .cols { grid-template-columns: minmax(0, 1fr); gap: 1.125rem; }
     .sub { display: none; }
 }

@@ -53,7 +53,7 @@ handling is removed.
 | **ETL / Informatica pattern** — staging object + promotion batch | [`ConsentStagingBatch.cls`](force-app/main/default/classes/ConsentStagingBatch.cls) |
 | **Data Cloud** — Query API v2, DMOs, identity resolution, Calculated Insight | [`DataCloudService.cls`](force-app/main/default/classes/DataCloudService.cls), [`DataCloudClient.cls`](force-app/main/default/classes/DataCloudClient.cls) |
 | **Security** — `USER_MODE`, least-privilege permission set, SQL injection defence | [`DataCloudQuery.cls`](force-app/main/default/classes/DataCloudQuery.cls), [`Consent_Center_User.permissionset-meta.xml`](force-app/main/default/permissionsets/Consent_Center_User.permissionset-meta.xml) |
-| **Testing** — 14 Apex test classes, 73 Jest assertions | [`*Test.cls`](force-app/main/default/classes/), [`__tests__/`](force-app/main/default/lwc/) |
+| **Testing** — 14 Apex test classes, 80 Jest assertions | [`*Test.cls`](force-app/main/default/classes/), [`__tests__/`](force-app/main/default/lwc/) |
 
 ---
 
@@ -169,7 +169,7 @@ authorised anything:
   catch component bugs that are invisible in review. (`valid-api` would have caught the one real
   bug found while building this: a `show()` method that was not `@api`, leaving every toast in the
   app silently dead.)
-- **Jest** — 73 assertions across the components, the router and the source viewer.
+- **Jest** — 80 assertions across the components, the router, the source viewer and the intro.
 - **Smoke checks** on the demo data layer, because a module-scope error builds cleanly and then
   ships a blank page.
 - **PMD** static analysis over the Apex — SOQL-in-loops, sharing violations, SOQL injection.
