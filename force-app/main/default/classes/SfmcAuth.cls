@@ -3,7 +3,7 @@
  *
  * SFMC access tokens are short lived (typically 20 minutes) and the tenant returns the
  * REST base URL alongside the token, so both are cached together. Cache order is:
- *   1. static (same transaction — free)
+ *   1. static (same transaction, free)
  *   2. Platform Cache org partition (across transactions, best effort)
  *   3. fresh callout
  *
@@ -57,7 +57,7 @@ public with sharing class SfmcAuth {
         try {
             Cache.Org.getPartition(CACHE_PARTITION).remove(CACHE_KEY);
         } catch (Exception ignored) {
-            // Platform Cache not provisioned — resetting the static cache above is sufficient.
+            // Platform Cache not provisioned. Resetting the static cache above is sufficient.
         }
     }
 

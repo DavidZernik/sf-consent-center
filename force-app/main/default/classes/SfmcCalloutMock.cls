@@ -2,7 +2,7 @@
  * Routing HTTP mock for the Marketing Cloud endpoints.
  *
  * One mock handles both the token call and the rowset call because a single Apex transaction
- * only accepts one Test.setMock per interface — routing on the endpoint is the standard way
+ * only accepts one Test.setMock per interface. Routing on the endpoint is the standard way
  * to cover a multi-hop integration.
  */
 @IsTest

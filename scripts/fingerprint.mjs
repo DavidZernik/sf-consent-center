@@ -4,7 +4,7 @@
  * Why any of this exists: GitHub Pages serves every file with `Cache-Control: max-age=600`
  * and gives no way to change that. With a stable `app.js` URL a browser that has the file
  * cached keeps running the old application, and the only fix available to a visitor is a hard
- * refresh — not something you can ask a recruiter to do. Hashing makes each new build a URL
+ * refresh, not something you can ask a recruiter to do. Hashing makes each new build a URL
  * nothing has cached, so an update cannot be missed.
  *
  * The JS hashing itself is done by rollup, not here. Every code-split chunk imports shared
@@ -14,7 +14,7 @@
  * rollup rewrites those back-references. This script therefore discovers the name rollup chose
  * rather than assigning one.
  *
- * index.css has no such back-references — nothing imports it — so it is safe to hash here.
+ * index.css has no such back-references (nothing imports it) so it is safe to hash here.
  *
  * index.html stays at a stable URL and is still cached for ten minutes. That window is
  * unavoidable on Pages, but it is self-healing: the stale HTML names a bundle that still

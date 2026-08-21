@@ -6,7 +6,7 @@
  * feature deserves.
  *
  * The whole file is tokenised in ONE regex pass. Highlighting by running a series of
- * replacements is the obvious approach and it is always wrong — the second pass happily matches
+ * replacements is the obvious approach and it is always wrong: the second pass happily matches
  * inside the markup the first pass just inserted, so a keyword inside a string comment gets
  * double-wrapped and the output falls apart.
  */

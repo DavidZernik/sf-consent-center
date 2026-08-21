@@ -1,7 +1,7 @@
 /**
  * Data Cloud boundary for the Consent Center UI.
  *
- * The problem this solves: a single human being usually exists several times in CRM — a web
+ * The problem this solves: a single human being usually exists several times in CRM, a web
  * lead, a POS record, a support contact. Identity Resolution collapses those into one Unified
  * Individual. Consent has to be answered at that unified level, because "did this person opt
  * out of email" is a question about the person, not about whichever record you happened to open.
@@ -159,7 +159,7 @@ public with sharing class DataCloudService {
      *
      * Most-restrictive-wins: a single opt-out anywhere in the graph makes the unified answer
      * opted out. A channel where sources disagree is flagged as conflicted so the UI can show
-     * that the answer was contested rather than unanimous — that distinction is exactly what an
+     * that the answer was contested rather than unanimous. That distinction is exactly what an
      * auditor asks about.
      *
      * Public and static with no callouts so it can be unit tested directly.

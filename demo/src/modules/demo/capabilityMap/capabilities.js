@@ -6,7 +6,7 @@
  * where the recursion guard lives" is not. Each entry points at real source in this repository,
  * which the View source panel loads directly from force-app/.
  *
- * `paths` are repository-relative and must stay in sync with the tree — scripts/generate-sources.mjs
+ * `paths` are repository-relative and must stay in sync with the tree; scripts/generate-sources.mjs
  * fails the build if any path listed here does not exist.
  */
 
@@ -34,7 +34,7 @@ export const CAPABILITIES = [
         summary: 'One trigger per object, all logic in a handler, with recursion and bypass guards.',
         detail:
             'The trigger itself contains no logic. The handler switches on Trigger.operationType, and ' +
-            'the after-update path only re-queues a sync when a marketing-relevant field changed — ' +
+            'the after-update path only re-queues a sync when a marketing-relevant field changed, ' +
             'without that check, the sync job writing its own status back would loop until the org hit ' +
             'the async limit. A static bypass lets bulk loads suppress per-record side effects.',
         paths: [
@@ -84,7 +84,7 @@ export const CAPABILITIES = [
         detail:
             'When a Case closes with reason "Unsubscribe Request", the Flow records the opt-out through ' +
             'the same Apex path the UI uses. The invocable takes a List and returns a List of identical ' +
-            'size and order — Flow bulkifies interviews behind the scenes, and a mismatched return list ' +
+            'size and order. Flow bulkifies interviews behind the scenes, and a mismatched return list ' +
             'silently misassigns results. Failures come back as data, not exceptions, so one bad record ' +
             'cannot roll back the other 199.',
         paths: [
@@ -103,7 +103,7 @@ export const CAPABILITIES = [
             'Search terms are bound and escaped, never concatenated. SOSL is used where SOQL genuinely ' +
             'cannot compete: searching Contact, Lead and the consent trail together costs one indexed ' +
             'round trip instead of three LIKE scans. Note the SOSL reserved-character set differs from ' +
-            "SOQL's — escapeSingleQuotes alone would leave ? and * live.",
+            "SOQL's; escapeSingleQuotes alone would leave ? and * live.",
         paths: ['force-app/main/default/classes/ConsentSelector.cls'],
         anchor: 'searchEverywhere'
     },
@@ -142,7 +142,7 @@ export const CAPABILITIES = [
     {
         id: 'rest-outbound',
         group: 'Integration',
-        name: 'REST APIs — outbound',
+        name: 'REST APIs (outbound)',
         summary: 'Marketing Cloud Data Extension writes with retryable/permanent error classification.',
         detail:
             'The judgement call worth reading is the classification: 429 and 5xx are transient and get ' +
@@ -157,7 +157,7 @@ export const CAPABILITIES = [
     {
         id: 'rest-inbound',
         group: 'Integration',
-        name: 'REST APIs — inbound',
+        name: 'REST APIs (inbound)',
         summary: '@RestResource endpoint with per-record outcomes and correct HTTP semantics.',
         detail:
             'Accepts a batch and answers per record rather than all-or-nothing, so a caller sending 50 ' +
@@ -175,8 +175,8 @@ export const CAPABILITIES = [
         name: 'SOAP APIs',
         summary: 'Marketing Cloud Subscriber updates, with Dom.Document response parsing.',
         detail:
-            'SOAP because REST cannot do this job: the account-level global unsubscribe — the one that ' +
-            'suppresses a person across every send, which is what a legal opt-out actually means — is ' +
+            'SOAP because REST cannot do this job: the account-level global unsubscribe (the one that ' +
+            'suppresses a person across every send, which is what a legal opt-out actually means) is ' +
             'only exposed through the SOAP Subscriber object. SOAP also reports application errors ' +
             'inside an HTTP 200, so the response is parsed with Dom.Document and checked on ' +
             'OverallStatus; a client that trusts the status code reports failed unsubscribes as ' +
@@ -194,7 +194,7 @@ export const CAPABILITIES = [
         detail:
             'Two different OAuth shapes. Marketing Cloud uses client_credentials against an External ' +
             'Credential, so no secret ever appears in source or in a custom setting. Data Cloud needs a ' +
-            'token exchange — the core Salesforce token is swapped for a Data Cloud token using the CDP ' +
+            'token exchange: the core Salesforce token is swapped for a Data Cloud token using the CDP ' +
             'external grant, and the response carries its own instance host. Both cache static → ' +
             'Platform Cache → fresh callout, refreshing inside a safety window so an in-flight callout ' +
             'cannot race the TTL.',
@@ -208,7 +208,7 @@ export const CAPABILITIES = [
         id: 'etl',
         group: 'Integration',
         name: 'ETL / Informatica pattern',
-        summary: 'Staging object plus a promotion batch — the standard iPaaS landing pattern.',
+        summary: 'Staging object plus a promotion batch, the standard iPaaS landing pattern.',
         detail:
             'The shape any ETL tool integrates against. The job bulk-inserts into a staging object with ' +
             'no logic attached, so the load either lands or it does not and it is fast. A batch then ' +
@@ -247,7 +247,7 @@ export const CAPABILITIES = [
         summary: 'USER_MODE enforcement, least-privilege permission set, SQL injection defence.',
         detail:
             'The sharp edge here is Data Cloud. Its Query API takes ANSI SQL with no bind variables, so ' +
-            'every value is interpolated by hand — and String.escapeSingleQuotes is a SOQL helper that ' +
+            'every value is interpolated by hand, and String.escapeSingleQuotes is a SOQL helper that ' +
             'does not cover the backslash escape or comment sequences ANSI SQL honours. DataCloudQuery ' +
             'allowlists literals and identifiers instead of trying to escape dangerous input, and its ' +
             'test class is the security test suite of this repository.',

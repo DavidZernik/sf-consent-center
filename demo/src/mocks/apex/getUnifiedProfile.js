@@ -52,7 +52,7 @@ function resolveConsent(sourceConsents) {
     return resolved;
 }
 
-/** Mirrors DataCloudService.describeAgreement — "All 1 sources agree" reads as a bug. */
+/** Mirrors DataCloudService.describeAgreement. "All 1 sources agree" reads as a bug. */
 function describeAgreement(sourceCount, optIn) {
     const position = optIn ? 'opt-in' : 'opt-out';
     return sourceCount === 1

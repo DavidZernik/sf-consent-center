@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   lwc:
-    name: Components — lint, unit tests, build
+    name: Components (lint, unit tests, build)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -57,7 +57,7 @@ jobs:
           echo "| app.js (gzipped) | $((GZ / 1024)) KB |" >> "$GITHUB_STEP_SUMMARY"
 
   apex:
-    name: Apex — PMD static analysis
+    name: Apex (PMD static analysis)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -85,7 +85,7 @@ jobs:
             --no-cache
 
   metadata:
-    name: Metadata — structure checks
+    name: Metadata (structure checks)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -121,7 +121,7 @@ jobs:
           exit $MISSING
 
       - name: Every Apex class is covered by a test class
-        # Not a coverage percentage — just the structural check that no class was added without
+        # Not a coverage percentage, just the structural check that no class was added without
         # anyone writing a test for it.
         run: |
           UNTESTED=""

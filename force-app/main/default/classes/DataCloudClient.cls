@@ -1,7 +1,7 @@
 /**
  * HTTP client for the Data Cloud Query API (v2).
  *
- * The v2 response is column-oriented — a metadata map describing each column and its position,
+ * The v2 response is column-oriented, a metadata map describing each column and its position,
  * plus a list of positional value arrays. This class zips those back into row maps so callers
  * work with named fields instead of array indices, which is where off-by-one bugs live.
  *

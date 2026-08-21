@@ -5,7 +5,7 @@ import { highlight, languageFor } from './highlight.js';
  * Slide-out source viewer.
  *
  * The manifest is fetched lazily on first open rather than bundled, so the initial page load
- * stays small — the source of the whole repository is a lot of bytes to ship to someone who
+ * stays small: the source of the whole repository is a lot of bytes to ship to someone who
  * might never open the panel.
  */
 export default class ViewSourcePanel extends LightningElement {
@@ -151,7 +151,7 @@ export default class ViewSourcePanel extends LightningElement {
     /**
      * Paints the highlighted source.
      *
-     * Highlighting produces an HTML string, so the container is marked lwc:dom="manual" — the
+     * Highlighting produces an HTML string, so the container is marked lwc:dom="manual", the
      * supported escape hatch for content LWC did not render itself. The input is repository
      * source read at build time, never user input.
      */
@@ -168,7 +168,7 @@ export default class ViewSourcePanel extends LightningElement {
         const lines = file.content.split('\n');
         const gutter = lines.map((_, index) => index + 1).join('\n');
 
-        // `container` is lwc:dom="manual" — the supported way to own a subtree LWC did not
+        // `container` is lwc:dom="manual", the supported way to own a subtree LWC did not
         // render. The content is repository source read at build time, and highlight() escapes
         // <, > and & before emitting; see highlight.test.js for the escaping proofs.
         // eslint-disable-next-line @lwc/lwc/no-inner-html

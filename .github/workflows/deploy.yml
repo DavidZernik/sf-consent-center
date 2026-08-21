@@ -11,7 +11,7 @@ permissions:
   pages: write
   id-token: write
 
-# One deploy at a time, and never cancel one midway — a cancelled Pages deploy can leave the
+# One deploy at a time, and never cancel one midway. A cancelled Pages deploy can leave the
 # site serving a half-published build.
 concurrency:
   group: pages

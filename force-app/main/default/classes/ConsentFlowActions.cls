@@ -130,7 +130,7 @@ public with sharing class ConsentFlowActions {
         return results;
     }
 
-    /** Builds the preference record for one request — insert shape or update shape. */
+    /** Builds the preference record for one request, insert shape or update shape. */
     private static Consent_Preference__c buildPreference(
         ApplyConsentRequest request,
         Consent_Preference__c existing,
@@ -177,7 +177,7 @@ public with sharing class ConsentFlowActions {
      * Copies the DML outcome for each written record back onto the result at its ORIGINAL index.
      *
      * The index mapping is the whole point. Flow pairs the Nth result with the Nth request, so a
-     * result written to the wrong slot silently attributes one record's failure to another —
+     * result written to the wrong slot silently attributes one record's failure to another, 
      * a bug that looks like data corruption rather than a bad write.
      */
     private static void applyOutcomes(

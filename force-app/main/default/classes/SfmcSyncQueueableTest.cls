@@ -104,7 +104,7 @@ private class SfmcSyncQueueableTest {
     @IsTest
     static void enqueueAll_neverExceedsTheQueueableLimit() {
         // 5,000 rows want 100 jobs against a per-transaction limit of 50. Before this guard the
-        // 51st enqueueJob threw a LimitException that rolled back the whole transaction —
+        // 51st enqueueJob threw a LimitException that rolled back the whole transaction, 
         // including the consent change the user had just saved.
         List<Id> ids = new List<Id>();
         for (Integer i = 0; i < 5000; i++) {
@@ -165,7 +165,7 @@ private class SfmcSyncQueueableTest {
     static void execute_missingRecordsExitQuietly() {
         Test.setMock(HttpCalloutMock.class, SfmcCalloutMock.success());
         Test.startTest();
-        // Ids that resolve to nothing — e.g. rows deleted between queueing and execution.
+        // Ids that resolve to nothing, e.g. rows deleted between queueing and execution.
         System.enqueueJob(new SfmcSyncQueueable(new List<Id>{ fakeId(Consent_Preference__c.SObjectType, 999) }));
         Test.stopTest();
 

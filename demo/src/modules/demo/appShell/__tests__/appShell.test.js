@@ -4,8 +4,8 @@ import AppShell from 'demo/appShell';
 /**
  * Routing and platform-service tests for the shell.
  *
- * The shell stands in for the three things Lightning Experience normally provides — routing,
- * toasts and navigation — so these tests pin the contracts the components rely on.
+ * The shell stands in for the three things Lightning Experience normally provides: routing,
+ * toasts and navigation, so these tests pin the contracts the components rely on.
  */
 
 function mount() {

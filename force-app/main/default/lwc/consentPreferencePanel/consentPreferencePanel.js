@@ -17,7 +17,7 @@ const CHANNEL_META = {
  *
  * Holds a working copy of the preferences so the user can toggle several channels and save
  * once. Only the differences against the loaded state are submitted, which keeps the audit
- * trail meaningful — Apex would skip no-op rows anyway, but sending them would be sloppy.
+ * trail meaningful. Apex would skip no-op rows anyway, but sending them would be sloppy.
  */
 export default class ConsentPreferencePanel extends LightningElement {
     _recordId;

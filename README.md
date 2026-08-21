@@ -9,7 +9,7 @@ A working Salesforce application built as a portfolio piece by
 [David Zernik](https://davidz-losangeles.com/): marketing consent captured in CRM, resolved across
 a Data Cloud unified profile, and activated into Marketing Cloud.
 
-The demo runs in your browser. The Lightning Web Components are real — compiled with the `@lwc`
+The demo runs in your browser. The Lightning Web Components are real, compiled with the `@lwc`
 toolchain against Salesforce's published `lightning-base-components` package, from the same source
 files that would deploy to an org. The Apex is real, deployable source; it cannot execute outside a
 Salesforce org, so the browser serves the identical JSON contract from a mock layer.
@@ -38,22 +38,22 @@ handling is removed.
 
 | Capability | Where |
 |---|---|
-| **Apex** — service / selector / domain layers, explicit DTOs at the UI boundary | [`ConsentService.cls`](force-app/main/default/classes/ConsentService.cls), [`ConsentSelector.cls`](force-app/main/default/classes/ConsentSelector.cls) |
-| **Triggers** — one per object, handler class, recursion + bypass guards | [`ConsentPreferenceTrigger.trigger`](force-app/main/default/triggers/ConsentPreferenceTrigger.trigger), [`ConsentPreferenceTriggerHandler.cls`](force-app/main/default/classes/ConsentPreferenceTriggerHandler.cls) |
-| **Lightning Web Components** — 9 components | [`force-app/main/default/lwc/`](force-app/main/default/lwc/) |
-| **Visualforce** — proof-of-consent PDF, `renderAs="pdf"` | [`ConsentCertificate.page`](force-app/main/default/pages/ConsentCertificate.page) |
-| **Flows** — record-triggered Flow → bulk-safe invocable Apex | [`Consent_Unsubscribe_Request.flow-meta.xml`](force-app/main/default/flows/Consent_Unsubscribe_Request.flow-meta.xml), [`ConsentFlowActions.cls`](force-app/main/default/classes/ConsentFlowActions.cls) |
-| **SOQL + SOSL** — `USER_MODE` queries, single-round-trip cross-object search | [`ConsentSelector.cls`](force-app/main/default/classes/ConsentSelector.cls) |
-| **Batch Apex** — stateful nightly backfill | [`ConsentSyncBatch.cls`](force-app/main/default/classes/ConsentSyncBatch.cls) |
-| **Queueable Apex** — chained retries, exponential backoff, attempt ceiling | [`SfmcSyncQueueable.cls`](force-app/main/default/classes/SfmcSyncQueueable.cls) |
-| **REST — outbound** — Data Extension writes, retryable/permanent classification | [`SfmcClient.cls`](force-app/main/default/classes/SfmcClient.cls) |
-| **REST — inbound** — `@RestResource`, per-record outcomes, 200/207/400/413 | [`ConsentApiResource.cls`](force-app/main/default/classes/ConsentApiResource.cls) |
-| **SOAP** — Subscriber status via SOAP, `Dom.Document` parsing | [`SfmcSoapClient.cls`](force-app/main/default/classes/SfmcSoapClient.cls) |
-| **OAuth** — client credentials + Data Cloud token exchange, three-tier cache | [`SfmcAuth.cls`](force-app/main/default/classes/SfmcAuth.cls), [`DataCloudAuth.cls`](force-app/main/default/classes/DataCloudAuth.cls) |
-| **ETL / Informatica pattern** — staging object + promotion batch | [`ConsentStagingBatch.cls`](force-app/main/default/classes/ConsentStagingBatch.cls) |
-| **Data Cloud** — Query API v2, DMOs, identity resolution, Calculated Insight | [`DataCloudService.cls`](force-app/main/default/classes/DataCloudService.cls), [`DataCloudClient.cls`](force-app/main/default/classes/DataCloudClient.cls) |
-| **Security** — `USER_MODE`, least-privilege permission set, SQL injection defence | [`DataCloudQuery.cls`](force-app/main/default/classes/DataCloudQuery.cls), [`Consent_Center_User.permissionset-meta.xml`](force-app/main/default/permissionsets/Consent_Center_User.permissionset-meta.xml) |
-| **Testing** — 14 Apex test classes, 80 Jest assertions | [`*Test.cls`](force-app/main/default/classes/), [`__tests__/`](force-app/main/default/lwc/) |
+| **Apex**: service / selector / domain layers, explicit DTOs at the UI boundary | [`ConsentService.cls`](force-app/main/default/classes/ConsentService.cls), [`ConsentSelector.cls`](force-app/main/default/classes/ConsentSelector.cls) |
+| **Triggers**: one per object, handler class, recursion + bypass guards | [`ConsentPreferenceTrigger.trigger`](force-app/main/default/triggers/ConsentPreferenceTrigger.trigger), [`ConsentPreferenceTriggerHandler.cls`](force-app/main/default/classes/ConsentPreferenceTriggerHandler.cls) |
+| **Lightning Web Components**: 9 components | [`force-app/main/default/lwc/`](force-app/main/default/lwc/) |
+| **Visualforce**: proof-of-consent PDF, `renderAs="pdf"` | [`ConsentCertificate.page`](force-app/main/default/pages/ConsentCertificate.page) |
+| **Flows**: record-triggered Flow → bulk-safe invocable Apex | [`Consent_Unsubscribe_Request.flow-meta.xml`](force-app/main/default/flows/Consent_Unsubscribe_Request.flow-meta.xml), [`ConsentFlowActions.cls`](force-app/main/default/classes/ConsentFlowActions.cls) |
+| **SOQL + SOSL**: `USER_MODE` queries, single-round-trip cross-object search | [`ConsentSelector.cls`](force-app/main/default/classes/ConsentSelector.cls) |
+| **Batch Apex**: stateful nightly backfill | [`ConsentSyncBatch.cls`](force-app/main/default/classes/ConsentSyncBatch.cls) |
+| **Queueable Apex**: chained retries, exponential backoff, attempt ceiling | [`SfmcSyncQueueable.cls`](force-app/main/default/classes/SfmcSyncQueueable.cls) |
+| **REST (outbound)**: Data Extension writes, retryable/permanent classification | [`SfmcClient.cls`](force-app/main/default/classes/SfmcClient.cls) |
+| **REST (inbound)**: `@RestResource`, per-record outcomes, 200/207/400/413 | [`ConsentApiResource.cls`](force-app/main/default/classes/ConsentApiResource.cls) |
+| **SOAP**: Subscriber status via SOAP, `Dom.Document` parsing | [`SfmcSoapClient.cls`](force-app/main/default/classes/SfmcSoapClient.cls) |
+| **OAuth**: client credentials + Data Cloud token exchange, three-tier cache | [`SfmcAuth.cls`](force-app/main/default/classes/SfmcAuth.cls), [`DataCloudAuth.cls`](force-app/main/default/classes/DataCloudAuth.cls) |
+| **ETL / Informatica pattern**: staging object + promotion batch | [`ConsentStagingBatch.cls`](force-app/main/default/classes/ConsentStagingBatch.cls) |
+| **Data Cloud**: Query API v2, DMOs, identity resolution, Calculated Insight | [`DataCloudService.cls`](force-app/main/default/classes/DataCloudService.cls), [`DataCloudClient.cls`](force-app/main/default/classes/DataCloudClient.cls) |
+| **Security**: `USER_MODE`, least-privilege permission set, SQL injection defence | [`DataCloudQuery.cls`](force-app/main/default/classes/DataCloudQuery.cls), [`Consent_Center_User.permissionset-meta.xml`](force-app/main/default/permissionsets/Consent_Center_User.permissionset-meta.xml) |
+| **Testing**: 14 Apex test classes, 80 Jest assertions | [`*Test.cls`](force-app/main/default/classes/), [`__tests__/`](force-app/main/default/lwc/) |
 
 ---
 
@@ -61,7 +61,7 @@ handling is removed.
 
 **Consent resolves across the unified profile, most-restrictive-wins.**
 A person with three CRM records has one consent position, not three. If any source says opted out,
-the unified answer is opted out — the only rule that fails safe when systems disagree. The UI shows
+the unified answer is opted out, the only rule that fails safe when systems disagree. The UI shows
 *which* source decided the outcome, because "opted out" invites the question "says who?".
 → [`DataCloudService.resolveConsent`](force-app/main/default/classes/DataCloudService.cls)
 
@@ -72,13 +72,13 @@ Literals and identifiers are allowlisted rather than escaped.
 → [`DataCloudQuery.cls`](force-app/main/default/classes/DataCloudQuery.cls) · [tests](force-app/main/default/classes/DataCloudQueryTest.cls)
 
 **The sync job writes its own status back to the record it syncs.**
-Without a check on *which* fields changed, that write re-triggers the sync, which writes again —
+Without a check on *which* fields changed, that write re-triggers the sync, which writes again, 
 until the org hits its async limit. The trigger only re-queues when a marketing-relevant field moved.
 → [`ConsentPreferenceTriggerHandler.enqueueSync`](force-app/main/default/classes/ConsentPreferenceTriggerHandler.cls)
 
 **SOAP is not legacy here, it is required.**
 Marketing Cloud REST can write Data Extension rows but cannot set a Subscriber's account-level
-status. A global unsubscribe — the one that actually suppresses a person across every send — is only
+status. A global unsubscribe (the one that actually suppresses a person across every send) is only
 exposed via the SOAP Subscriber object. SOAP also reports application errors inside an HTTP 200, so
 the response is parsed and checked on `OverallStatus`.
 → [`SfmcSoapClient.cls`](force-app/main/default/classes/SfmcSoapClient.cls)
@@ -96,7 +96,7 @@ sf org assign permset --name Consent_Center_User --target-org consent
 sf apex run test --target-org consent --code-coverage --result-format human
 ```
 
-The two Named Credentials point at placeholder hosts — set your own Marketing Cloud tenant and
+The two Named Credentials point at placeholder hosts, set your own Marketing Cloud tenant and
 My Domain before exercising the callouts. Data Cloud DMO and Calculated Insight API names vary by
 data space; adjust the constants at the top of `DataCloudService`.
 
@@ -134,7 +134,7 @@ import getConsentSummaries from '@salesforce/apex/ConsentService.getConsentSumma
 
 [`lwc.config.json`](lwc.config.json) maps that specifier to a browser mock, and maps the `c/`
 namespace onto the real SFDX component paths. The component source is byte-identical between the
-demo, the org, and the test suite — only the module resolution differs.
+demo, the org, and the test suite, only the module resolution differs.
 
 The mock layer resolves asynchronously with realistic latency and returns errors in the same
 `{ body: { message } }` shape the Apex boundary produces, so components exercise their real loading
@@ -147,7 +147,7 @@ Two other pieces the platform normally provides are reimplemented in the shell: 
 platform API on the component side.
 
 One deliberate choice worth flagging: the demo runs LWC in **synthetic shadow**, as Lightning
-Experience does. SLDS is a document-level stylesheet, and native shadow roots block it — so under
+Experience does. SLDS is a document-level stylesheet, and native shadow roots block it, so under
 native shadow every `slds-*` class inside a component silently stops applying.
 
 ### Deep links
@@ -165,15 +165,15 @@ Any file can be linked directly:
 Everything runs without a Salesforce org, so the badges mean something to a reader who has not
 authorised anything:
 
-- **ESLint** with the LWC rule set — including `valid-api` and `no-leaky-event-listeners`, which
+- **ESLint** with the LWC rule set, including `valid-api` and `no-leaky-event-listeners`, which
   catch component bugs that are invisible in review. (`valid-api` would have caught the one real
   bug found while building this: a `show()` method that was not `@api`, leaving every toast in the
   app silently dead.)
-- **Jest** — 80 assertions across the components, the router, the source viewer and the intro.
+- **Jest**: 80 assertions across the components, the router, the source viewer and the intro.
 - **Smoke checks** on the demo data layer, because a module-scope error builds cleanly and then
   ships a blank page.
-- **PMD** static analysis over the Apex — SOQL-in-loops, sharing violations, SOQL injection.
-- **Structure checks** — every Apex class has its `-meta.xml`, every LWC bundle has a template and
+- **PMD** static analysis over the Apex: SOQL-in-loops, sharing violations, SOQL injection.
+- **Structure checks**: every Apex class has its `-meta.xml`, every LWC bundle has a template and
   metadata, and no Apex class exists without a test class referencing it.
 
 Deploys to GitHub Pages on green, after verifying the built artifact is actually publishable.
@@ -184,7 +184,7 @@ Deploys to GitHub Pages on green, after verifying the built artifact is actually
 
 - **The Apex does not execute in the demo.** It is real, deployable source with real tests; the
   browser serves the same contract from a mock. Deploy it to a scratch org to see it run.
-- **Visualforce cannot render outside an org** — `renderAs="pdf"` is server-side. The page and its
+- **Visualforce cannot render outside an org**: `renderAs="pdf"` is server-side. The page and its
   controller are in the repository and in the source viewer; the demo links to the real
   `/apex/ConsentCertificate?id=` URL rather than faking a PDF.
 - **Data Cloud DMO and Calculated Insight names vary per org.** The names used follow the standard
@@ -196,4 +196,4 @@ Deploys to GitHub Pages on green, after verifying the built artifact is actually
 
 ## Licence
 
-MIT — see [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).

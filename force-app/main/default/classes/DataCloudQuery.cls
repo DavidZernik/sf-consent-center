@@ -12,7 +12,7 @@
  *   - identifiers (table and column names) never come from user input; they are allowlisted
  */
 public with sharing class DataCloudQuery {
-    /** Identifiers may only ever be word characters — no quoting scheme can make more safe. */
+    /** Identifiers may only ever be word characters. No quoting scheme can make more safe. */
     private static final Pattern SAFE_IDENTIFIER = Pattern.compile('^[A-Za-z][A-Za-z0-9_]*$');
     /** Anything outside this set has no legitimate place in a consent lookup value. */
     private static final Pattern SAFE_LITERAL = Pattern.compile('^[A-Za-z0-9 @._+\\-]*$');

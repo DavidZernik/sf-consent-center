@@ -26,7 +26,7 @@
                         <template for:each={channel.contributing} for:item="source">
                             <li key={source.key} class="slds-text-body_small">
                                 <span class="slds-text-color_weak">{source.sourceSystem}</span>
-                                <span> — </span>
+                                <span>: </span>
                                 <span class={source.statusClass}>{source.statusLabel}</span>
                                 <template lwc:if={source.isDecisive}>
                                     <span class="slds-text-color_error"> · decided the outcome</span>

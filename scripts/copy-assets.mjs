@@ -1,7 +1,7 @@
 /**
  * Stages the static assets the built site needs.
  *
- * The SLDS package ships about 30 MB — every icon as an individual SVG, several stylesheet
+ * The SLDS package ships about 30 MB, every icon as an individual SVG, several stylesheet
  * variants, plus fonts. A GitHub Pages deploy that size is slow to publish and slower to load,
  * so only the minified stylesheet and the sprite sheets actually referenced are copied.
  */

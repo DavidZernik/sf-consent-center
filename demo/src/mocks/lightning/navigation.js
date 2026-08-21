@@ -1,7 +1,7 @@
 /**
  * Stand-in for lightning/navigation.
  *
- * NavigationMixin is a real mixin on the platform, so this is one too — components call
+ * NavigationMixin is a real mixin on the platform, so this is one too. Components call
  * this[NavigationMixin.Navigate](pageReference) exactly as they would in an org. Instead of a
  * page transition, the mock dispatches a window event that the demo's router listens for, which
  * is how a standard__recordPage reference becomes a route change in the browser.

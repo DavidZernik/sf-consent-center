@@ -5,7 +5,7 @@
  * The shape is the standard one for an ETL tool such as Informatica:
  *
  *   1. The ETL job bulk-inserts into Consent_Staging__c. No triggers, no validation, no
- *      callouts — the load either lands or it does not, and it is fast.
+ *      callouts. The load either lands or it does not, and it is fast.
  *   2. This batch validates, resolves match keys and promotes in chunks.
  *   3. Rows that fail are marked Failed with the reason ON the staging row, so the ETL team can
  *      query their own failures instead of asking someone to read a debug log.
@@ -202,7 +202,7 @@ public with sharing class ConsentStagingBatch implements Database.Batchable<SObj
             Boolean previous = existing != null && existing.Opt_In__c == true;
 
             if (existing != null && previous == next) {
-                // Already in the requested state — a no-op, not a failure.
+                // Already in the requested state, a no-op, not a failure.
                 row.Process_Status__c = 'Skipped';
                 row.Processed_At__c = now;
                 skipped++;

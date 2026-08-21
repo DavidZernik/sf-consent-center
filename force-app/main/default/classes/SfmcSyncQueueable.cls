@@ -84,7 +84,7 @@ public with sharing class SfmcSyncQueueable implements Queueable, Database.Allow
      * Chains the next attempt with exponential backoff.
      *
      * Guarded on the async job limit: inside a test context, and when the org is already at
-     * its queueable depth, chaining throws — parking the rows is better than an unhandled
+     * its queueable depth, chaining throws. Parking the rows is better than an unhandled
      * exception that rolls back the logs written above.
      */
     @TestVisible
@@ -106,7 +106,7 @@ public with sharing class SfmcSyncQueueable implements Queueable, Database.Allow
      * Splits a set of preference ids into chunks the REST endpoint will accept and queues one
      * job per chunk. This is the entry point every caller should use.
      */
-    // The enqueueJob call below sits in a loop, which is exactly what this rule looks for — but
+    // The enqueueJob call below sits in a loop, which is exactly what this rule looks for, but
     // the loop is explicitly bounded by the remaining queueable budget and breaks before the
     // limit, which is the opposite of the defect the rule targets. See the budget check.
     @SuppressWarnings('PMD.OperationWithLimitsInLoop')
@@ -118,7 +118,7 @@ public with sharing class SfmcSyncQueueable implements Queueable, Database.Allow
 
         // Queueable jobs are capped per transaction. Chunking blindly would mean 5,000 rows ask
         // for 100 jobs against a limit of 50, and the 51st call throws a LimitException that
-        // rolls back the whole transaction — including the consent change the user just made.
+        // rolls back the whole transaction, including the consent change the user just made.
         // Enqueue what fits and leave the rest Pending: ConsentSyncBatch sweeps those up, which
         // is precisely why the nightly backfill exists.
         Integer budget = Limits.getLimitQueueableJobs() - Limits.getQueueableJobs();

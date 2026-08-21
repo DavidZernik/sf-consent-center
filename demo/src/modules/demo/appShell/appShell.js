@@ -20,7 +20,7 @@ const UNIFIED_CONTACTS = ['003Kg000001aA01', '003Kg000001aA04'];
  *   1. Routing. NavigationMixin.Navigate emits a window event (see mocks/lightning/navigation.js)
  *      which is translated into a hash route here, so components use the real platform API.
  *   2. Toasts. lightning__showtoast bubbles and is composed, so it surfaces at this boundary and
- *      is handed to the toast host — exactly what the platform does with it.
+ *      is handed to the toast host, exactly what the platform does with it.
  *   3. The source panel, which is demo-only and has no platform equivalent.
  *
  * Hash routing rather than the History API because GitHub Pages serves this from a project
@@ -185,7 +185,7 @@ export default class AppShell extends LightningElement {
     /** Contacts with a Data Cloud profile, for the unified-profile picker. */
     get unifiedOptions() {
         return PEOPLE.filter(([id]) => UNIFIED_CONTACTS.includes(id)).map(([id, name, email]) => ({
-            label: `${name} — ${email}`,
+            label: `${name} (${email})`,
             value: id
         }));
     }

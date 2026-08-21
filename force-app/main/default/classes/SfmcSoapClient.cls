@@ -3,8 +3,8 @@
  *
  * Why SOAP when the rest of this integration is REST: Marketing Cloud's REST API can write rows
  * into a Data Extension, but it cannot set a Subscriber's account-level status on the All
- * Subscribers list. A global unsubscribe — the one that suppresses a person across every send in
- * the account, which is what a legal opt-out actually means — is only exposed through the SOAP
+ * Subscribers list. A global unsubscribe (the one that suppresses a person across every send in
+ * the account, which is what a legal opt-out actually means) is only exposed through the SOAP
  * Subscriber object. Using REST here would produce a consent record that looks correct and does
  * not actually stop the mail.
  *

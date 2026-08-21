@@ -1,7 +1,7 @@
 /**
  * Behavioural tests for the service boundary.
  *
- * These assert outcomes the UI depends on — the audit trail, the no-op skip, the rollback —
+ * These assert outcomes the UI depends on (the audit trail, the no-op skip, the rollback)
  * rather than simply executing lines for coverage.
  */
 @IsTest

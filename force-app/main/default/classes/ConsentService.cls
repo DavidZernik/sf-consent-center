@@ -3,7 +3,7 @@
  *
  * Three rules hold everywhere in this class:
  *   1. Nothing but this layer throws AuraHandledException. Internals throw typed exceptions.
- *   2. Every method is bulk-safe — no SOQL or DML inside a loop, ever.
+ *   2. Every method is bulk-safe, no SOQL or DML inside a loop, ever.
  *   3. DTOs are explicit rather than returning SObjects, so the wire contract is stable even
  *      if the underlying fields are renamed, and so no field the UI shouldn't see leaks out.
  *
@@ -153,12 +153,12 @@ public with sharing class ConsentService {
     /**
      * Applies a set of channel changes for one contact and queues the Marketing Cloud push.
      *
-     * Not cacheable, and deliberately not annotated with (continuation) — the callout is
+     * Not cacheable, and deliberately not annotated with (continuation). The callout is
      * handed to a Queueable so the user gets an immediate response and the sync is retried
      * independently of their session.
      *
      * @param contactId   Contact whose preferences are changing.
-     * @param changesJson JSON array of {channel, optIn} — passed as a string because
+     * @param changesJson JSON array of {channel, optIn}, passed as a string because
      *                    Lightning cannot marshal a List of inner-class instances inbound.
      * @param source      Where the change originated, recorded on the audit trail.
      */

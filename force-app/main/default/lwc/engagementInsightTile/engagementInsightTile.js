@@ -32,7 +32,7 @@ export default class EngagementInsightTile extends LightningElement {
 
     get scoreLabel() {
         const score = this._engagement?.score;
-        return score === null || score === undefined ? '—' : Math.round(score);
+        return score === null || score === undefined ? '-' : Math.round(score);
     }
 
     get band() {

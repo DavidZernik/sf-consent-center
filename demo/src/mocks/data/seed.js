@@ -1,7 +1,7 @@
 /**
  * Seed data for the browser demo.
  *
- * Shapes match the Apex DTOs exactly — ConsentService.ConsentSummary, ConsentDetail, SyncLogView
+ * Shapes match the Apex DTOs exactly: ConsentService.ConsentSummary, ConsentDetail, SyncLogView
  * and DataCloudService.UnifiedProfile. If a field name here disagrees with the Apex wrapper, the
  * demo is lying about the contract, so this file is the one place worth cross-checking against
  * force-app/main/default/classes/ConsentService.cls.
@@ -47,13 +47,13 @@ function buildPreferences() {
         CHANNELS.forEach((channel, channelIndex) => {
             // Draw each attribute independently. Deriving several fields from one roll
             // correlates them, which produced a table where every recently-changed row was also
-            // an opt-out — data that looks broken rather than realistic.
+            // an opt-out, data that looks broken rather than realistic.
             const consentRoll = random();
             const recencyRoll = random();
             const sourceRoll = random();
             const syncRoll = random();
 
-            // Unsubscribed contacts are opted out everywhere — the data has to be internally
+            // Unsubscribed contacts are opted out everywhere. The data has to be internally
             // consistent or the lifecycle path contradicts the toggles.
             const optIn = stage === 'Unsubscribed' ? false : consentRoll > 0.4;
             const syncStatus = syncRoll > 0.88 ? 'Failed' : syncRoll > 0.76 ? 'Pending' : 'Synced';

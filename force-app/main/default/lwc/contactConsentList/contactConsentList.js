@@ -27,7 +27,7 @@ const COLUMNS = [
     {
         // Deliberately not type 'boolean'. The datatable's boolean cell renders a tick when true
         // and NOTHING when false, so an opted-out row is visually identical to a row with no
-        // consent record at all. On a consent screen that ambiguity is unacceptable — the state
+        // consent record at all. On a consent screen that ambiguity is unacceptable. The state
         // has to be stated in words.
         label: 'Consent',
         fieldName: 'consentLabel',
@@ -108,7 +108,7 @@ export default class ContactConsentList extends NavigationMixin(LightningElement
         const value = event.target.value;
         clearTimeout(this._debounceHandle);
         // Handle is retained and cleared in disconnectedCallback, so no timer outlives the
-        // component — which is the leak this rule exists to prevent.
+        // component, which is the leak this rule exists to prevent.
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         this._debounceHandle = setTimeout(() => {
             this.searchTerm = value;

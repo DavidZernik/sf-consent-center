@@ -103,7 +103,7 @@ private class ConsentPreferenceTriggerTest {
         insert pref;
 
         Integer afterInsert = Limits.getQueueableJobs();
-        // Exactly what the sync job itself writes back — this must not loop.
+        // Exactly what the sync job itself writes back. This must not loop.
         update new Consent_Preference__c(Id = pref.Id, Sync_Status__c = 'Synced', Sync_Attempts__c = 1);
         Integer afterStatusWriteback = Limits.getQueueableJobs();
         Test.stopTest();

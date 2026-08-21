@@ -130,7 +130,7 @@ public with sharing class ConsentSelector {
     /**
      * Cross-object search using SOSL.
      *
-     * SOQL cannot answer "find this person anywhere" in one round trip — it would take a query
+     * SOQL cannot answer "find this person anywhere" in one round trip. It would take a query
      * per object plus LIKE scans that ignore the search index. SOSL hits the index once and
      * spans Contact, Lead and the consent audit trail together, which is both faster and the
      * only thing that finds a match on a field the caller did not think to name.

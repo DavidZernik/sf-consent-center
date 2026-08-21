@@ -2,7 +2,7 @@
  * Tests for the Data Cloud HTTP client and its token exchange.
  *
  * The response parser is the part worth testing directly. Data Cloud v2 returns column-oriented
- * data — a metadata map giving each column a position, plus positional value arrays — and
+ * data (a metadata map giving each column a position, plus positional value arrays) and
  * reassembling that into row maps is exactly where an off-by-one silently mislabels every field
  * in the result set.
  */
@@ -213,7 +213,7 @@ private class DataCloudClientTest {
         incomplete.expiresAt = Datetime.now().addMinutes(10);
         Assert.isFalse(
             incomplete.isUsable(),
-            'A token with no instance host is unusable — the query would go to the wrong domain.'
+            'A token with no instance host is unusable. The query would go to the wrong domain.'
         );
     }
 

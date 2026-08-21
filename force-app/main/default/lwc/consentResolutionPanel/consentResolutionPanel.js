@@ -4,7 +4,7 @@ import { LightningElement, api } from 'lwc';
  * Explains how consent resolved across a unified profile.
  *
  * The value here is not the answer, it is the reasoning. "Opted out" on its own invites the
- * question "says who?" — so each channel shows which sources contributed and which rule decided
+ * question "says who?", so each channel shows which sources contributed and which rule decided
  * the outcome. That is the view someone actually needs during a compliance conversation.
  */
 export default class ConsentResolutionPanel extends LightningElement {

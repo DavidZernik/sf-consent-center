@@ -3,7 +3,7 @@
  *
  * Data Cloud does not accept a core Salesforce session directly. The core access token is
  * swapped for a Data Cloud token at /services/a360/token using the CDP external grant, and the
- * response carries its own instance host — Data Cloud lives on a different domain from the
+ * response carries its own instance host. Data Cloud lives on a different domain from the
  * core org, so both halves must be kept together or the query call 404s.
  *
  * Tokens are short lived (typically ~30 minutes) and the exchange is not free, so the same
@@ -21,7 +21,7 @@ public with sharing class DataCloudAuth {
     /** Data Cloud access token plus the tenant host it is valid against. */
     public class Token {
         public String accessToken;
-        /** Host only, no scheme — this is exactly what the API returns. */
+        /** Host only, no scheme. This is exactly what the API returns. */
         public String instanceUrl;
         public Datetime expiresAt;
 

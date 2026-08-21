@@ -7,7 +7,7 @@
  */
 @IsTest
 public class DataCloudCalloutMock implements HttpCalloutMock {
-    /** Query responses, returned in order — one per call, last one repeating. */
+    /** Query responses, returned in order, one per call, last one repeating. */
     private final List<String> queryBodies;
     private final Integer queryStatus;
     private final Integer tokenStatus;
@@ -114,7 +114,7 @@ public class DataCloudCalloutMock implements HttpCalloutMock {
         });
     }
 
-    /** Consent rows where the two sources disagree on Email — the conflict case. */
+    /** Consent rows where the two sources disagree on Email, the conflict case. */
     public static String conflictingConsentResult(Id contactId) {
         return resultOf(new List<Map<String, Object>>{
             new Map<String, Object>{

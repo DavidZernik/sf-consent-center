@@ -10,7 +10,7 @@ const STORAGE_KEY = 'consent-center.intro-collapsed';
  *
  * Expanded on a first visit because the explanation is the point of the page; collapsible
  * because a returning reader who is here to browse code should not have to scroll past it
- * every time. The choice is remembered for the session only — a link shared with someone
+ * every time. The choice is remembered for the session only. A link shared with someone
  * new always opens on the introduction.
  */
 export default class DemoBanner extends LightningElement {

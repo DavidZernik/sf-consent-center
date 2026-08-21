@@ -1,7 +1,7 @@
 <!--
     Proof-of-consent certificate, rendered server side as a PDF.
 
-    This is deliberately Visualforce and not LWC. renderAs="pdf" has no Lightning equivalent —
+    This is deliberately Visualforce and not LWC. renderAs="pdf" has no Lightning equivalent, 
     generating a paginated, printable document that a compliance team can file is still the one
     job Visualforce does better than anything else on the platform. Using LWC here would mean
     shipping a client-side PDF library to do worse.

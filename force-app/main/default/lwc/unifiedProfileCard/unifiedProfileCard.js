@@ -4,7 +4,7 @@ import getUnifiedProfile from '@salesforce/apex/DataCloudService.getUnifiedProfi
 /**
  * Data Cloud unified profile for one CRM contact.
  *
- * Shows the identity graph — every source record that resolved into this person — alongside the
+ * Shows the identity graph (every source record that resolved into this person) alongside the
  * resolved consent position and the engagement Calculated Insight. The point of the component is
  * to make visible something that is otherwise invisible in the CRM UI: that the record you are
  * looking at is one of several, and that consent is answered across all of them.
@@ -46,7 +46,7 @@ export default class UnifiedProfileCard extends LightningElement {
             key: source.sourceRecordId,
             confidenceLabel:
                 source.matchConfidence === null || source.matchConfidence === undefined
-                    ? '—'
+                    ? '-'
                     : `${Math.round(source.matchConfidence * 100)}%`,
             // An exact match and a probabilistic one are very different things to an auditor.
             isExactMatch: source.matchConfidence >= 1,

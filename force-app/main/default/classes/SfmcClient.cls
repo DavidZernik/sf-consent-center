@@ -84,7 +84,7 @@ public with sharing class SfmcClient {
         }
 
         if (status == 401) {
-            // Token was rejected — drop it so the next attempt authenticates cleanly.
+            // Token was rejected, drop it so the next attempt authenticates cleanly.
             SfmcAuth.invalidate();
             return failure(status, 'Access token rejected by Marketing Cloud.', true, elapsed);
         }

@@ -2,7 +2,7 @@
  * Pre-build smoke check for the demo data layer.
  *
  * Motivated by a real failure: a stale variable reference in seed.js threw at module scope. The
- * bundle built without complaint — Rollup has no reason to object to valid syntax — and the app
+ * bundle built without complaint (Rollup has no reason to object to valid syntax) and the app
  * then died on boot with a blank page. A green build that ships a blank page is the worst kind
  * of green, so the mocks are imported and exercised here before anything is bundled.
  */

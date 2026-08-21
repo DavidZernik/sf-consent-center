@@ -35,7 +35,7 @@ export function respond(producer) {
         setTimeout(() => {
             try {
                 // Structured-clone the payload so a component mutating its own copy cannot
-                // corrupt the store — the real wire boundary serialises, so this matches.
+                // corrupt the store. The real wire boundary serialises, so this matches.
                 resolve(JSON.parse(JSON.stringify(producer())));
             } catch (error) {
                 reject(apexError(error.message));

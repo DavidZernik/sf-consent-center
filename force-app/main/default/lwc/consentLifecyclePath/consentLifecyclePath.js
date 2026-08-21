@@ -19,7 +19,7 @@ export default class ConsentLifecyclePath extends LightningElement {
         return STAGES.includes(this.stage) ? this.stage : STAGES[0];
     }
 
-    /** Unsubscribed is a terminal, undesirable state — path renders it as an error. */
+    /** Unsubscribed is a terminal, undesirable state. The path renders it as an error. */
     get hasError() {
         return this.stage === 'Unsubscribed';
     }

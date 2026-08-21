@@ -40,7 +40,7 @@ public class TestDataFactory {
         );
     }
 
-    /** One preference per channel for every contact supplied — the standard bulk fixture. */
+    /** One preference per channel for every contact supplied, the standard bulk fixture. */
     public static List<Consent_Preference__c> createPreferencesForAllChannels(List<Contact> contacts, Boolean optIn) {
         List<Consent_Preference__c> prefs = new List<Consent_Preference__c>();
         for (Contact c : contacts) {

@@ -8,8 +8,8 @@
  *   - A static bypass exists so bulk migrations (the Informatica staging load, for one) can
  *     suppress downstream side effects and re-run them deliberately afterwards.
  *   - after-update only enqueues a Marketing Cloud push when a field that Marketing Cloud
- *     actually cares about changed. Without that check, every touch of the record — including
- *     the sync job writing back its own status — would re-queue another sync and loop forever.
+ *     actually cares about changed. Without that check, every touch of the record (including
+ *     the sync job writing back its own status) would re-queue another sync and loop forever.
  */
 public with sharing class ConsentPreferenceTriggerHandler {
     /** Set by data loads that will re-sync explicitly afterwards. */

@@ -3,7 +3,7 @@
  *
  * This is the real-time half of the integration pattern; ConsentStagingBatch is the batch half.
  * An external preference centre, a mobile app or an iPaaS flow POSTs here and gets a synchronous
- * answer. Anything high-volume should land in the staging object instead — a REST call per row
+ * answer. Anything high-volume should land in the staging object instead, a REST call per row
  * is the wrong shape for a million-row reconciliation.
  *
  *   POST /services/apexrest/consent/v1/

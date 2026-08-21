@@ -1,7 +1,7 @@
 import { store, respond, apexError } from './apexRuntime.js';
 import { CHANNELS } from '../data/seed.js';
 
-/** Mocks ConsentService.getConsentDetail — preferences plus audit trail for one contact. */
+/** Mocks ConsentService.getConsentDetail: preferences plus audit trail for one contact. */
 export default function getConsentDetail({ contactId } = {}) {
     return respond(() => {
         if (!contactId) {

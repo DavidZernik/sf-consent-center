@@ -1,5 +1,5 @@
 /**
- * Tests for the SOQL boundary — row caps, ordering, and the empty-input short circuit that
+ * Tests for the SOQL boundary: row caps, ordering, and the empty-input short circuit that
  * keeps callers from burning a query on nothing.
  */
 @IsTest

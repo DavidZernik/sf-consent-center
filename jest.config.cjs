@@ -1,7 +1,7 @@
 /**
  * Jest configuration for the Lightning Web Components.
  *
- * Built on @salesforce/sfdx-lwc-jest — the same runner an org-connected SFDX project uses. It
+ * Built on @salesforce/sfdx-lwc-jest, the same runner an org-connected SFDX project uses. It
  * stubs every lightning/* base component automatically, which is why the component source needs
  * no test-specific branching.
  *

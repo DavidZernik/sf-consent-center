@@ -139,7 +139,7 @@ export default class SfmcSyncConsole extends LightningElement {
             this.rows = data.map((row) => ({
                 ...row,
                 statusClass: this.statusClass(row.status),
-                durationLabel: row.durationMs === null || row.durationMs === undefined ? '—' : `${row.durationMs} ms`
+                durationLabel: row.durationMs === null || row.durationMs === undefined ? '-' : `${row.durationMs} ms`
             }));
         } catch (error) {
             this.rows = [];
