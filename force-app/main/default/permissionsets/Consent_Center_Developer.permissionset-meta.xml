@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Consent Center Developer</label>
+    <description>Adds Data Cloud query diagnostics on top of Consent Center User. Separate from the user permission set on purpose: seeing the query text is a developer affordance, and bundling it with ordinary access would hand the Data Cloud schema to everyone who can open the console.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>View_Data_Cloud_Diagnostics</name>
+    </customPermissions>
+</PermissionSet>

@@ -58,9 +58,13 @@ export default class UnifiedProfileCard extends LightningElement {
     }
 
     get queryTimingLabel() {
-        return this.profile?.queryDurationMs === undefined
-            ? ''
-            : `3 Data Cloud queries · ${this.profile.queryDurationMs} ms`;
+        if (this.profile?.queryDurationMs === undefined) {
+            return '';
+        }
+        // Counted from the trace rather than hardcoded: a profile that short-circuits runs
+        // fewer than three, and a label that always says three is just decoration.
+        const n = this.profile.queries?.length ?? 0;
+        return `${n} Data Cloud ${n === 1 ? 'query' : 'queries'} · ${this.profile.queryDurationMs} ms`;
     }
 
     async loadProfile() {

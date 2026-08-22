@@ -119,6 +119,56 @@ private class DataCloudServiceTest {
         Assert.isTrue(profile.queryDurationMs >= 0, 'Query timing should be reported to the UI.');
     }
 
+    /* -------------------------------------------------------- Query trace and gating */
+
+    private static DataCloudService.UnifiedProfile profileWithTrace(Contact contact) {
+        Test.setMock(HttpCalloutMock.class, new DataCloudCalloutMock(new List<String>{
+            DataCloudCalloutMock.identityGraphResult(contact.Id),
+            DataCloudCalloutMock.conflictingConsentResult(contact.Id),
+            DataCloudCalloutMock.engagementInsightResult()
+        }));
+        return DataCloudService.getUnifiedProfile(contact.Id);
+    }
+
+    @IsTest
+    static void queryTrace_describesEveryQueryItRan() {
+        Contact contact = TestDataFactory.createContacts(1)[0];
+        DataCloudService.diagnosticsAllowed = true;
+
+        Test.startTest();
+        DataCloudService.UnifiedProfile profile = profileWithTrace(contact);
+        Test.stopTest();
+
+        Assert.areEqual(3, profile.queries.size(), 'Three queries ran, so three should be reported.');
+        Set<String> dmos = new Set<String>();
+        for (DataCloudService.QueryTrace t : profile.queries) {
+            Assert.isNotNull(t.purpose, 'Every trace entry needs a purpose the UI can label.');
+            Assert.isTrue(t.rowCount >= 0, 'Row count is what Data Cloud bills on; it must be reported.');
+            Assert.isTrue(t.sql.contains(t.dmo), 'A trace must name the DMO its statement queries.');
+            dmos.add(t.dmo);
+        }
+        Assert.areEqual(3, dmos.size(), 'The three queries should hit three different subject areas.');
+    }
+
+    @IsTest
+    static void queryTrace_withholdsSqlWithoutTheDiagnosticsPermission() {
+        // Query text names every DMO and field the org models. Returning it to a console user
+        // who does not hold the permission would leak the Data Cloud schema to the browser.
+        Contact contact = TestDataFactory.createContacts(1)[0];
+        DataCloudService.diagnosticsAllowed = false;
+
+        Test.startTest();
+        DataCloudService.UnifiedProfile profile = profileWithTrace(contact);
+        Test.stopTest();
+
+        Assert.areEqual(3, profile.queries.size(), 'Withholding SQL must not remove the trace entries.');
+        for (DataCloudService.QueryTrace t : profile.queries) {
+            Assert.isNull(t.sql, 'SQL must be withheld without the diagnostics permission.');
+            Assert.isNotNull(t.dmo, 'The DMO name and counts stay; only the statement is withheld.');
+            Assert.isTrue(t.rowCount >= 0, 'Row counts are not sensitive and should still be reported.');
+        }
+    }
+
     @IsTest
     static void getUnifiedProfile_deduplicatesSourcesFannedOutByTheEmailJoin() {
         Contact contact = TestDataFactory.createContacts(1)[0];

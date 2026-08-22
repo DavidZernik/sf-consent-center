@@ -7,6 +7,7 @@
  * of green, so the mocks are imported and exercised here before anything is bundled.
  */
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 
 const failures = [];
 
@@ -145,6 +146,46 @@ await check('getUnifiedProfile explains a missing profile', async () => {
         (error) => String(error?.body?.message ?? '').includes('Identity Resolution'),
         'expected a message pointing at Identity Resolution'
     );
+});
+
+await check('the query trace mirrors what DataCloudService actually runs', async () => {
+    const { DMO } = await import('../demo/src/mocks/apex/getUnifiedProfile.js');
+    const apex = await readFile(
+        new URL('../force-app/main/default/classes/DataCloudService.cls', import.meta.url),
+        'utf8'
+    );
+    // The demo shows this SQL to visitors as evidence. If the mock names a DMO the Apex does
+    // not query, the demo is misrepresenting the code it claims to demonstrate.
+    for (const name of Object.values(DMO)) {
+        assert.ok(apex.includes(name), `${name} is in the mock but not in DataCloudService.cls`);
+    }
+
+    const profile = await getUnifiedProfile({ contactId: '003Kg000001aA01' });
+    assert.equal(profile.queries.length, 3, 'expected three Data Cloud queries');
+    const summed = profile.queries.reduce((t, q) => t + q.durationMs, 0);
+    assert.equal(summed, profile.queryDurationMs, 'per-query timings must add up to the total');
+    for (const q of profile.queries) {
+        assert.ok(q.sql.includes(q.dmo), `${q.purpose} does not query the DMO it names`);
+        assert.ok(q.purpose && q.rowCount !== undefined, 'a trace entry is incomplete');
+    }
+});
+
+await check('every LWC bundle is registered in lwc.config.json', async () => {
+    // sfdx-lwc-jest resolves c/* from force-app automatically; the rollup build does not, it
+    // uses the explicit map below. A component can therefore pass its own tests, build without
+    // a warning, and then fail at runtime with "Failed to resolve module specifier". That is
+    // exactly what happened when dataCloudQueryPanel was added, and it ships a blank page.
+    const root = new URL('../', import.meta.url);
+    const config = JSON.parse(await readFile(new URL('lwc.config.json', root), 'utf8'));
+    const mapped = new Set(
+        config.modules.filter((m) => m.name?.startsWith('c/')).map((m) => m.name.slice(2))
+    );
+    const { readdir } = await import('node:fs/promises');
+    const bundles = (await readdir(new URL('force-app/main/default/lwc/', root), { withFileTypes: true }))
+        .filter((e) => e.isDirectory())
+        .map((e) => e.name);
+    const missing = bundles.filter((b) => !mapped.has(b));
+    assert.deepEqual(missing, [], `not mapped in lwc.config.json: ${missing.join(', ')}`);
 });
 
 if (failures.length > 0) {

@@ -19,6 +19,7 @@ public with sharing class DataCloudService {
     private static final String CONSENT_DMO = 'ssot__ContactPointConsent__dlm';
     private static final String EMAIL_DMO = 'ssot__ContactPointEmail__dlm';
     private static final String ENGAGEMENT_CI = 'Engagement_Score__cio';
+    private static final String DIAGNOSTICS_PERMISSION = 'View_Data_Cloud_Diagnostics';
 
     private static final Integer DEFAULT_ROWS = 50;
     private static final Integer MAX_ROWS = 200;
@@ -62,6 +63,21 @@ public with sharing class DataCloudService {
         @AuraEnabled public Integer clicks90d;
     }
 
+    /**
+     * One Data Cloud query, surfaced so the console can show what was actually run.
+     *
+     * The statement itself is withheld unless the running user holds the diagnostics custom
+     * permission. Query text names every DMO and field the org models, which is schema detail
+     * a general console user has no reason to receive.
+     */
+    public class QueryTrace {
+        @AuraEnabled public String purpose;
+        @AuraEnabled public String dmo;
+        @AuraEnabled public Integer rowCount;
+        @AuraEnabled public Long durationMs;
+        @AuraEnabled public String sql;
+    }
+
     public class UnifiedProfile {
         @AuraEnabled public String unifiedId;
         @AuraEnabled public String name;
@@ -71,6 +87,7 @@ public with sharing class DataCloudService {
         @AuraEnabled public List<ResolvedChannel> resolvedConsent;
         @AuraEnabled public EngagementInsight engagement;
         @AuraEnabled public Long queryDurationMs;
+        @AuraEnabled public List<QueryTrace> queries = new List<QueryTrace>();
     }
 
     /* ------------------------------------------------------------------ Entry points */
@@ -108,6 +125,7 @@ public with sharing class DataCloudService {
 
             DataCloudClient.QueryResult linkResult = client.query(linkSql);
             totalMs += linkResult.durationMs;
+            QueryTrace linkTrace = trace('Identity graph', IDENTITY_LINK_DMO, linkSql, linkResult);
 
             if (linkResult.rows.isEmpty()) {
                 throw new ConsentCenterException(
@@ -116,6 +134,7 @@ public with sharing class DataCloudService {
             }
 
             UnifiedProfile profile = buildProfileShell(linkResult.rows);
+            profile.queries.add(linkTrace);
 
             // 2. Consent rows for every source record in the graph.
             List<String> sourceIds = new List<String>();
@@ -131,6 +150,7 @@ public with sharing class DataCloudService {
 
             DataCloudClient.QueryResult consentResult = client.query(consentSql);
             totalMs += consentResult.durationMs;
+            profile.queries.add(trace('Consent by contact point', CONSENT_DMO, consentSql, consentResult));
             profile.sourceConsents = mapSourceConsents(consentResult.rows);
             profile.resolvedConsent = resolveConsent(profile.sourceConsents);
 
@@ -143,6 +163,7 @@ public with sharing class DataCloudService {
 
             DataCloudClient.QueryResult insightResult = client.query(insightSql);
             totalMs += insightResult.durationMs;
+            profile.queries.add(trace('Engagement Calculated Insight', ENGAGEMENT_CI, insightSql, insightResult));
             profile.engagement = mapEngagement(insightResult.rows);
 
             profile.queryDurationMs = totalMs;
@@ -150,6 +171,29 @@ public with sharing class DataCloudService {
         } catch (Exception e) {
             throw asUiError(e, 'Unable to load the unified profile.');
         }
+    }
+
+    /* --------------------------------------------------------------- Query tracing */
+
+    /** Cached per transaction: the permission cannot change mid-request. */
+    @TestVisible
+    private static Boolean diagnosticsAllowed;
+
+    private static Boolean canSeeSql() {
+        if (diagnosticsAllowed == null) {
+            diagnosticsAllowed = FeatureManagement.checkPermission(DIAGNOSTICS_PERMISSION);
+        }
+        return diagnosticsAllowed;
+    }
+
+    private static QueryTrace trace(String purpose, String dmo, String sql, DataCloudClient.QueryResult result) {
+        QueryTrace t = new QueryTrace();
+        t.purpose = purpose;
+        t.dmo = dmo;
+        t.rowCount = result.rowCount;
+        t.durationMs = result.durationMs;
+        t.sql = canSeeSql() ? sql : null;
+        return t;
     }
 
     /* --------------------------------------------------------------- Domain logic */

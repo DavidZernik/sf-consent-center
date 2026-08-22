@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>View Data Cloud Diagnostics</label>
+    <description>Allows the Consent Center to return the text of the Data Cloud queries it runs. Query text names every DMO and field the org models, so it is withheld from users who do not hold this permission. Intended for developers and administrators, not general console users.</description>
+    <isLicensed>false</isLicensed>
+</CustomPermission>

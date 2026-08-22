@@ -1,0 +1,50 @@
+<template>
+    <template lwc:if={hasQueries}>
+        <div class="slds-box slds-box_x-small slds-var-m-top_small panel">
+            <div class="slds-grid slds-grid_vertical-align-center slds-wrap">
+                <div class="slds-col slds-grow">
+                    <span class="slds-text-title_caps">Data Cloud queries</span>
+                    <span class="slds-text-body_small slds-text-color_weak slds-var-m-left_x-small">{summary}</span>
+                </div>
+                <div class="slds-col">
+                    <button class="slds-button slds-button_neutral slds-button_small" onclick={handleToggle}>
+                        {toggleLabel}
+                    </button>
+                </div>
+            </div>
+
+            <template lwc:if={expanded}>
+                <ul class="slds-var-m-top_x-small">
+                    <template for:each={rows} for:item="q">
+                        <li key={q.key} class="query slds-var-m-bottom_x-small">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-wrap">
+                                <div class="slds-col slds-grow">
+                                    <span class="slds-text-body_small purpose">{q.purpose}</span>
+                                    <code class="dmo slds-var-m-left_x-small">{q.dmo}</code>
+                                </div>
+                                <div class="slds-col">
+                                    <span class="slds-text-body_small slds-text-color_weak">{q.meta}</span>
+                                </div>
+                            </div>
+                            <template lwc:if={q.hasSql}>
+                                <pre class="sql">{q.sql}</pre>
+                            </template>
+                            <template lwc:else>
+                                <p class="slds-text-body_small slds-text-color_weak slds-var-m-top_xx-small">
+                                    Query text hidden. It is returned only to users holding the
+                                    View_Data_Cloud_Diagnostics permission.
+                                </p>
+                            </template>
+                        </li>
+                    </template>
+                </ul>
+
+                <p class="slds-text-body_small slds-text-color_weak note">
+                    Three targeted queries rather than one wide join. Data Cloud bills on data
+                    processed, so a join across the identity graph, the consent DMO and the
+                    Calculated Insight costs more than querying each one directly.
+                </p>
+            </template>
+        </div>
+    </template>
+</template>

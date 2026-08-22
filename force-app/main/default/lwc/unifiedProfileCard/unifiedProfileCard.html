@@ -56,6 +56,10 @@
                     resolved={profile.resolvedConsent}
                     sources={profile.sourceConsents}
                 ></c-consent-resolution-panel>
+                <c-data-cloud-query-panel
+                    queries={profile.queries}
+                    total-duration-ms={profile.queryDurationMs}
+                ></c-data-cloud-query-panel>
             </div>
         </template>
     </lightning-card>

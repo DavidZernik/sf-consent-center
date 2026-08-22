@@ -226,17 +226,23 @@ export const CAPABILITIES = [
         id: 'data-cloud',
         group: 'Data Cloud',
         name: 'Data Cloud',
-        summary: 'Query API v2, DMOs, identity resolution and a Calculated Insight.',
+        summary: 'Query API v2, DMOs, identity resolution, a Calculated Insight, and the query trace.',
         detail:
             'Consent has to be answered about a person, not about whichever CRM record you opened. This ' +
             'queries the identity graph, the consent DMOs and an engagement Calculated Insight, then ' +
             'resolves consent across every source with most-restrictive-wins. Three targeted queries ' +
             'rather than one wide join, because Data Cloud charges by data processed. The v2 response is ' +
-            'column-oriented, so the client zips metadata positions back into named row maps.',
+            'column-oriented, so the client zips metadata positions back into named row maps. The Unified ' +
+            'Profile tab shows the statements themselves: an unverifiable "3 queries" badge is worth less ' +
+            'than the SQL. The statement text is gated behind a custom permission, because it names every ' +
+            'DMO and field the org models and a console user has no reason to receive that.',
         paths: [
             'force-app/main/default/classes/DataCloudService.cls',
             'force-app/main/default/classes/DataCloudClient.cls',
-            'force-app/main/default/classes/DataCloudServiceTest.cls'
+            'force-app/main/default/classes/DataCloudServiceTest.cls',
+            'force-app/main/default/lwc/dataCloudQueryPanel/dataCloudQueryPanel.js',
+            'force-app/main/default/customPermissions/View_Data_Cloud_Diagnostics.customPermission-meta.xml',
+            'force-app/main/default/permissionsets/Consent_Center_Developer.permissionset-meta.xml'
         ],
         route: '#/unified'
     },

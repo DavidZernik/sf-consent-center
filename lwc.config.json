@@ -40,6 +40,10 @@
       "path": "force-app/main/default/lwc/engagementInsightTile/engagementInsightTile.js"
     },
     {
+      "name": "c/dataCloudQueryPanel",
+      "path": "force-app/main/default/lwc/dataCloudQueryPanel/dataCloudQueryPanel.js"
+    },
+    {
       "name": "@salesforce/apex/ConsentService.getConsentSummaries",
       "path": "demo/src/mocks/apex/getConsentSummaries.js"
     },
