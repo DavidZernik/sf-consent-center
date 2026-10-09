@@ -16,6 +16,30 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  java:
+    name: Java backend (REST contract and consent policy tests)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Verify Java fixtures match browser fixtures
+        run: |
+          node scripts/export-java-seed.mjs
+          git diff --exit-code backend/src/main/resources/seed.json
+      - name: Test and package Java service
+        # Bundle the UI too so this job verifies the same runnable jar described in the README.
+        run: |
+          npm ci
+          npm run build
+          mvn -B -f backend/pom.xml verify
+
   lwc:
     name: Components (lint, unit tests, build)
     runs-on: ubuntu-latest
@@ -32,6 +56,9 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      - name: Java browser adapter
+        run: npm run test:java-adapter
 
       - name: Demo data smoke checks
         # Catches a module-scope error that would build cleanly and then ship a blank page.

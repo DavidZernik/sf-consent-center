@@ -47,6 +47,7 @@ function span(className, text) {
 }
 
 export function languageFor(path) {
+    if (/\.java$/i.test(path)) return 'java';
     if (/\.(cls|trigger|apex)$/i.test(path)) return 'apex';
     if (/\.(js|mjs)$/i.test(path)) return 'javascript';
     if (/\.(html|page|cmp)$/i.test(path)) return 'markup';
@@ -65,8 +66,8 @@ export function highlight(source, language) {
 }
 
 function highlightCode(source, language) {
-    const keywords = new Set(language === 'apex' ? APEX_KEYWORDS : JS_KEYWORDS);
-    const types = new Set(language === 'apex' ? APEX_TYPES : []);
+    const keywords = new Set(language === 'java' ? [...APEX_KEYWORDS, 'package', 'import', 'record', 'synchronized', 'throws', 'var', 'long', 'int', 'boolean'] : language === 'apex' ? APEX_KEYWORDS : JS_KEYWORDS);
+    const types = new Set(language === 'apex' || language === 'java' ? APEX_TYPES : []);
 
     // Order matters: comments and strings must be claimed before anything can match inside them.
     const pattern = /(\/\*[\s\S]*?\*\/|\/\/[^\n]*)|('(?:\\.|[^'\\])*'|"(?:\\.|[^"\\])*"|`(?:\\.|[^`\\])*`)|(@[A-Za-z_][\w]*)|(\b\d+(?:\.\d+)?\b)|(\b[A-Za-z_][\w]*\b)/g;

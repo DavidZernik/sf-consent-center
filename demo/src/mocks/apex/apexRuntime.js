@@ -1,3 +1,5 @@
+import { isJavaBackend, javaRequest } from './javaBackend.js';
+
 /**
  * Shared runtime for the mocked Apex methods.
  *
@@ -30,7 +32,8 @@ function latency() {
 }
 
 /** Resolves like a real imperative Apex call: async, after a realistic delay. */
-export function respond(producer) {
+export function respond(producer, method, params) {
+    if (method && isJavaBackend()) return javaRequest(method, params);
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             try {

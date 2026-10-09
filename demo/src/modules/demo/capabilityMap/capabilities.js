@@ -12,6 +12,19 @@
 
 export const CAPABILITIES = [
     {
+        id: 'java',
+        group: 'Integrations',
+        name: 'Java / Spring Boot REST backend',
+        summary: 'Java 21 service for consent reads, preference updates, audit history, and consent resolution.',
+        detail: 'Run the Spring Boot jar locally and open /?backend=java to use the same Lightning UI against real Java REST endpoints. The service validates complete update batches before applying changes, skips no-op updates, writes audit history, and resolves consent with most-restrictive-wins. Fictional data lives in memory; sync delivery is simulated. The GitHub Pages demo uses browser fixtures.',
+        paths: [
+            'backend/src/main/java/com/blueinbox/consent/ConsentController.java',
+            'backend/src/main/java/com/blueinbox/consent/ConsentService.java',
+            'backend/pom.xml'
+        ],
+        route: '#/records'
+    },
+    {
         id: 'apex',
         group: 'Core development',
         name: 'Apex',

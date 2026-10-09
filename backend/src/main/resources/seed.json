@@ -1,0 +1,1198 @@
+{
+  "preferences": [
+    {
+      "preferenceId": "a0AKg0000000000",
+      "contactId": "003Kg000001aA01",
+      "contactName": "Dana Reyes",
+      "email": "dana.reyes@northwind.example",
+      "channel": "Email",
+      "optIn": false,
+      "consentSource": "Mobile App",
+      "lifecycleStage": "Engaged",
+      "lastChanged": "2026-07-25T13:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000001",
+      "contactId": "003Kg000001aA01",
+      "contactName": "Dana Reyes",
+      "email": "dana.reyes@northwind.example",
+      "channel": "SMS",
+      "optIn": false,
+      "consentSource": "REST API",
+      "lifecycleStage": "Engaged",
+      "lastChanged": "2026-07-24T06:30:00.000Z",
+      "syncStatus": "Failed"
+    },
+    {
+      "preferenceId": "a0AKg0000000002",
+      "contactId": "003Kg000001aA01",
+      "contactName": "Dana Reyes",
+      "email": "dana.reyes@northwind.example",
+      "channel": "Push",
+      "optIn": true,
+      "consentSource": "Preference Centre",
+      "lifecycleStage": "Engaged",
+      "lastChanged": "2026-08-19T08:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000003",
+      "contactId": "003Kg000001aA01",
+      "contactName": "Dana Reyes",
+      "email": "dana.reyes@northwind.example",
+      "channel": "Direct Mail",
+      "optIn": false,
+      "consentSource": "Service Console",
+      "lifecycleStage": "Engaged",
+      "lastChanged": "2026-07-24T02:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000004",
+      "contactId": "003Kg000001aA02",
+      "contactName": "Marcus Bello",
+      "email": "m.bello@northwind.example",
+      "channel": "Email",
+      "optIn": false,
+      "consentSource": "Service Console",
+      "lifecycleStage": "Subscriber",
+      "lastChanged": "2026-08-13T04:30:00.000Z",
+      "syncStatus": "Failed"
+    },
+    {
+      "preferenceId": "a0AKg0000000005",
+      "contactId": "003Kg000001aA02",
+      "contactName": "Marcus Bello",
+      "email": "m.bello@northwind.example",
+      "channel": "SMS",
+      "optIn": true,
+      "consentSource": "Bulk Load",
+      "lifecycleStage": "Subscriber",
+      "lastChanged": "2026-08-18T04:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000006",
+      "contactId": "003Kg000001aA02",
+      "contactName": "Marcus Bello",
+      "email": "m.bello@northwind.example",
+      "channel": "Push",
+      "optIn": true,
+      "consentSource": "Preference Centre",
+      "lifecycleStage": "Subscriber",
+      "lastChanged": "2026-07-27T00:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000007",
+      "contactId": "003Kg000001aA02",
+      "contactName": "Marcus Bello",
+      "email": "m.bello@northwind.example",
+      "channel": "Direct Mail",
+      "optIn": true,
+      "consentSource": "Service Console",
+      "lifecycleStage": "Subscriber",
+      "lastChanged": "2026-07-19T10:30:00.000Z",
+      "syncStatus": "Pending"
+    },
+    {
+      "preferenceId": "a0AKg0000000008",
+      "contactId": "003Kg000001aA03",
+      "contactName": "Priya Raman",
+      "email": "priya.raman@lakeside.example",
+      "channel": "Email",
+      "optIn": true,
+      "consentSource": "Service Console",
+      "lifecycleStage": "Engaged",
+      "lastChanged": "2026-08-13T05:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000009",
+      "contactId": "003Kg000001aA03",
+      "contactName": "Priya Raman",
+      "email": "priya.raman@lakeside.example",
+      "channel": "SMS",
+      "optIn": true,
+      "consentSource": "Preference Centre",
+      "lifecycleStage": "Engaged",
+      "lastChanged": "2026-07-20T03:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000010",
+      "contactId": "003Kg000001aA03",
+      "contactName": "Priya Raman",
+      "email": "priya.raman@lakeside.example",
+      "channel": "Push",
+      "optIn": true,
+      "consentSource": "REST API",
+      "lifecycleStage": "Engaged",
+      "lastChanged": "2026-08-04T08:30:00.000Z",
+      "syncStatus": "Pending"
+    },
+    {
+      "preferenceId": "a0AKg0000000011",
+      "contactId": "003Kg000001aA03",
+      "contactName": "Priya Raman",
+      "email": "priya.raman@lakeside.example",
+      "channel": "Direct Mail",
+      "optIn": true,
+      "consentSource": "REST API",
+      "lifecycleStage": "Engaged",
+      "lastChanged": "2026-08-12T11:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000012",
+      "contactId": "003Kg000001aA04",
+      "contactName": "Tomás Iglesias",
+      "email": "tomas.i@lakeside.example",
+      "channel": "Email",
+      "optIn": false,
+      "consentSource": "Preference Centre",
+      "lifecycleStage": "Lapsed",
+      "lastChanged": "2026-07-22T07:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000013",
+      "contactId": "003Kg000001aA04",
+      "contactName": "Tomás Iglesias",
+      "email": "tomas.i@lakeside.example",
+      "channel": "SMS",
+      "optIn": false,
+      "consentSource": "Service Console",
+      "lifecycleStage": "Lapsed",
+      "lastChanged": "2026-08-06T21:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000014",
+      "contactId": "003Kg000001aA04",
+      "contactName": "Tomás Iglesias",
+      "email": "tomas.i@lakeside.example",
+      "channel": "Push",
+      "optIn": true,
+      "consentSource": "Service Console",
+      "lifecycleStage": "Lapsed",
+      "lastChanged": "2026-07-25T06:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000015",
+      "contactId": "003Kg000001aA04",
+      "contactName": "Tomás Iglesias",
+      "email": "tomas.i@lakeside.example",
+      "channel": "Direct Mail",
+      "optIn": true,
+      "consentSource": "Service Console",
+      "lifecycleStage": "Lapsed",
+      "lastChanged": "2026-08-06T00:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000016",
+      "contactId": "003Kg000001aA05",
+      "contactName": "Aisha Okonkwo",
+      "email": "aisha.o@brightpath.example",
+      "channel": "Email",
+      "optIn": true,
+      "consentSource": "Mobile App",
+      "lifecycleStage": "Subscriber",
+      "lastChanged": "2026-08-14T18:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000017",
+      "contactId": "003Kg000001aA05",
+      "contactName": "Aisha Okonkwo",
+      "email": "aisha.o@brightpath.example",
+      "channel": "SMS",
+      "optIn": true,
+      "consentSource": "Support Case",
+      "lifecycleStage": "Subscriber",
+      "lastChanged": "2026-08-15T20:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000018",
+      "contactId": "003Kg000001aA05",
+      "contactName": "Aisha Okonkwo",
+      "email": "aisha.o@brightpath.example",
+      "channel": "Push",
+      "optIn": false,
+      "consentSource": "Mobile App",
+      "lifecycleStage": "Subscriber",
+      "lastChanged": "2026-07-28T18:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000019",
+      "contactId": "003Kg000001aA05",
+      "contactName": "Aisha Okonkwo",
+      "email": "aisha.o@brightpath.example",
+      "channel": "Direct Mail",
+      "optIn": true,
+      "consentSource": "REST API",
+      "lifecycleStage": "Subscriber",
+      "lastChanged": "2026-07-25T11:30:00.000Z",
+      "syncStatus": "Failed"
+    },
+    {
+      "preferenceId": "a0AKg0000000020",
+      "contactId": "003Kg000001aA06",
+      "contactName": "Jonas Lindqvist",
+      "email": "jonas.l@brightpath.example",
+      "channel": "Email",
+      "optIn": true,
+      "consentSource": "Preference Centre",
+      "lifecycleStage": "Prospect",
+      "lastChanged": "2026-08-20T06:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000021",
+      "contactId": "003Kg000001aA06",
+      "contactName": "Jonas Lindqvist",
+      "email": "jonas.l@brightpath.example",
+      "channel": "SMS",
+      "optIn": false,
+      "consentSource": "Mobile App",
+      "lifecycleStage": "Prospect",
+      "lastChanged": "2026-08-21T11:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000022",
+      "contactId": "003Kg000001aA06",
+      "contactName": "Jonas Lindqvist",
+      "email": "jonas.l@brightpath.example",
+      "channel": "Push",
+      "optIn": false,
+      "consentSource": "REST API",
+      "lifecycleStage": "Prospect",
+      "lastChanged": "2026-08-06T01:30:00.000Z",
+      "syncStatus": "Failed"
+    },
+    {
+      "preferenceId": "a0AKg0000000023",
+      "contactId": "003Kg000001aA06",
+      "contactName": "Jonas Lindqvist",
+      "email": "jonas.l@brightpath.example",
+      "channel": "Direct Mail",
+      "optIn": false,
+      "consentSource": "Support Case",
+      "lifecycleStage": "Prospect",
+      "lastChanged": "2026-07-22T15:30:00.000Z",
+      "syncStatus": "Pending"
+    },
+    {
+      "preferenceId": "a0AKg0000000024",
+      "contactId": "003Kg000001aA07",
+      "contactName": "Wen Zhao",
+      "email": "wen.zhao@northwind.example",
+      "channel": "Email",
+      "optIn": true,
+      "consentSource": "Service Console",
+      "lifecycleStage": "Engaged",
+      "lastChanged": "2026-08-01T10:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000025",
+      "contactId": "003Kg000001aA07",
+      "contactName": "Wen Zhao",
+      "email": "wen.zhao@northwind.example",
+      "channel": "SMS",
+      "optIn": true,
+      "consentSource": "Support Case",
+      "lifecycleStage": "Engaged",
+      "lastChanged": "2026-07-19T22:30:00.000Z",
+      "syncStatus": "Failed"
+    },
+    {
+      "preferenceId": "a0AKg0000000026",
+      "contactId": "003Kg000001aA07",
+      "contactName": "Wen Zhao",
+      "email": "wen.zhao@northwind.example",
+      "channel": "Push",
+      "optIn": true,
+      "consentSource": "Mobile App",
+      "lifecycleStage": "Engaged",
+      "lastChanged": "2026-07-24T22:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000027",
+      "contactId": "003Kg000001aA07",
+      "contactName": "Wen Zhao",
+      "email": "wen.zhao@northwind.example",
+      "channel": "Direct Mail",
+      "optIn": false,
+      "consentSource": "Mobile App",
+      "lifecycleStage": "Engaged",
+      "lastChanged": "2026-08-07T03:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000028",
+      "contactId": "003Kg000001aA08",
+      "contactName": "Rosa Delgado",
+      "email": "rosa.d@lakeside.example",
+      "channel": "Email",
+      "optIn": false,
+      "consentSource": "Service Console",
+      "lifecycleStage": "Unsubscribed",
+      "lastChanged": "2026-07-21T04:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000029",
+      "contactId": "003Kg000001aA08",
+      "contactName": "Rosa Delgado",
+      "email": "rosa.d@lakeside.example",
+      "channel": "SMS",
+      "optIn": false,
+      "consentSource": "Mobile App",
+      "lifecycleStage": "Unsubscribed",
+      "lastChanged": "2026-07-23T23:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000030",
+      "contactId": "003Kg000001aA08",
+      "contactName": "Rosa Delgado",
+      "email": "rosa.d@lakeside.example",
+      "channel": "Push",
+      "optIn": false,
+      "consentSource": "Support Case",
+      "lifecycleStage": "Unsubscribed",
+      "lastChanged": "2026-08-04T19:30:00.000Z",
+      "syncStatus": "Failed"
+    },
+    {
+      "preferenceId": "a0AKg0000000031",
+      "contactId": "003Kg000001aA08",
+      "contactName": "Rosa Delgado",
+      "email": "rosa.d@lakeside.example",
+      "channel": "Direct Mail",
+      "optIn": false,
+      "consentSource": "Service Console",
+      "lifecycleStage": "Unsubscribed",
+      "lastChanged": "2026-07-28T08:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000032",
+      "contactId": "003Kg000001aA09",
+      "contactName": "Ade Fashola",
+      "email": "ade.f@brightpath.example",
+      "channel": "Email",
+      "optIn": false,
+      "consentSource": "Service Console",
+      "lifecycleStage": "Subscriber",
+      "lastChanged": "2026-08-06T01:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000033",
+      "contactId": "003Kg000001aA09",
+      "contactName": "Ade Fashola",
+      "email": "ade.f@brightpath.example",
+      "channel": "SMS",
+      "optIn": true,
+      "consentSource": "REST API",
+      "lifecycleStage": "Subscriber",
+      "lastChanged": "2026-08-03T06:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000034",
+      "contactId": "003Kg000001aA09",
+      "contactName": "Ade Fashola",
+      "email": "ade.f@brightpath.example",
+      "channel": "Push",
+      "optIn": false,
+      "consentSource": "Support Case",
+      "lifecycleStage": "Subscriber",
+      "lastChanged": "2026-08-12T02:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000035",
+      "contactId": "003Kg000001aA09",
+      "contactName": "Ade Fashola",
+      "email": "ade.f@brightpath.example",
+      "channel": "Direct Mail",
+      "optIn": true,
+      "consentSource": "REST API",
+      "lifecycleStage": "Subscriber",
+      "lastChanged": "2026-08-04T09:30:00.000Z",
+      "syncStatus": "Failed"
+    },
+    {
+      "preferenceId": "a0AKg0000000036",
+      "contactId": "003Kg000001aA10",
+      "contactName": "Hannah Weiss",
+      "email": "h.weiss@northwind.example",
+      "channel": "Email",
+      "optIn": false,
+      "consentSource": "Service Console",
+      "lifecycleStage": "Lapsed",
+      "lastChanged": "2026-07-21T04:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000037",
+      "contactId": "003Kg000001aA10",
+      "contactName": "Hannah Weiss",
+      "email": "h.weiss@northwind.example",
+      "channel": "SMS",
+      "optIn": false,
+      "consentSource": "REST API",
+      "lifecycleStage": "Lapsed",
+      "lastChanged": "2026-08-09T11:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000038",
+      "contactId": "003Kg000001aA10",
+      "contactName": "Hannah Weiss",
+      "email": "h.weiss@northwind.example",
+      "channel": "Push",
+      "optIn": true,
+      "consentSource": "Service Console",
+      "lifecycleStage": "Lapsed",
+      "lastChanged": "2026-07-26T15:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000039",
+      "contactId": "003Kg000001aA10",
+      "contactName": "Hannah Weiss",
+      "email": "h.weiss@northwind.example",
+      "channel": "Direct Mail",
+      "optIn": true,
+      "consentSource": "REST API",
+      "lifecycleStage": "Lapsed",
+      "lastChanged": "2026-08-02T12:30:00.000Z",
+      "syncStatus": "Pending"
+    },
+    {
+      "preferenceId": "a0AKg0000000040",
+      "contactId": "003Kg000001aA11",
+      "contactName": "Diego Moreau",
+      "email": "d.moreau@lakeside.example",
+      "channel": "Email",
+      "optIn": false,
+      "consentSource": "REST API",
+      "lifecycleStage": "Prospect",
+      "lastChanged": "2026-07-29T01:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000041",
+      "contactId": "003Kg000001aA11",
+      "contactName": "Diego Moreau",
+      "email": "d.moreau@lakeside.example",
+      "channel": "SMS",
+      "optIn": false,
+      "consentSource": "Support Case",
+      "lifecycleStage": "Prospect",
+      "lastChanged": "2026-07-31T17:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000042",
+      "contactId": "003Kg000001aA11",
+      "contactName": "Diego Moreau",
+      "email": "d.moreau@lakeside.example",
+      "channel": "Push",
+      "optIn": true,
+      "consentSource": "Bulk Load",
+      "lifecycleStage": "Prospect",
+      "lastChanged": "2026-08-02T06:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000043",
+      "contactId": "003Kg000001aA11",
+      "contactName": "Diego Moreau",
+      "email": "d.moreau@lakeside.example",
+      "channel": "Direct Mail",
+      "optIn": true,
+      "consentSource": "Mobile App",
+      "lifecycleStage": "Prospect",
+      "lastChanged": "2026-08-02T03:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000044",
+      "contactId": "003Kg000001aA12",
+      "contactName": "Sofia Kalu",
+      "email": "sofia.kalu@brightpath.example",
+      "channel": "Email",
+      "optIn": false,
+      "consentSource": "Support Case",
+      "lifecycleStage": "Engaged",
+      "lastChanged": "2026-08-03T05:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000045",
+      "contactId": "003Kg000001aA12",
+      "contactName": "Sofia Kalu",
+      "email": "sofia.kalu@brightpath.example",
+      "channel": "SMS",
+      "optIn": false,
+      "consentSource": "Bulk Load",
+      "lifecycleStage": "Engaged",
+      "lastChanged": "2026-08-06T15:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000046",
+      "contactId": "003Kg000001aA12",
+      "contactName": "Sofia Kalu",
+      "email": "sofia.kalu@brightpath.example",
+      "channel": "Push",
+      "optIn": true,
+      "consentSource": "Preference Centre",
+      "lifecycleStage": "Engaged",
+      "lastChanged": "2026-07-25T17:30:00.000Z",
+      "syncStatus": "Synced"
+    },
+    {
+      "preferenceId": "a0AKg0000000047",
+      "contactId": "003Kg000001aA12",
+      "contactName": "Sofia Kalu",
+      "email": "sofia.kalu@brightpath.example",
+      "channel": "Direct Mail",
+      "optIn": true,
+      "consentSource": "Preference Centre",
+      "lifecycleStage": "Engaged",
+      "lastChanged": "2026-07-23T22:30:00.000Z",
+      "syncStatus": "Pending"
+    }
+  ],
+  "history": [
+    {
+      "historyId": "a0BKg0000000000",
+      "contactId": "003Kg000001aA01",
+      "channel": "Email",
+      "previousValue": "Opted Out",
+      "newValue": "Opted In",
+      "changedByName": "Dana Reyes",
+      "changeSource": "Preference Centre",
+      "changedAt": "2026-08-20T07:30:00.000Z"
+    },
+    {
+      "historyId": "a0BKg0000000001",
+      "contactId": "003Kg000001aA01",
+      "channel": "SMS",
+      "previousValue": "None",
+      "newValue": "Opted In",
+      "changedByName": "Integration User",
+      "changeSource": "Mobile App",
+      "changedAt": "2026-08-13T02:30:00.000Z"
+    },
+    {
+      "historyId": "a0BKg0000000002",
+      "contactId": "003Kg000001aA01",
+      "channel": "Direct Mail",
+      "previousValue": "Opted In",
+      "newValue": "Opted Out",
+      "changedByName": "A. Whitfield",
+      "changeSource": "Service Console",
+      "changedAt": "2026-08-04T12:30:00.000Z"
+    },
+    {
+      "historyId": "a0BKg0000000003",
+      "contactId": "003Kg000001aA02",
+      "channel": "Email",
+      "previousValue": "None",
+      "newValue": "Opted In",
+      "changedByName": "Integration User",
+      "changeSource": "Bulk Load",
+      "changedAt": "2026-08-17T14:30:00.000Z"
+    },
+    {
+      "historyId": "a0BKg0000000004",
+      "contactId": "003Kg000001aA03",
+      "channel": "Push",
+      "previousValue": "Opted Out",
+      "newValue": "Opted In",
+      "changedByName": "Priya Raman",
+      "changeSource": "Mobile App",
+      "changedAt": "2026-08-21T02:30:00.000Z"
+    },
+    {
+      "historyId": "a0BKg0000000005",
+      "contactId": "003Kg000001aA04",
+      "channel": "Email",
+      "previousValue": "Opted In",
+      "newValue": "Opted Out",
+      "changedByName": "Support Agent",
+      "changeSource": "Support Case",
+      "changedAt": "2026-08-19T04:30:00.000Z"
+    },
+    {
+      "historyId": "a0BKg0000000006",
+      "contactId": "003Kg000001aA08",
+      "channel": "Email",
+      "previousValue": "Opted In",
+      "newValue": "Opted Out",
+      "changedByName": "Rosa Delgado",
+      "changeSource": "Preference Centre",
+      "changedAt": "2026-08-21T08:30:00.000Z"
+    },
+    {
+      "historyId": "a0BKg0000000007",
+      "contactId": "003Kg000001aA08",
+      "channel": "SMS",
+      "previousValue": "Opted In",
+      "newValue": "Opted Out",
+      "changedByName": "Rosa Delgado",
+      "changeSource": "Preference Centre",
+      "changedAt": "2026-08-21T08:30:00.000Z"
+    },
+    {
+      "historyId": "a0BKg0000000008",
+      "contactId": "003Kg000001aA08",
+      "channel": "Push",
+      "previousValue": "Opted In",
+      "newValue": "Opted Out",
+      "changedByName": "Rosa Delgado",
+      "changeSource": "Preference Centre",
+      "changedAt": "2026-08-21T08:30:00.000Z"
+    }
+  ],
+  "syncLogs": [
+    {
+      "logId": "a0CKg0000000013",
+      "preferenceId": "a0AKg0000000025",
+      "contactName": "Wen Zhao",
+      "channel": "SMS",
+      "status": "Failed",
+      "attempt": 4,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 400,
+      "errorMessage": "Invalid SubscriberKey: no matching subscriber in the All Subscribers list.",
+      "durationMs": 154,
+      "processedAt": "2026-08-21T14:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000022",
+      "preferenceId": "a0AKg0000000041",
+      "contactName": "Diego Moreau",
+      "channel": "SMS",
+      "status": "Success",
+      "attempt": 1,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 202,
+      "errorMessage": null,
+      "durationMs": 732,
+      "processedAt": "2026-08-21T10:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000001",
+      "preferenceId": "a0AKg0000000001",
+      "contactName": "Dana Reyes",
+      "channel": "SMS",
+      "status": "Failed",
+      "attempt": 4,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 400,
+      "errorMessage": "Invalid SubscriberKey: no matching subscriber in the All Subscribers list.",
+      "durationMs": 669,
+      "processedAt": "2026-08-21T09:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000008",
+      "preferenceId": "a0AKg0000000015",
+      "contactName": "Tomás Iglesias",
+      "channel": "Direct Mail",
+      "status": "Success",
+      "attempt": 1,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 202,
+      "errorMessage": null,
+      "durationMs": 133,
+      "processedAt": "2026-08-21T08:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000015",
+      "preferenceId": "a0AKg0000000028",
+      "contactName": "Rosa Delgado",
+      "channel": "Email",
+      "status": "Success",
+      "attempt": 1,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 202,
+      "errorMessage": null,
+      "durationMs": 686,
+      "processedAt": "2026-08-21T06:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000000",
+      "preferenceId": "a0AKg0000000000",
+      "contactName": "Dana Reyes",
+      "channel": "Email",
+      "status": "Success",
+      "attempt": 1,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 202,
+      "errorMessage": null,
+      "durationMs": 554,
+      "processedAt": "2026-08-21T00:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000006",
+      "preferenceId": "a0AKg0000000011",
+      "contactName": "Priya Raman",
+      "channel": "Direct Mail",
+      "status": "Success",
+      "attempt": 1,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 202,
+      "errorMessage": null,
+      "durationMs": 415,
+      "processedAt": "2026-08-20T23:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000025",
+      "preferenceId": "a0AKg0000000047",
+      "contactName": "Sofia Kalu",
+      "channel": "Direct Mail",
+      "status": "Retrying",
+      "attempt": 2,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 500,
+      "errorMessage": "Internal Server Error",
+      "durationMs": 472,
+      "processedAt": "2026-08-20T22:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000017",
+      "preferenceId": "a0AKg0000000031",
+      "contactName": "Rosa Delgado",
+      "channel": "Direct Mail",
+      "status": "Success",
+      "attempt": 1,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 202,
+      "errorMessage": null,
+      "durationMs": 225,
+      "processedAt": "2026-08-20T21:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000020",
+      "preferenceId": "a0AKg0000000037",
+      "contactName": "Hannah Weiss",
+      "channel": "SMS",
+      "status": "Success",
+      "attempt": 1,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 202,
+      "errorMessage": null,
+      "durationMs": 141,
+      "processedAt": "2026-08-20T20:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000009",
+      "preferenceId": "a0AKg0000000018",
+      "contactName": "Aisha Okonkwo",
+      "channel": "Push",
+      "status": "Success",
+      "attempt": 1,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 202,
+      "errorMessage": null,
+      "durationMs": 772,
+      "processedAt": "2026-08-20T16:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000010",
+      "preferenceId": "a0AKg0000000019",
+      "contactName": "Aisha Okonkwo",
+      "channel": "Direct Mail",
+      "status": "Failed",
+      "attempt": 4,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 400,
+      "errorMessage": "Invalid SubscriberKey: no matching subscriber in the All Subscribers list.",
+      "durationMs": 223,
+      "processedAt": "2026-08-20T15:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000007",
+      "preferenceId": "a0AKg0000000014",
+      "contactName": "Tomás Iglesias",
+      "channel": "Push",
+      "status": "Success",
+      "attempt": 1,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 202,
+      "errorMessage": null,
+      "durationMs": 743,
+      "processedAt": "2026-08-20T13:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000023",
+      "preferenceId": "a0AKg0000000042",
+      "contactName": "Diego Moreau",
+      "channel": "Push",
+      "status": "Success",
+      "attempt": 1,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 202,
+      "errorMessage": null,
+      "durationMs": 628,
+      "processedAt": "2026-08-20T07:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000018",
+      "preferenceId": "a0AKg0000000034",
+      "contactName": "Ade Fashola",
+      "channel": "Push",
+      "status": "Success",
+      "attempt": 1,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 202,
+      "errorMessage": null,
+      "durationMs": 491,
+      "processedAt": "2026-08-19T21:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000002",
+      "preferenceId": "a0AKg0000000004",
+      "contactName": "Marcus Bello",
+      "channel": "Email",
+      "status": "Failed",
+      "attempt": 4,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 400,
+      "errorMessage": "Invalid SubscriberKey: no matching subscriber in the All Subscribers list.",
+      "durationMs": 945,
+      "processedAt": "2026-08-19T20:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000011",
+      "preferenceId": "a0AKg0000000022",
+      "contactName": "Jonas Lindqvist",
+      "channel": "Push",
+      "status": "Failed",
+      "attempt": 4,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 400,
+      "errorMessage": "Invalid SubscriberKey: no matching subscriber in the All Subscribers list.",
+      "durationMs": 577,
+      "processedAt": "2026-08-19T13:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000019",
+      "preferenceId": "a0AKg0000000035",
+      "contactName": "Ade Fashola",
+      "channel": "Direct Mail",
+      "status": "Failed",
+      "attempt": 4,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 400,
+      "errorMessage": "Invalid SubscriberKey: no matching subscriber in the All Subscribers list.",
+      "durationMs": 345,
+      "processedAt": "2026-08-19T12:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000003",
+      "preferenceId": "a0AKg0000000005",
+      "contactName": "Marcus Bello",
+      "channel": "SMS",
+      "status": "Success",
+      "attempt": 1,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 202,
+      "errorMessage": null,
+      "durationMs": 855,
+      "processedAt": "2026-08-19T10:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000014",
+      "preferenceId": "a0AKg0000000026",
+      "contactName": "Wen Zhao",
+      "channel": "Push",
+      "status": "Success",
+      "attempt": 1,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 202,
+      "errorMessage": null,
+      "durationMs": 848,
+      "processedAt": "2026-08-19T08:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000016",
+      "preferenceId": "a0AKg0000000030",
+      "contactName": "Rosa Delgado",
+      "channel": "Push",
+      "status": "Failed",
+      "attempt": 4,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 400,
+      "errorMessage": "Invalid SubscriberKey: no matching subscriber in the All Subscribers list.",
+      "durationMs": 933,
+      "processedAt": "2026-08-19T07:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000004",
+      "preferenceId": "a0AKg0000000007",
+      "contactName": "Marcus Bello",
+      "channel": "Direct Mail",
+      "status": "Retrying",
+      "attempt": 2,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 500,
+      "errorMessage": "Internal Server Error",
+      "durationMs": 739,
+      "processedAt": "2026-08-19T05:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000012",
+      "preferenceId": "a0AKg0000000023",
+      "contactName": "Jonas Lindqvist",
+      "channel": "Direct Mail",
+      "status": "Retrying",
+      "attempt": 2,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 500,
+      "errorMessage": "Internal Server Error",
+      "durationMs": 828,
+      "processedAt": "2026-08-19T02:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000021",
+      "preferenceId": "a0AKg0000000039",
+      "contactName": "Hannah Weiss",
+      "channel": "Direct Mail",
+      "status": "Retrying",
+      "attempt": 2,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 500,
+      "errorMessage": "Internal Server Error",
+      "durationMs": 677,
+      "processedAt": "2026-08-19T01:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000024",
+      "preferenceId": "a0AKg0000000046",
+      "contactName": "Sofia Kalu",
+      "channel": "Push",
+      "status": "Success",
+      "attempt": 1,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 202,
+      "errorMessage": null,
+      "durationMs": 891,
+      "processedAt": "2026-08-18T21:30:00.000Z"
+    },
+    {
+      "logId": "a0CKg0000000005",
+      "preferenceId": "a0AKg0000000010",
+      "contactName": "Priya Raman",
+      "channel": "Push",
+      "status": "Retrying",
+      "attempt": 2,
+      "dataExtensionKey": "Consent_Preferences",
+      "statusCode": 500,
+      "errorMessage": "Internal Server Error",
+      "durationMs": 626,
+      "processedAt": "2026-08-18T15:30:00.000Z"
+    }
+  ],
+  "unifiedProfiles": {
+    "003Kg000001aA01": {
+      "unifiedId": "UNI-4471-0A9C",
+      "name": "Dana Reyes",
+      "primaryEmail": "dana.reyes@northwind.example",
+      "queryDurationMs": 412,
+      "sources": [
+        {
+          "sourceRecordId": "003Kg000001aA01",
+          "sourceSystem": "Salesforce CRM",
+          "email": "dana.reyes@northwind.example",
+          "matchConfidence": 1,
+          "lastModified": "2026-08-20T07:30:00.000Z"
+        },
+        {
+          "sourceRecordId": "POS-88213",
+          "sourceSystem": "Point of Sale",
+          "email": "d.reyes@northwind.example",
+          "matchConfidence": 0.94,
+          "lastModified": "2026-08-13T16:30:00.000Z"
+        },
+        {
+          "sourceRecordId": "LOY-00519",
+          "sourceSystem": "Loyalty Platform",
+          "email": "dana.reyes@northwind.example",
+          "matchConfidence": 0.88,
+          "lastModified": "2026-07-22T14:30:00.000Z"
+        }
+      ],
+      "sourceConsents": [
+        {
+          "sourceRecordId": "003Kg000001aA01",
+          "sourceSystem": "Salesforce CRM",
+          "channel": "Email",
+          "optIn": true,
+          "capturedAt": "2026-08-20T07:30:00.000Z"
+        },
+        {
+          "sourceRecordId": "POS-88213",
+          "sourceSystem": "Point of Sale",
+          "channel": "Email",
+          "optIn": false,
+          "capturedAt": "2026-08-13T16:30:00.000Z"
+        },
+        {
+          "sourceRecordId": "LOY-00519",
+          "sourceSystem": "Loyalty Platform",
+          "channel": "Email",
+          "optIn": true,
+          "capturedAt": "2026-07-22T14:30:00.000Z"
+        },
+        {
+          "sourceRecordId": "003Kg000001aA01",
+          "sourceSystem": "Salesforce CRM",
+          "channel": "SMS",
+          "optIn": true,
+          "capturedAt": "2026-08-13T02:30:00.000Z"
+        },
+        {
+          "sourceRecordId": "LOY-00519",
+          "sourceSystem": "Loyalty Platform",
+          "channel": "SMS",
+          "optIn": true,
+          "capturedAt": "2026-07-22T14:30:00.000Z"
+        },
+        {
+          "sourceRecordId": "POS-88213",
+          "sourceSystem": "Point of Sale",
+          "channel": "Direct Mail",
+          "optIn": false,
+          "capturedAt": "2026-08-13T16:30:00.000Z"
+        }
+      ],
+      "engagement": {
+        "score": 82.4,
+        "band": "Highly engaged",
+        "lastEngagementAt": "2026-08-20T19:30:00.000Z",
+        "emailOpens90d": 27,
+        "clicks90d": 9
+      },
+      "queries": [
+        {
+          "purpose": "Identity graph",
+          "dmo": "IndividualIdentityLink__dlm",
+          "rowCount": 3,
+          "durationMs": 185,
+          "sql": "SELECT link.UnifiedRecordId__c, link.SourceRecordId__c, link.SourceSystemName__c,\n       link.MatchConfidence__c, ui.ssot__FirstName__c, ui.ssot__LastName__c,\n       email.ssot__EmailAddress__c, link.ssot__LastModifiedDate__c\nFROM IndividualIdentityLink__dlm link\nJOIN UnifiedIndividual__dlm ui ON link.UnifiedRecordId__c = ui.ssot__Id__c\nLEFT JOIN ssot__ContactPointEmail__dlm email ON email.ssot__PartyId__c = ui.ssot__Id__c\nWHERE link.UnifiedRecordId__c IN (\n  SELECT UnifiedRecordId__c FROM IndividualIdentityLink__dlm\n  WHERE SourceRecordId__c = '003Kg000001aA01'\n) LIMIT 200"
+        },
+        {
+          "purpose": "Consent by contact point",
+          "dmo": "ssot__ContactPointConsent__dlm",
+          "rowCount": 6,
+          "durationMs": 144,
+          "sql": "SELECT ssot__PartyIdentificationId__c, ssot__ContactPointType__c,\n       ssot__ConsentStatus__c, ssot__EffectiveFromDate__c, ssot__DataSourceName__c\nFROM ssot__ContactPointConsent__dlm\nWHERE ssot__PartyIdentificationId__c IN ('003Kg000001aA01', 'POS-88213', 'LOY-00519')\nLIMIT 1000"
+        },
+        {
+          "purpose": "Engagement Calculated Insight",
+          "dmo": "Engagement_Score__cio",
+          "rowCount": 1,
+          "durationMs": 83,
+          "sql": "SELECT Engagement_Score__c, Last_Engagement_Date__c, Email_Opens_90d__c, Clicks_90d__c\nFROM Engagement_Score__cio\nWHERE UnifiedIndividualId__c = 'UNI-4471-0A9C'\nLIMIT 1"
+        }
+      ]
+    },
+    "003Kg000001aA04": {
+      "unifiedId": "UNI-7732-2B41",
+      "name": "Tomás Iglesias",
+      "primaryEmail": "tomas.i@lakeside.example",
+      "queryDurationMs": 288,
+      "sources": [
+        {
+          "sourceRecordId": "003Kg000001aA04",
+          "sourceSystem": "Salesforce CRM",
+          "email": "tomas.i@lakeside.example",
+          "matchConfidence": 1,
+          "lastModified": "2026-08-19T04:30:00.000Z"
+        },
+        {
+          "sourceRecordId": "WEB-41192",
+          "sourceSystem": "Web Forms",
+          "email": "tomas.i@lakeside.example",
+          "matchConfidence": 0.97,
+          "lastModified": "2026-08-09T02:30:00.000Z"
+        }
+      ],
+      "sourceConsents": [
+        {
+          "sourceRecordId": "003Kg000001aA04",
+          "sourceSystem": "Salesforce CRM",
+          "channel": "Email",
+          "optIn": false,
+          "capturedAt": "2026-08-19T04:30:00.000Z"
+        },
+        {
+          "sourceRecordId": "WEB-41192",
+          "sourceSystem": "Web Forms",
+          "channel": "Email",
+          "optIn": false,
+          "capturedAt": "2026-08-09T02:30:00.000Z"
+        },
+        {
+          "sourceRecordId": "WEB-41192",
+          "sourceSystem": "Web Forms",
+          "channel": "Push",
+          "optIn": true,
+          "capturedAt": "2026-08-09T02:30:00.000Z"
+        }
+      ],
+      "engagement": {
+        "score": 21.6,
+        "band": "At risk",
+        "lastEngagementAt": "2026-07-25T22:30:00.000Z",
+        "emailOpens90d": 3,
+        "clicks90d": 0
+      },
+      "queries": [
+        {
+          "purpose": "Identity graph",
+          "dmo": "IndividualIdentityLink__dlm",
+          "rowCount": 2,
+          "durationMs": 130,
+          "sql": "SELECT link.UnifiedRecordId__c, link.SourceRecordId__c, link.SourceSystemName__c,\n       link.MatchConfidence__c, ui.ssot__FirstName__c, ui.ssot__LastName__c,\n       email.ssot__EmailAddress__c, link.ssot__LastModifiedDate__c\nFROM IndividualIdentityLink__dlm link\nJOIN UnifiedIndividual__dlm ui ON link.UnifiedRecordId__c = ui.ssot__Id__c\nLEFT JOIN ssot__ContactPointEmail__dlm email ON email.ssot__PartyId__c = ui.ssot__Id__c\nWHERE link.UnifiedRecordId__c IN (\n  SELECT UnifiedRecordId__c FROM IndividualIdentityLink__dlm\n  WHERE SourceRecordId__c = '003Kg000001aA04'\n) LIMIT 200"
+        },
+        {
+          "purpose": "Consent by contact point",
+          "dmo": "ssot__ContactPointConsent__dlm",
+          "rowCount": 3,
+          "durationMs": 101,
+          "sql": "SELECT ssot__PartyIdentificationId__c, ssot__ContactPointType__c,\n       ssot__ConsentStatus__c, ssot__EffectiveFromDate__c, ssot__DataSourceName__c\nFROM ssot__ContactPointConsent__dlm\nWHERE ssot__PartyIdentificationId__c IN ('003Kg000001aA04', 'WEB-41192')\nLIMIT 1000"
+        },
+        {
+          "purpose": "Engagement Calculated Insight",
+          "dmo": "Engagement_Score__cio",
+          "rowCount": 1,
+          "durationMs": 57,
+          "sql": "SELECT Engagement_Score__c, Last_Engagement_Date__c, Email_Opens_90d__c, Clicks_90d__c\nFROM Engagement_Score__cio\nWHERE UnifiedIndividualId__c = 'UNI-7732-2B41'\nLIMIT 1"
+        }
+      ]
+    }
+  },
+  "channels": [
+    "Email",
+    "SMS",
+    "Push",
+    "Direct Mail"
+  ]
+}

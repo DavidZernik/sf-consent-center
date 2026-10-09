@@ -33,7 +33,7 @@ export default function getConsentDetail({ contactId } = {}) {
                 .filter((entry) => entry.contactId === contactId)
                 .sort((a, b) => (a.changedAt < b.changedAt ? 1 : -1))
         };
-    });
+    }, 'getConsentDetail', { contactId });
 }
 
 export { apexError };

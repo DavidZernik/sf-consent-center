@@ -23,7 +23,7 @@ export default function getUnifiedProfile({ contactId } = {}) {
             resolvedConsent: resolveConsent(profile.sourceConsents),
             queries: buildQueryTrace(contactId, profile)
         };
-    });
+    }, 'getUnifiedProfile', { contactId });
 }
 
 /**

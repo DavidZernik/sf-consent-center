@@ -38,5 +38,5 @@ export default function retrySync({ logIds } = {}) {
             queued++;
         }
         return { queued, skipped, message: `${queued} queued, ${skipped} skipped.` };
-    });
+    }, 'retrySync', { logIds });
 }

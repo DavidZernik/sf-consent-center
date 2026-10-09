@@ -25,5 +25,5 @@ export default function getConsentSummaries({ searchTerm, channel } = {}) {
             .slice()
             .sort((a, b) => (a.lastChanged < b.lastChanged ? 1 : -1))
             .slice(0, 200);
-    });
+    }, 'getConsentSummaries', { searchTerm, channel });
 }
