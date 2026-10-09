@@ -13,7 +13,9 @@
     "test:unit": "jest --config jest.config.cjs --coverage",
     "lint": "eslint force-app/main/default/lwc demo/src scripts",
     "lint:apex": "pmd check -d force-app/main/default/classes -R pmd/apex-ruleset.xml -f text --no-cache",
-    "smoke": "node scripts/smoke.mjs"
+    "smoke": "node scripts/smoke.mjs",
+    "java:seed": "node scripts/export-java-seed.mjs",
+    "test:java-adapter": "node scripts/test-java-adapter.mjs"
   },
   "devDependencies": {
     "@babel/core": "^7.25.0",

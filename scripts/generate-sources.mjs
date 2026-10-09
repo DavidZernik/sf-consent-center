@@ -19,6 +19,8 @@ const OUT_FILE = join(OUT_DIR, 'sources.json');
 
 /** Directories to publish, in the order they should appear in the panel. */
 const INCLUDES = [
+    { dir: 'backend/src/main/java', group: 'Java backend', extensions: ['.java'] },
+    { dir: 'backend/src/test/java', group: 'Java tests', extensions: ['.java'] },
     { dir: 'force-app/main/default/classes', group: 'Apex classes', extensions: ['.cls'] },
     { dir: 'force-app/main/default/triggers', group: 'Triggers', extensions: ['.trigger'] },
     { dir: 'force-app/main/default/lwc', group: 'Lightning Web Components', extensions: ['.js', '.html', '.css'] },
@@ -33,7 +35,7 @@ const INCLUDES = [
 ];
 
 /** Standalone files worth showing that do not live under an included directory. */
-const EXTRA_FILES = ['lwc.config.json', 'rollup.config.mjs', 'sfdx-project.json', 'pmd/apex-ruleset.xml'];
+const EXTRA_FILES = ['backend/pom.xml', 'lwc.config.json', 'rollup.config.mjs', 'sfdx-project.json', 'pmd/apex-ruleset.xml'];
 
 /** Excluded because they add bulk without telling a reviewer anything. */
 const EXCLUDE_PATTERNS = [/__tests__\/.*\.test\.js$/, /\.cls-meta\.xml$/, /\.trigger-meta\.xml$/, /js-meta\.xml$/];

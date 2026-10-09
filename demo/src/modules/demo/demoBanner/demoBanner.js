@@ -19,6 +19,12 @@ export default class DemoBanner extends LightningElement {
     portfolioUrl = 'https://davidz-losangeles.com/';
     repoUrl = 'https://github.com/DavidZernik/sf-consent-center';
 
+    get dataMode() {
+        return new URLSearchParams(window.location.search).get('backend') === 'java'
+            ? 'Data mode: Java REST API. Fictional data in memory; sync delivery is simulated.'
+            : 'Data mode: browser fixtures. A Java / Spring Boot backend is available to run locally.';
+    }
+
     connectedCallback() {
         // sessionStorage is unavailable in some privacy modes; the default is fine there.
         try {

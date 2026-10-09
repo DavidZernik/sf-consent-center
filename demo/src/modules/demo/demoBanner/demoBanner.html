@@ -42,7 +42,7 @@
                         <h2 class="col-title">What it demonstrates</h2>
                         <p>
                             My ability to code with Apex, LWC, SOQL, SOSL, Visualforce, Flow and metadata
-                            XML. Plus REST and SOAP integrations, OAuth, and Data Cloud.
+                            XML. Plus REST and SOAP integrations, OAuth, Data Cloud, and a Java / Spring Boot backend.
                         </p>
                     </section>
                 </div>
@@ -72,9 +72,10 @@
 
                 <div class="intro-foot">
                     <span class="hint">
-                        Apex only runs inside a Salesforce org, so the browser serves the same JSON from a
-                        mock. The Apex is real, deployable source. Read all of it in the source browser.
+                        Apex only runs inside a Salesforce org. This demo uses fictional data from browser
+                        fixtures or the optional local Java backend. The Apex is real, deployable source.
                     </span>
+                    <span class="hint">{dataMode}</span>
                     <button class="toggle" onclick={handleToggle}>Hide this introduction</button>
                 </div>
             </div>

@@ -17,6 +17,51 @@ Salesforce org, so the browser serves the identical JSON contract from a mock la
 Open the **Capability Map** tab in the demo to jump from any capability straight to the code that
 implements it.
 
+## Java backend
+
+The app also has a Java 21 / Spring Boot REST backend in `backend/`. Run it locally to use the
+same Lightning screens against Java instead of the browser fixtures. Java handles searching
+consent records, validated preference changes, audit history, simulated sync retries, and
+most-restrictive-wins consent resolution across unified profile sources.
+
+With Java 21, Maven 3.9+, and Node.js 20+ installed, run from the repository root:
+
+```bash
+npm ci
+npm run build
+mvn -f backend/pom.xml verify
+java -jar backend/target/consent-backend-1.0.0.jar
+```
+
+Open **http://127.0.0.1:8081/?backend=java**. The jar serves both the built UI and its same-origin
+API. GitHub Pages continues to run the browser fixture mode; it does not host a Java process.
+
+The Java service is a local portfolio implementation: fictional fixtures are held in memory
+and reset on restart, audit actors are labeled as demo users, and sync delivery is simulated.
+It does not call a Salesforce org, Data Cloud, or Marketing Cloud. Data Cloud query traces are
+illustrative fixtures derived from the existing Apex demonstration, not executed database queries.
+The server binds to loopback by default and has no production authentication or persistence.
+
+| Endpoint | Behavior |
+|---|---|
+| `GET /api/health` | Identify the running Java service |
+| `GET /api/consents?searchTerm=&channel=` | Filter and retrieve consent summaries |
+| `GET /api/contacts/{id}/consent` | Preferences and audit history |
+| `POST /api/contacts/{id}/preferences` | Apply a batch of changes; no-op updates create no history |
+| `GET /api/contacts/{id}/unified-profile` | Compute most-restrictive-wins decisions in Java |
+| `GET /api/sync-logs?status=` | Inspect simulated sync attempts |
+| `POST /api/sync-logs/retry` | Simulate retries; skip already-synced preferences |
+
+Preference writes accept `{ "changesJson": "[{\"channel\":\"Email\",\"optIn\":false}]", "source": "Service Console" }`,
+matching the existing LWC/Apex contract. Every change is validated before the batch mutates state.
+Java's mutation methods synchronize access to the in-memory store so overlapping writes cannot
+interleave consent updates and audit records.
+
+`npm run java:seed` regenerates `backend/src/main/resources/seed.json` from the shared fictional
+browser data. CI checks fixture consistency, Java REST contracts, validation atomicity, no-op
+behavior, retry idempotency, and consent resolution. `npm run test:java-adapter` checks the
+browser adapter and error contract. Java source and tests are included in the demo's source viewer.
+
 ---
 
 ## Why this problem

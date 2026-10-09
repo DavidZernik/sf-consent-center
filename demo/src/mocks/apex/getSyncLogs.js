@@ -7,5 +7,5 @@ export default function getSyncLogs({ status } = {}) {
             ? store.syncLogs
             : store.syncLogs.filter((row) => row.status === status);
         return rows.slice(0, 100);
-    });
+    }, 'getSyncLogs', { status });
 }

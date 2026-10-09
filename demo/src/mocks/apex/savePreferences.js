@@ -104,5 +104,5 @@ export default function savePreferences({ contactId, changesJson, source } = {})
             })),
             history: store.history.filter((entry) => entry.contactId === contactId)
         };
-    });
+    }, 'savePreferences', { contactId, changesJson, source });
 }
